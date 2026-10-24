@@ -1,8 +1,11 @@
 {
-  "dependencies": {
-    "better-sqlite3": "^12.10.0",
-    "express": "^5.2.1",
-    "mqtt": "^5.15.1",
-    "mysql2": "^3.22.4"
+  "name": "dashboard-monitoring-udara",
+  "version": "2.0.0",
+  "private": true,
+  "description": "IoT Air Quality & Circulation Monitoring System",
+  "scripts": {
+    "start:backend": "cd backend && npm start",
+    "dev:frontend": "cd frontend && npm run dev",
+    "build:frontend": "cd frontend && npm run build"
   }
 }
