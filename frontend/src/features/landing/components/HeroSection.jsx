@@ -9,14 +9,12 @@ import {
 } from 'lucide-react';
 
 export default function HeroSection({ onOpenDashboard, latest }) {
-  // Derive AQI or score based on sensor reading
-  const co2 = latest?.co2 ?? 480;
   const temp = latest?.temperature ?? 26.8;
   const humid = latest?.humidity ?? 58;
   const wind = latest?.wind_speed ?? 1.2;
-  const tvoc = latest?.tvoc ?? 14;
 
-  const aqiScore = Math.min(Math.round((co2 / 1000) * 80), 100) || 42;
+  // Skor Kenyamanan Ruangan berdasarkan suhu & kelembapan ideal
+  const comfortScore = Math.max(30, Math.min(98, Math.round(100 - Math.abs(temp - 24) * 4 - Math.abs(humid - 55) * 0.4)));
 
   return (
     <section id="beranda" className="relative overflow-hidden bg-gradient-to-b from-[#e3f2fd]/70 via-[#f0f9ff]/50 to-[#f8fafc] pt-10 pb-16 border-b border-slate-200/70">
@@ -37,7 +35,7 @@ export default function HeroSection({ onOpenDashboard, latest }) {
             </h1>
 
             <p className="text-sm sm:text-base text-slate-600 max-w-xl leading-relaxed">
-              Dapatkan informasi kualitas udara dan kelancaran sirkulasi secara real-time untuk menjaga kenyamanan dan kesehatan lingkungan ruangan.
+              Dapatkan informasi suhu, kelembaban udara, dan kelancaran sirkulasi angin secara real-time untuk menjaga kenyamanan dan kesehatan lingkungan ruangan.
             </p>
 
             {/* Prominent Call to Action Button */}
@@ -64,7 +62,7 @@ export default function HeroSection({ onOpenDashboard, latest }) {
               </div>
               <div className="flex items-center gap-1.5">
                 <MapPin className="h-4 w-4 text-emerald-600" />
-                <span>Sensor DHT22 & SGP30</span>
+                <span>Sensor DHT22 & Anemometer</span>
               </div>
             </div>
           </div>
@@ -80,7 +78,7 @@ export default function HeroSection({ onOpenDashboard, latest }) {
                     <MapPin className="h-4 w-4" />
                   </div>
                   <div>
-                    <h3 className="font-bold text-sm text-[#0f2942]">Stasiun Ruang H5</h3>
+                    <h3 className="font-bold text-sm text-[#0f2942]">Stasiun Telemetri Ruangan</h3>
                     <p className="text-[11px] text-slate-400">Node IoT Pemantauan Aktif</p>
                   </div>
                 </div>
@@ -94,8 +92,8 @@ export default function HeroSection({ onOpenDashboard, latest }) {
               <div className="py-5 flex items-center gap-6">
                 {/* Circular Gauge */}
                 <div className="relative flex h-24 w-24 flex-shrink-0 flex-col items-center justify-center rounded-full border-4 border-emerald-500 bg-emerald-50/40">
-                  <span className="text-3xl font-extrabold text-[#0f2942] leading-none">{aqiScore}</span>
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500 mt-1">AQI Index</span>
+                  <span className="text-3xl font-extrabold text-[#0f2942] leading-none">{comfortScore}</span>
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500 mt-1">Skor Indeks</span>
                 </div>
 
                 {/* Status text */}
@@ -103,36 +101,28 @@ export default function HeroSection({ onOpenDashboard, latest }) {
                   <div className="flex items-center gap-1.5">
                     <CheckCircle2 className="h-5 w-5 text-emerald-600 fill-emerald-100" />
                     <span className="text-lg font-bold text-emerald-700">
-                      {latest?.air_quality || 'Baik'}
+                      {latest?.air_quality || 'Kondisi Baik'}
                     </span>
                   </div>
                   <p className="text-xs text-slate-600 mt-1 leading-relaxed">
-                    Kualitas udara masih baik dan aman untuk aktivitas belajar & kerja.
+                    Sirkulasi dan kenyamanan udara ruangan terjaga dengan stabil.
                   </p>
                 </div>
               </div>
 
-              {/* 5 Pollutants / Sensor Metrics Columns */}
-              <div className="grid grid-cols-5 gap-2 pt-4 border-t border-slate-100 text-center">
-                <div className="rounded-lg bg-slate-50 p-2">
-                  <div className="text-[10px] text-slate-400 font-semibold">Suhu</div>
-                  <div className="text-xs font-bold text-slate-800 mt-0.5">{temp}°C</div>
+              {/* 3 Aspek Pengukuran: Suhu, Kelembaban, Sirkulasi Angin */}
+              <div className="grid grid-cols-3 gap-3 pt-4 border-t border-slate-100 text-center">
+                <div className="rounded-xl bg-orange-50/50 border border-orange-100 p-2.5">
+                  <div className="text-[10px] text-slate-400 font-semibold uppercase">Suhu Udara</div>
+                  <div className="text-sm font-bold text-orange-700 mt-0.5">{temp}°C</div>
                 </div>
-                <div className="rounded-lg bg-slate-50 p-2">
-                  <div className="text-[10px] text-slate-400 font-semibold">Lembap</div>
-                  <div className="text-xs font-bold text-slate-800 mt-0.5">{humid}%</div>
+                <div className="rounded-xl bg-purple-50/50 border border-purple-100 p-2.5">
+                  <div className="text-[10px] text-slate-400 font-semibold uppercase">Kelembaban</div>
+                  <div className="text-sm font-bold text-purple-700 mt-0.5">{humid}%</div>
                 </div>
-                <div className="rounded-lg bg-slate-50 p-2">
-                  <div className="text-[10px] text-slate-400 font-semibold">CO₂</div>
-                  <div className="text-xs font-bold text-slate-800 mt-0.5">{co2}</div>
-                </div>
-                <div className="rounded-lg bg-slate-50 p-2">
-                  <div className="text-[10px] text-slate-400 font-semibold">TVOC</div>
-                  <div className="text-xs font-bold text-slate-800 mt-0.5">{tvoc}</div>
-                </div>
-                <div className="rounded-lg bg-slate-50 p-2">
-                  <div className="text-[10px] text-slate-400 font-semibold">Angin</div>
-                  <div className="text-xs font-bold text-slate-800 mt-0.5">{wind}m/s</div>
+                <div className="rounded-xl bg-cyan-50/50 border border-cyan-100 p-2.5">
+                  <div className="text-[10px] text-slate-400 font-semibold uppercase">Sirkulasi Angin</div>
+                  <div className="text-sm font-bold text-cyan-700 mt-0.5">{wind} m/s</div>
                 </div>
               </div>
 

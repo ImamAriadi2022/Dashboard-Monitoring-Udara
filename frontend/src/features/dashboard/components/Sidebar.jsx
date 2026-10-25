@@ -2,7 +2,6 @@ import React from 'react';
 import {
   LayoutDashboard,
   Thermometer,
-  Gauge,
   Wind,
   Database,
   ArrowLeft,
@@ -28,34 +27,27 @@ export default function Sidebar({
       id: 'overview',
       label: 'Ringkasan Sistem',
       icon: LayoutDashboard,
-      desc: 'Ikhtisar seluruh metrik utama',
+      desc: 'Ikhtisar suhu, kelembaban, sirkulasi',
     },
     {
       id: 'temp-humid',
-      label: 'Suhu & Kelembapan',
+      label: 'Suhu dan Kelembapan',
       icon: Thermometer,
-      desc: 'Sensor DHT22 & Kenyamanan',
+      desc: 'Sensor DHT22 dan kenyamanan',
       badge: 'DHT22',
     },
     {
-      id: 'air-quality',
-      label: 'Kualitas Gas & CO₂',
-      icon: Gauge,
-      desc: 'Sensor SGP30 (CO₂ & TVOC)',
-      badge: 'SGP30',
-    },
-    {
       id: 'circulation',
-      label: 'Sirkulasi & Kipas',
+      label: 'Kecepatan Angin dan Kipas',
       icon: Wind,
-      desc: 'Anemometer & Relay Kipas',
-      badge: 'Relay',
+      desc: 'Anemometer dan relay kipas',
+      badge: 'Anemometer',
     },
     {
       id: 'history',
       label: 'Log Riwayat Data',
       icon: Database,
-      desc: 'Rekaman tabel & unduh CSV',
+      desc: 'Rekaman tabel dan unduh CSV',
     },
   ];
 
@@ -100,7 +92,7 @@ export default function Sidebar({
               <button
                 key={item.id}
                 onClick={() => onSelectTab(item.id)}
-                className={`w-full flex items-center justify-between rounded-xl px-3.5 py-3 text-left transition-all ${
+                className={`w-full flex items-center justify-between rounded-xl px-3.5 py-3 text-left transition-all cursor-pointer ${
                   isActive
                     ? 'bg-emerald-50 border border-emerald-200/80 text-emerald-800 font-bold shadow-2xs'
                     : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900 font-medium'
@@ -158,7 +150,7 @@ export default function Sidebar({
         <button
           onClick={onSimulate}
           disabled={isSimulating}
-          className="w-full flex items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white py-2.5 px-3 text-xs font-semibold text-slate-700 hover:bg-slate-50 hover:border-emerald-400 transition-all shadow-2xs disabled:opacity-50"
+          className="w-full flex items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white py-2.5 px-3 text-xs font-semibold text-slate-700 hover:bg-slate-50 hover:border-emerald-400 transition-all shadow-2xs disabled:opacity-50 cursor-pointer"
         >
           <Sparkles className={`h-3.5 w-3.5 text-amber-500 ${isSimulating ? 'animate-spin' : ''}`} />
           <span>{isSimulating ? 'Mengirim Data...' : 'Kirim Simulasi Data'}</span>
@@ -167,7 +159,7 @@ export default function Sidebar({
         {/* Back to Home */}
         <button
           onClick={onBackToHome}
-          className="w-full flex items-center justify-center gap-2 rounded-xl py-2 px-3 text-xs font-medium text-slate-500 hover:text-slate-800 hover:bg-slate-50 transition-colors"
+          className="w-full flex items-center justify-center gap-2 rounded-xl py-2 px-3 text-xs font-medium text-slate-500 hover:text-slate-800 hover:bg-slate-50 transition-colors cursor-pointer"
         >
           <ArrowLeft className="h-3.5 w-3.5" />
           <span>Kembali ke Beranda</span>

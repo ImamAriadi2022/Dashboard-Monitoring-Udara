@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Thermometer, Droplets, Wind, Gauge, ShieldCheck } from 'lucide-react';
+import { Thermometer, Droplets, Wind, ShieldCheck } from 'lucide-react';
 import MetricCard from './MetricCard';
 import SensorChart from './SensorChart';
 import TimeRangeSelector from './TimeRangeSelector';
@@ -12,13 +12,12 @@ export default function OverviewTab({
   onDownload,
   roomName,
 }) {
-  const [selectedChartKey, setSelectedChartKey] = useState('co2');
+  const [selectedChartKey, setSelectedChartKey] = useState('temperature');
 
   const chartConfigs = {
     temperature: { title: 'Tren Suhu (°C)', key: 'temperature', label: 'Suhu', color: '#ea580c', unit: '°C' },
     humidity: { title: 'Tren Kelembapan (%)', key: 'humidity', label: 'Kelembapan', color: '#7c3aed', unit: '%' },
     wind_speed: { title: 'Tren Kecepatan Angin (m/s)', key: 'wind_speed', label: 'Kecepatan', color: '#0284c7', unit: 'm/s' },
-    co2: { title: 'Tren Kadar Gas CO₂ (ppm)', key: 'co2', label: 'CO₂', color: '#059669', unit: 'ppm' },
   };
 
   const currentChart = chartConfigs[selectedChartKey];
@@ -57,15 +56,11 @@ export default function OverviewTab({
             <span>Putaran Kipas: </span>
             <span className="font-bold text-[#0f2942] font-mono">{latest?.fan_rpm != null ? `${latest.fan_rpm} RPM` : '--'}</span>
           </div>
-          <div className="bg-slate-50 px-3.5 py-2 rounded-xl border border-slate-200 text-slate-600">
-            <span>TVOC: </span>
-            <span className="font-bold text-emerald-700 font-mono">{latest?.tvoc != null ? `${latest.tvoc} ppb` : '--'}</span>
-          </div>
         </div>
       </div>
 
-      {/* Main Metric Cards Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      {/* Main Metric Cards Grid (3 Aspek Pengukuran: Suhu, Kelembapan, Sirkulasi Angin) */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <MetricCard
           title="Suhu Ruangan"
           value={latest?.temperature}
@@ -91,15 +86,6 @@ export default function OverviewTab({
           icon={Wind}
           status={latest?.wind_speed > 0.5 ? 'Baik' : 'Sedang'}
           subtitle="Sensor Anemometer"
-        />
-
-        <MetricCard
-          title="Kadar Gas CO₂"
-          value={latest?.co2}
-          unit="PPM"
-          icon={Gauge}
-          status={latest?.co2_status || (latest?.co2 ? (latest.co2 < 700 ? 'Baik' : latest.co2 < 800 ? 'Sedang' : 'Buruk') : 'Normal')}
-          subtitle="Ambang batas: 800 ppm"
         />
       </div>
 

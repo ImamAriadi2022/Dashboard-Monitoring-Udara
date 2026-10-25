@@ -193,7 +193,7 @@ app.get('/latest', (req, res) => {
 
 // Endpoint unduh CSV langsung dari database SQLite per ruangan dan rentang waktu
 app.get('/download', (req, res) => {
-  const room = (req.query.room || 'h5').toLowerCase();
+  const room = (req.query.room || 'lab_td').toLowerCase();
   const range = (req.query.range || 'all').toLowerCase();
 
   let query = 'SELECT * FROM readings WHERE 1=1';
@@ -215,19 +215,17 @@ app.get('/download', (req, res) => {
   query += ' ORDER BY recorded_at ASC';
   const rows = db.prepare(query).all(...params);
 
-  const headers = ['ID', 'Ruangan', 'Waktu_Rekam', 'Suhu_C', 'Kelembapan_Persen', 'Angin_ms', 'CO2_ppm', 'TVOC_ppb', 'Status_Kipas', 'Kualitas_Udara'];
+  const headers = ['ID', 'Ruangan', 'Waktu_Rekam', 'Suhu_C', 'Kelembapan_Persen', 'Angin_ms', 'Status_Kipas', 'Kualitas_Udara'];
   const csvLines = [headers.join(',')];
 
   for (const r of rows) {
     csvLines.push([
       r.id,
-      r.room || 'h5',
+      r.room || 'lab_td',
       `"${r.recorded_at}"`,
       r.temperature ?? '',
       r.humidity ?? '',
       r.wind_speed ?? '',
-      r.co2 ?? '',
-      r.tvoc ?? '',
       r.relay_state ?? '',
       `"${r.air_quality ?? ''}"`
     ].join(','));
@@ -251,11 +249,11 @@ app.post('/simulate', (req, res) => {
   let baseCo2 = 480;
   let baseTvoc = 14;
 
-  if (room === 'h18') {
+  if (room === 'lab_kom') {
     baseTemp = 24.0; baseHum = 51.0; baseCo2 = 610; baseTvoc = 22;
   } else if (room === 'seminar') {
     baseTemp = 23.2; baseHum = 64.0; baseCo2 = 760; baseTvoc = 38;
-  } else if (room === 'h17') {
+  } else if (room === 'lab_td') {
     baseTemp = 25.1; baseHum = 53.0; baseCo2 = 430; baseTvoc = 10;
   }
 

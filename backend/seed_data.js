@@ -13,6 +13,10 @@ if (!existing.includes('room')) {
 }
 db.prepare("UPDATE readings SET room = 'h5' WHERE room IS NULL OR room = ''").run();
 
+// Migrasi nama ruangan lama ke ruangan baru jika ada
+db.prepare("UPDATE readings SET room = 'lab_td' WHERE room = 'h17'").run();
+db.prepare("UPDATE readings SET room = 'lab_kom' WHERE room = 'h18'").run();
+
 const insert = db.prepare(`
   INSERT INTO readings
     (temperature, humidity, wind_speed, co2, tvoc, fan_rpm, relay_state,
@@ -23,10 +27,10 @@ const insert = db.prepare(`
 `);
 
 const roomsConfig = [
+  { id: 'lab_td', baseTemp: 25.1, baseHum: 53.0, baseCo2: 430, baseTvoc: 10, baseWind: 0.8 },
+  { id: 'lab_kom', baseTemp: 24.0, baseHum: 51.0, baseCo2: 610, baseTvoc: 22, baseWind: 1.6 },
   { id: 'h5', baseTemp: 26.5, baseHum: 56.0, baseCo2: 480, baseTvoc: 14, baseWind: 1.2 },
-  { id: 'h18', baseTemp: 24.0, baseHum: 51.0, baseCo2: 610, baseTvoc: 22, baseWind: 1.6 },
   { id: 'seminar', baseTemp: 23.2, baseHum: 64.0, baseCo2: 760, baseTvoc: 38, baseWind: 2.1 },
-  { id: 'h17', baseTemp: 25.1, baseHum: 53.0, baseCo2: 430, baseTvoc: 10, baseWind: 0.8 },
 ];
 
 // Check existing counts per room in the last 30 days
@@ -42,7 +46,6 @@ console.log('Record 30 hari terakhir saat ini:', checkCount);
 const now = new Date();
 const insertMany = db.transaction(() => {
   for (const rc of roomsConfig) {
-    // Only seed if this room has less than 20 records in the last 30 days
     const roomCount = checkCount.find(r => r.room === rc.id)?.c || 0;
     if (roomCount >= 30) {
       console.log(`Ruangan ${rc.id} sudah memiliki ${roomCount} data. Melewati seeding.`);

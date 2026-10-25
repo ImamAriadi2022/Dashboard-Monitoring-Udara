@@ -30,43 +30,67 @@ Dashboard-Monitoring-Udara/
 │   │   │   │   └── LandingPage.jsx                   # Kontainer Halaman Depan
 │   │   │   │
 │   │   │   └── dashboard/           # 2. Feature: Dashboard Telemetri
-│   │   │       ├── roomsConfig.js   # Konfigurasi Ruangan (H5, H18, Seminar, H17)
+│   │   │       ├── roomsConfig.js   # Konfigurasi Ruangan (Lab TD, Lab Kom, H5, Seminar)
 │   │   │       ├── components/
-│   │   │       │   ├── RoomSelector.jsx    # Dropdown Pemilih Ruangan
-│   │   │       │   ├── Sidebar.jsx         # Sidebar Navigasi Berdasarkan Topik & Dropdown
+│   │   │       │   ├── Sidebar.jsx         # Sidebar Navigasi Sticky & Dropdown Ruangan
 │   │   │       │   ├── MetricCard.jsx      # Kartu Parameter Sensor Interaktif
-│   │   │       │   ├── SensorChart.jsx     # Grafik Chart.js Real-time
-│   │   │       │   ├── OverviewTab.jsx     # Topik 1: Ringkasan Sistem
-│   │   │       │   ├── TempHumidTab.jsx    # Topik 2: Suhu & Kelembapan (DHT22)
-│   │   │       │   ├── AirQualityTab.jsx   # Topik 3: Kualitas Gas & CO₂ (SGP30)
-│   │   │       │   ├── CirculationTab.jsx  # Topik 4: Sirkulasi & Kipas (Anemometer & Relay)
-│   │   │       │   └── HistoryLogsTab.jsx  # Topik 5: Log Riwayat & Ekspor CSV
+│   │   │       │   ├── SensorChart.jsx     # Grafik Chart.js Riwayat Telemetri
+│   │   │       │   ├── TimeRangeSelector.jsx # Filter Waktu (3 Hari, 7 Hari, 1 Bulan) & Unduh
+│   │   │       │   ├── OverviewTab.jsx     # Tab 1: Ringkasan Sistem (Suhu, Lembap, Sirkulasi)
+│   │   │       │   ├── TempHumidTab.jsx    # Tab 2: Suhu & Kelembaban Udara (DHT22)
+│   │   │       │   ├── CirculationTab.jsx  # Tab 3: Sirkulasi Udara & Kipas (Anemometer & Relay)
+│   │   │       │   └── HistoryLogsTab.jsx  # Tab 4: Log Riwayat Data & Unduh CSV
 │   │   │       ├── hooks/
-│   │   │       │   └── useSensorData.js    # Custom Hook Polling & Status Telemetri
-│   │   │       └── DashboardPage.jsx       # Kontainer Dashboard
+│   │   │       │   └── useSensorData.js    # Hook Koneksi Backend API & SQLite
+│   │   │       └── DashboardPage.jsx       # Kontainer Dashboard Telemetri
+│   │   │
+│   │   │   └── docs/                # 3. Feature: Dokumentasi Interaktif
+│   │   │       ├── components/
+│   │   │       │   └── CodeBlock.jsx       # Komponen Monospace Code Block + Tombol Salin
+│   │   │       ├── DocsBackendPage.jsx     # Rute /docs-backend: Dokumentasi API & Backend
+│   │   │       └── DocsIotPage.jsx         # Rute /docs-iot: Panduan & Firmware IoT (ESP32)
 │   │   │
 │   │   ├── services/
-│   │   │   └── api.js               # Service API REST Backend
+│   │   │   └── api.js               # Service REST API Backend (Support SSL & Proxy)
 │   │   ├── theme/
-│   │   │   └── designSystem.js      # Design System Tokens & Helper Classes
-│   │   ├── App.jsx                  # Root App & State Navigasi
-│   │   ├── main.jsx                 # Entrypoint React 19
+│   │   │   └── designSystem.js      # Design System Light Mode
+│   │   ├── App.jsx                  # Root App & Routing Path
+│   │   ├── main.jsx                 # Entrypoint React
 │   │   └── index.css                # Styling Tailwind CSS Light Mode
 │   └── package.json
 │
-├── Monitor_ruang_sehat.html         # Versi HTML Dashboard Lama (Legacy)
+├── setup-production.sh              # Script otomatisasi deploy VPS kosongan + SSL
+├── PRODUCTION_GUIDE.md              # Dokumentasi & prompt deploy AI Agent VPS
 └── README.md
 ```
 
 ---
 
-## 🏢 Dropdown Ruangan pada Dashboard
+## 🌐 Rute URL Aplikasi (Base IP: 202.155.17.57)
 
-Tersedia pemilih ruangan interaktif dengan karakteristik pemantauan masing-masing:
-1. **Ruang H5** (Ruang Kelas — Terhubung langsung ke data live hardware mikrokontroler)
-2. **Ruang H18** (Laboratorium Komputer)
-3. **Ruang Seminar** (Auditorium / Aula Kapasitas Besar)
-4. **Ruang H17** (Ruang Dosen & Riset)
+| Rute URL | Tipe Halaman | Deskripsi |
+| :--- | :--- | :--- |
+| `https://202.155.17.57/` | Landing Page | Halaman depan, overview metrik, dan tips kesehatan udara |
+| `https://202.155.17.57/dashboard` | Dashboard | Pemantauan live telemetri 4 ruangan, grafik tren 3d/7d/30d, unduh CSV |
+| `https://202.155.17.57/docs-backend` | Dokumentasi API | Spesifikasi REST API, schema SQLite, dan contoh kode cURL, JS, Python |
+| `https://202.155.17.57/docs-iot` | Dokumentasi IoT | Skema wiring pinout ESP32, broker MQTT, dan full source code firmware C++ |
+
+---
+
+## 🎯 Aspek Pengukuran Sensor
+Sistem berfokus pada 3 aspek pengukuran lingkungan dalam ruangan:
+1. **Kelembaban Udara (%)** — diukur dengan sensor digital presisi **DHT22**.
+2. **Suhu Udara (°C)** — diukur dengan sensor digital **DHT22**.
+3. **Kecepatan Angin / Sirkulasi Udara (m/s)** — diukur dengan sensor **Anemometer** dan diotomasi oleh aktuator **Relay / Exhaust Fan**.
+
+---
+
+## 🏢 Dropdown Ruangan pada Dashboard
+Tersedia pemilih ruangan pada sidebar:
+1. **Ruang Lab TD**
+2. **Ruang Lab Kom**
+3. **Ruang H5** (Terhubung langsung ke telemetri live hardware IoT)
+4. **Ruang Seminar**
 
 ---
 

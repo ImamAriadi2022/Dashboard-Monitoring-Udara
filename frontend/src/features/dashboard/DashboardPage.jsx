@@ -3,7 +3,6 @@ import { useSensorData } from './hooks/useSensorData';
 import Sidebar from './components/Sidebar';
 import OverviewTab from './components/OverviewTab';
 import TempHumidTab from './components/TempHumidTab';
-import AirQualityTab from './components/AirQualityTab';
 import CirculationTab from './components/CirculationTab';
 import HistoryLogsTab from './components/HistoryLogsTab';
 import StatusBadge from '../../components/StatusBadge';
@@ -12,7 +11,7 @@ import { ROOMS } from './roomsConfig';
 
 export default function DashboardPage({ onBackToHome }) {
   const [activeTab, setActiveTab] = useState('overview');
-  const [selectedRoomId, setSelectedRoomId] = useState('h5');
+  const [selectedRoomId, setSelectedRoomId] = useState('lab_td');
   const [timeRange, setTimeRange] = useState('7d'); // '3d' | '7d' | '30d'
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
 
@@ -52,8 +51,6 @@ export default function DashboardPage({ onBackToHome }) {
         return <OverviewTab {...tabProps} />;
       case 'temp-humid':
         return <TempHumidTab {...tabProps} />;
-      case 'air-quality':
-        return <AirQualityTab {...tabProps} />;
       case 'circulation':
         return <CirculationTab {...tabProps} />;
       case 'history':
@@ -69,10 +66,8 @@ export default function DashboardPage({ onBackToHome }) {
         return `Ringkasan Telemetri ${currentRoom.name}`;
       case 'temp-humid':
         return `Suhu dan Kelembapan ${currentRoom.name}`;
-      case 'air-quality':
-        return `Kualitas Udara CO₂ ${currentRoom.name}`;
       case 'circulation':
-        return `Sirkulasi Kipas ${currentRoom.name}`;
+        return `Kecepatan Angin dan Sirkulasi ${currentRoom.name}`;
       case 'history':
         return `Log Riwayat Sensor ${currentRoom.name}`;
       default:
@@ -137,7 +132,7 @@ export default function DashboardPage({ onBackToHome }) {
 
       {/* Main Content Area */}
       <main className="flex-1 p-4 sm:p-6 lg:p-8 overflow-y-auto max-w-7xl mx-auto w-full">
-        {/* Top Header info bar with Room Selector Dropdown & Direct Download */}
+        {/* Top Header info bar */}
         <div className="mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 rounded-2xl border border-slate-200/80 bg-white p-4 sm:p-5 shadow-xs">
           <div>
             <div className="text-[11px] font-bold uppercase tracking-wider text-emerald-700">

@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Database, Download, Search } from 'lucide-react';
-import { getStatusTheme } from '../../../theme/designSystem';
 import TimeRangeSelector from './TimeRangeSelector';
 
 export default function HistoryLogsTab({
@@ -31,7 +30,8 @@ export default function HistoryLogsTab({
     return (
       String(row.id).includes(term) ||
       String(row.temperature).includes(term) ||
-      String(row.co2).includes(term) ||
+      String(row.humidity).includes(term) ||
+      String(row.wind_speed).includes(term) ||
       String(row.relay_state).toLowerCase().includes(term) ||
       String(row.air_quality).toLowerCase().includes(term)
     );
@@ -98,26 +98,22 @@ export default function HistoryLogsTab({
                 <th className="py-3 px-4">Suhu (°C)</th>
                 <th className="py-3 px-4">Kelembapan (%)</th>
                 <th className="py-3 px-4">Angin (m/s)</th>
-                <th className="py-3 px-4">CO₂ (ppm)</th>
-                <th className="py-3 px-4">TVOC (ppb)</th>
                 <th className="py-3 px-4">Relay Kipas</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
               {filteredHistory.length === 0 ? (
                 <tr>
-                  <td colSpan="9" className="py-10 text-center text-slate-400">
+                  <td colSpan="7" className="py-10 text-center text-slate-400">
                     Tidak ada rekaman data pada rentang waktu ini.
                   </td>
                 </tr>
               ) : (
                 filteredHistory.map((row) => {
-                  const co2Status = row.co2 < 700 ? 'Baik' : row.co2 < 800 ? 'Sedang' : 'Buruk';
-                  const st = getStatusTheme(co2Status);
                   return (
                     <tr key={row.id} className="hover:bg-slate-50/80 transition-colors">
                       <td className="py-3 px-4 font-mono text-slate-400 font-medium">#{row.id}</td>
-                      <td className="py-3 px-4 font-semibold text-slate-700 uppercase font-mono">{row.room || 'h5'}</td>
+                      <td className="py-3 px-4 font-semibold text-slate-700 uppercase font-mono">{row.room || 'lab_td'}</td>
                       <td className="py-3 px-4 text-slate-600 font-mono">{formatTimestamp(row.recorded_at)}</td>
                       <td className="py-3 px-4 font-bold text-orange-700 font-mono">
                         {row.temperature != null ? `${row.temperature}°` : '--'}
@@ -127,14 +123,6 @@ export default function HistoryLogsTab({
                       </td>
                       <td className="py-3 px-4 font-bold text-cyan-700 font-mono">
                         {row.wind_speed != null ? `${row.wind_speed}` : '--'}
-                      </td>
-                      <td className="py-3 px-4 font-mono">
-                        <span className={`font-bold ${st.text}`}>
-                          {row.co2 != null ? `${row.co2} ppm` : '--'}
-                        </span>
-                      </td>
-                      <td className="py-3 px-4 font-mono text-slate-600">
-                        {row.tvoc != null ? `${row.tvoc}` : '--'}
                       </td>
                       <td className="py-3 px-4">
                         <span

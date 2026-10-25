@@ -6,7 +6,7 @@ export default function AboutSection() {
     {
       icon: <Layers className="h-5 w-5 text-emerald-600" />,
       title: '1. Akuisisi Data Sensor',
-      desc: 'Mikrokontroler membaca suhu, kelembapan (DHT22), CO₂, TVOC (SGP30), serta aliran udara (Anemometer).'
+      desc: 'Mikrokontroler membaca suhu, kelembaban udara (DHT22), serta kecepatan sirkulasi angin (Anemometer).'
     },
     {
       icon: <Globe className="h-5 w-5 text-cyan-600" />,
@@ -35,7 +35,7 @@ export default function AboutSection() {
             Menghadirkan Ruang Sehat Melalui Otomasi Udara
           </h2>
           <p className="mt-3 text-slate-600 text-xs sm:text-sm leading-relaxed">
-            Sistem pemantauan ini dikembangkan untuk memecahkan permasalahan penumpukan gas karbon dioksida (CO₂) dan udara pengap di ruang tertutup melalui pemantauan cerdas dan aktuasi sirkulasi otomatis.
+            Sistem pemantauan ini dikembangkan untuk memecahkan permasalahan udara pengap, ketidakseimbangan suhu, dan kelembaban di ruang tertutup melalui pemantauan cerdas dan aktuasi sirkulasi otomatis.
           </p>
         </div>
 
@@ -57,25 +57,25 @@ export default function AboutSection() {
 
         {/* Standards comparison table */}
         <div className="mt-10 rounded-2xl border border-slate-200/80 bg-slate-50/50 p-6">
-          <h3 className="text-sm font-bold text-[#0f2942] mb-3">Ambang Batas & Rekomendasi Baku Mutu Udara:</h3>
+          <h3 className="text-sm font-bold text-[#0f2942] mb-3">Ambang Batas & Rekomendasi Baku Mutu Kenyamanan Udara:</h3>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
-            <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-xs">
-              <span className="font-bold text-emerald-700 block mb-1">Kadar CO₂ (SGP30)</span>
-              <p className="text-slate-600">• Aman: &lt; 700 ppm</p>
-              <p className="text-amber-600">• Peringatan: 700 - 800 ppm</p>
-              <p className="text-rose-600">• Bahaya: &gt; 800 ppm (Kipas Relay Aktif)</p>
-            </div>
             <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-xs">
               <span className="font-bold text-orange-700 block mb-1">Suhu Udara (DHT22)</span>
               <p className="text-slate-600">• Nyaman: 22°C - 27°C</p>
-              <p className="text-amber-600">• Hangat: 28°C - 32°C</p>
-              <p className="text-rose-600">• Panas: &gt; 32°C</p>
+              <p className="text-amber-600">• Cukup Hangat: 28°C - 30°C</p>
+              <p className="text-rose-600">• Panas: &gt; 30°C</p>
             </div>
             <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-xs">
-              <span className="font-bold text-blue-700 block mb-1">Kelembapan Relatif (RH)</span>
+              <span className="font-bold text-blue-700 block mb-1">Kelembaban Relatif (RH)</span>
               <p className="text-slate-600">• Ideal: 45% - 65% RH</p>
               <p className="text-amber-600">• Cukup Lembap: 66% - 75% RH</p>
               <p className="text-rose-600">• Sangat Lembap: &gt; 75% RH</p>
+            </div>
+            <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-xs">
+              <span className="font-bold text-cyan-700 block mb-1">Kecepatan Angin (Sirkulasi)</span>
+              <p className="text-amber-600">• Sirkulasi Rendah: &lt; 0.3 m/s</p>
+              <p className="text-slate-600">• Sirkulasi Optimal: 0.3 - 1.5 m/s</p>
+              <p className="text-emerald-700">• Sirkulasi Aktif: &gt; 1.5 m/s</p>
             </div>
           </div>
         </div>

@@ -13,9 +13,7 @@ export default function AirQualityOverviewSection({ latest, onOpenDashboard }) {
   const pollutants = [
     { label: 'Suhu Udara (DHT22)', desc: 'Termal ruangan', value: `${latest?.temperature ?? 26.8} °C`, status: 'Baik' },
     { label: 'Kelembapan Relatif (RH)', desc: 'Kandungan uap air', value: `${latest?.humidity ?? 58} %`, status: 'Baik' },
-    { label: 'Kadar CO₂ (SGP30)', desc: 'Karbon dioksida eCO2', value: `${latest?.co2 ?? 480} ppm`, status: (latest?.co2 ?? 480) < 700 ? 'Baik' : 'Sedang' },
-    { label: 'Senyawa TVOC', desc: 'Gas organik volatil', value: `${latest?.tvoc ?? 14} ppb`, status: 'Baik' },
-    { label: 'Kecepatan Angin', desc: 'Aliran sirkulasi anemometer', value: `${latest?.wind_speed ?? 1.2} m/s`, status: 'Baik' },
+    { label: 'Kecepatan Sirkulasi Angin', desc: 'Aliran sirkulasi anemometer', value: `${latest?.wind_speed ?? 1.2} m/s`, status: 'Baik' },
   ];
 
   return (
@@ -99,7 +97,7 @@ export default function AirQualityOverviewSection({ latest, onOpenDashboard }) {
                   <div>
                     <div className="text-xs font-semibold text-slate-800">Sirkulasi Kipas Otomatis</div>
                     <div className="text-[11px] text-slate-500 mt-0.5 leading-relaxed">
-                      Pastikan kipas ekstraksi aktif saat ruangan dipenuhi banyak orang agar kadar CO₂ tidak menumpuk.
+                      Pastikan kipas ekstraksi aktif saat sirkulasi udara ruangan rendah agar udara tetap segar dan mengalir lancar.
                     </div>
                   </div>
                 </div>
