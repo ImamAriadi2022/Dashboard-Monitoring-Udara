@@ -20,6 +20,7 @@ import {
   Radio,
   FileCode,
   BookOpen,
+  Cloud,
 } from 'lucide-react';
 import CodeBlock from './components/CodeBlock';
 
@@ -427,6 +428,259 @@ node -e "const db=require('better-sqlite3')('air_data.db'); console.log(db.prepa
                 <p className="text-slate-500 mt-0.5">
                   Gunakan perintah <code>ssh-copy-id root@{vpsInfo.ip}</code> dari komputer lokal Anda untuk login instan tanpa perlu mengetikkan password berulang kali.
                 </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Section 7: Panduan Menghubungkan VPS ke Domain Sendiri via Cloudflare */}
+        <section className="space-y-6">
+          <div className="flex items-center gap-2.5 border-b border-slate-200 pb-3">
+            <Cloud className="h-5 w-5 text-orange-500" />
+            <div>
+              <h2 className="text-lg font-bold text-[#0f2942]">7. Panduan Menghubungkan VPS ke Domain via Cloudflare</h2>
+              <p className="text-xs text-slate-500">
+                Langkah-langkah menghubungkan nama domain kustom (misal: <code>namadomain.com</code>) ke IP VPS <strong>{vpsInfo.ip}</strong> menggunakan Cloudflare DNS & SSL.
+              </p>
+            </div>
+          </div>
+
+          {/* Overview Benefits Banner */}
+          <div className="rounded-2xl border border-orange-200/80 bg-orange-50/50 p-5 text-xs text-slate-700 space-y-2">
+            <div className="font-bold text-orange-950 text-sm flex items-center gap-2">
+              <Globe className="h-4 w-4 text-orange-600" />
+              <span>Mengapa Menggunakan Cloudflare untuk Domain Archtera?</span>
+            </div>
+            <p className="leading-relaxed text-slate-600">
+              Dengan mengarahkan domain Anda melalui Cloudflare (Proxied), website Anda mendapatkan perlindungan dari serangan DDoS, caching global CDN super cepat, dan <strong>sertifikat SSL publik yang tepercaya secara otomatis</strong> tanpa perlu memperpanjang sertifikat secara manual setiap beberapa bulan.
+            </p>
+          </div>
+
+          {/* Step by Step Cloudflare Integration */}
+          <div className="space-y-6 text-xs">
+            {/* Step 1: Nameserver */}
+            <div className="rounded-2xl border border-slate-200/90 bg-white p-6 shadow-xs space-y-3">
+              <div className="flex items-center gap-2">
+                <span className="flex h-6 w-6 items-center justify-center rounded-full bg-orange-100 text-orange-700 font-bold font-mono text-[11px]">
+                  1
+                </span>
+                <h3 className="font-bold text-sm text-[#0f2942]">
+                  Pindahkan Nameserver Domain ke Cloudflare
+                </h3>
+              </div>
+              <ol className="list-decimal list-inside space-y-1.5 text-slate-600 leading-relaxed pl-1">
+                <li>Buka akun Anda di <a href="https://dash.cloudflare.com" target="_blank" rel="noreferrer" className="text-orange-600 font-semibold underline">dash.cloudflare.com</a> dan klik <strong>+ Add a Site</strong>.</li>
+                <li>Ketik nama domain Anda (misal: <code>archtera.com</code>), lalu pilih paket <strong>Free Plan</strong>.</li>
+                <li>Cloudflare akan memberikan 2 buah Nameserver resmi (contoh: <code>dina.ns.cloudflare.com</code> dan <code>noah.ns.cloudflare.com</code>).</li>
+                <li>Buka panel registrar tempat Anda membeli domain (Niagahoster, Domainesia, Namecheap, GoDaddy, dll.), masuk ke menu <strong>Nameserver Management</strong>, lalu ubah nameserver default ke nameserver Cloudflare tersebut.</li>
+                <li>Tunggu proses propagasi nameserver (umumnya 5 menit hingga 1 jam).</li>
+              </ol>
+            </div>
+
+            {/* Step 2: DNS Records Table */}
+            <div className="rounded-2xl border border-slate-200/90 bg-white p-6 shadow-xs space-y-3">
+              <div className="flex items-center gap-2">
+                <span className="flex h-6 w-6 items-center justify-center rounded-full bg-orange-100 text-orange-700 font-bold font-mono text-[11px]">
+                  2
+                </span>
+                <h3 className="font-bold text-sm text-[#0f2942]">
+                  Tambahkan DNS Record ke IP VPS ({vpsInfo.ip})
+                </h3>
+              </div>
+              <p className="text-slate-600 leading-relaxed">
+                Di dashboard Cloudflare, buka menu <strong>DNS &gt; Records</strong>, lalu buat record berikut:
+              </p>
+
+              <div className="overflow-x-auto">
+                <table className="w-full text-left text-xs">
+                  <thead className="bg-slate-50 text-slate-500 font-bold border-b border-slate-200 uppercase font-mono text-[11px]">
+                    <tr>
+                      <th className="py-2.5 px-3">Type</th>
+                      <th className="py-2.5 px-3">Name</th>
+                      <th className="py-2.5 px-3">IPv4 Address / Content</th>
+                      <th className="py-2.5 px-3">Proxy Status</th>
+                      <th className="py-2.5 px-3">TTL</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-slate-100 font-mono">
+                    <tr>
+                      <td className="py-2.5 px-3 font-bold text-orange-700">A</td>
+                      <td className="py-2.5 px-3 font-bold text-slate-800">@ (root domain)</td>
+                      <td className="py-2.5 px-3 text-emerald-700 font-bold">{vpsInfo.ip}</td>
+                      <td className="py-2.5 px-3">
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-orange-50 text-orange-700 border border-orange-200 font-sans font-bold text-[10px]">
+                          🟠 Proxied (Aktif)
+                        </span>
+                      </td>
+                      <td className="py-2.5 px-3 text-slate-500">Auto</td>
+                    </tr>
+                    <tr>
+                      <td className="py-2.5 px-3 font-bold text-blue-700">CNAME</td>
+                      <td className="py-2.5 px-3 font-bold text-slate-800">www</td>
+                      <td className="py-2.5 px-3 text-slate-800 font-bold">@ (atau namadomain.com)</td>
+                      <td className="py-2.5 px-3">
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-orange-50 text-orange-700 border border-orange-200 font-sans font-bold text-[10px]">
+                          🟠 Proxied (Aktif)
+                        </span>
+                      </td>
+                      <td className="py-2.5 px-3 text-slate-500">Auto</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            {/* Step 3: SSL/TLS Mode Settings */}
+            <div className="rounded-2xl border border-slate-200/90 bg-white p-6 shadow-xs space-y-4">
+              <div className="flex items-center gap-2">
+                <span className="flex h-6 w-6 items-center justify-center rounded-full bg-orange-100 text-orange-700 font-bold font-mono text-[11px]">
+                  3
+                </span>
+                <h3 className="font-bold text-sm text-[#0f2942]">
+                  Pilih Mode Enkripsi SSL/TLS di Cloudflare (PENTING)
+                </h3>
+              </div>
+
+              <div className="rounded-xl border border-amber-200 bg-amber-50/80 p-4 space-y-1.5 text-amber-900">
+                <strong className="flex items-center gap-1.5 font-bold text-xs text-amber-950">
+                  <AlertTriangle className="h-4 w-4 text-amber-600" />
+                  <span>Wajib Pilih Mode "Full" (Bukan Flexible!)</span>
+                </strong>
+                <p className="text-[11px] leading-relaxed text-amber-900/90">
+                  Jangan memilih mode <em>Flexible</em>. Karena Nginx di VPS Anda secara otomatis mengalihkan port 80 ke port 443 (HTTPS), mode <em>Flexible</em> akan menyebabkan loop tanpa henti yang memicu error <strong>ERR_TOO_MANY_REDIRECTS</strong>.
+                </p>
+              </div>
+
+              <ol className="list-decimal list-inside space-y-2 text-slate-600 leading-relaxed pl-1">
+                <li>Buka menu <strong>SSL/TLS &gt; Overview</strong> di panel Cloudflare.</li>
+                <li>
+                  Pilih opsi <strong>Full</strong> (enkripsi ujung-ke-ujung antara pengunjung &rarr; Cloudflare &rarr; VPS Anda). Mode <strong>Full</strong> kompatibel penuh dengan sertifikat SSL Self-Signed yang sudah dibuat oleh script otomatis di VPS Anda.
+                </li>
+                <li>
+                  Masuk ke tab <strong>SSL/TLS &gt; Edge Certificates</strong>:
+                  <ul className="list-disc list-inside ml-4 mt-1 space-y-1 text-slate-500 text-[11px]">
+                    <li>Aktifkan <strong>Always Use HTTPS</strong> (Status: ON).</li>
+                    <li>Aktifkan <strong>Automatic HTTPS Rewrites</strong> (Status: ON).</li>
+                    <li>Minimum TLS Version: Pilih <strong>TLS 1.2</strong> atau <strong>TLS 1.3</strong>.</li>
+                  </ul>
+                </li>
+              </ol>
+            </div>
+
+            {/* Step 4: Update Nginx server_name */}
+            <div className="rounded-2xl border border-slate-200/90 bg-white p-6 shadow-xs space-y-3">
+              <div className="flex items-center gap-2">
+                <span className="flex h-6 w-6 items-center justify-center rounded-full bg-orange-100 text-orange-700 font-bold font-mono text-[11px]">
+                  4
+                </span>
+                <h3 className="font-bold text-sm text-[#0f2942]">
+                  Perbarui Konfigurasi Nginx di VPS untuk Nama Domain
+                </h3>
+              </div>
+
+              <p className="text-slate-600 leading-relaxed">
+                Login via SSH ke VPS (<code>ssh root@{vpsInfo.ip}</code>), lalu buka file konfigurasi Nginx:
+              </p>
+
+              <CodeBlock
+                language="bash"
+                title="Buka File Konfigurasi Nginx di VPS"
+                code={`sudo nano /etc/nginx/sites-available/air-dashboard`}
+              />
+
+              <p className="text-slate-600 leading-relaxed">
+                Ubah baris <code>server_name _;</code> menjadi nama domain Anda (ganti <code>namadomain.com</code> dengan domain asli Anda):
+              </p>
+
+              <CodeBlock
+                language="nginx"
+                title="Sesuaikan server_name pada /etc/nginx/sites-available/air-dashboard"
+                code={`# 1. Blok Redirect HTTP ke HTTPS
+server {
+    listen 80;
+    server_name namadomain.com www.namadomain.com;
+    return 301 https://$host$request_uri;
+}
+
+# 2. Blok HTTPS Utama (SSL)
+server {
+    listen 443 ssl http2;
+    server_name namadomain.com www.namadomain.com;
+
+    # Tetap gunakan sertifikat yang sudah dibuat di VPS
+    ssl_certificate /etc/ssl/certs/nginx-selfsigned.crt;
+    ssl_certificate_key /etc/ssl/private/nginx-selfsigned.key;
+
+    # Lokasi build frontend React
+    root /root/Dashboard-Monitoring-Udara/frontend/dist;
+    index index.html;
+
+    location / {
+        try_files $uri $uri/ /index.html;
+    }
+
+    # Reverse proxy aman ke backend Express API
+    location /api/ {
+        proxy_pass http://127.0.0.1:3000/;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto https;
+        proxy_cache_bypass $http_upgrade;
+    }
+}`}
+              />
+
+              <p className="text-slate-600 leading-relaxed">
+                Simpan file dengan menekan <code>Ctrl+O</code> &rarr; <code>Enter</code>, lalu keluar dengan <code>Ctrl+X</code>. Selanjutnya uji sintaks dan restart Nginx:
+              </p>
+
+              <CodeBlock
+                language="bash"
+                title="Restart Nginx"
+                code={`# Uji kebenaran sintaks
+sudo nginx -t
+
+# Restart web server Nginx
+sudo systemctl restart nginx`}
+              />
+            </div>
+
+            {/* Step 5: Troubleshooting Cloudflare */}
+            <div className="rounded-2xl border border-slate-200/90 bg-white p-6 shadow-xs space-y-3">
+              <div className="flex items-center gap-2">
+                <span className="flex h-6 w-6 items-center justify-center rounded-full bg-orange-100 text-orange-700 font-bold font-mono text-[11px]">
+                  5
+                </span>
+                <h3 className="font-bold text-sm text-[#0f2942]">
+                  Troubleshooting Masalah Error Cloudflare Umum
+                </h3>
+              </div>
+
+              <div className="space-y-3 text-slate-600 leading-relaxed">
+                <div className="p-3 rounded-xl bg-slate-50 border border-slate-100">
+                  <strong className="text-slate-800 block text-xs">Error 521 (Web Server is Down):</strong>
+                  <span className="text-[11px] text-slate-500">
+                    Artinya Cloudflare tidak bisa menghubungi port 80/443 di VPS Anda. Solusi: Pastikan Nginx sedang aktif (<code>sudo systemctl status nginx</code>) dan firewall UFW mengizinkan port 80 & 443 (<code>sudo ufw allow 80/tcp && sudo ufw allow 443/tcp</code>).
+                  </span>
+                </div>
+
+                <div className="p-3 rounded-xl bg-slate-50 border border-slate-100">
+                  <strong className="text-slate-800 block text-xs">Error 526 (Invalid SSL Certificate):</strong>
+                  <span className="text-[11px] text-slate-500">
+                    Terjadi jika Anda memilih mode SSL <em>Full (Strict)</em> di Cloudflare padahal VPS masih menggunakan sertifikat Self-Signed. Solusi: Ubah mode SSL di dashboard Cloudflare ke mode <strong>Full</strong>.
+                  </span>
+                </div>
+
+                <div className="p-3 rounded-xl bg-slate-50 border border-slate-100">
+                  <strong className="text-slate-800 block text-xs">ERR_TOO_MANY_REDIRECTS:</strong>
+                  <span className="text-[11px] text-slate-500">
+                    Terjadi jika mode SSL di Cloudflare disetel ke <em>Flexible</em>. Cloudflare menghubungi VPS lewat port 80, sementara Nginx selalu mengalihkan port 80 ke 443. Solusi: Ubah mode SSL di dashboard Cloudflare ke <strong>Full</strong>.
+                  </span>
+                </div>
               </div>
             </div>
           </div>

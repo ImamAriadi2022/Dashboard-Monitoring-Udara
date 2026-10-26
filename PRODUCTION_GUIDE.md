@@ -125,3 +125,63 @@ Saat pertama kali membuka `https://202.155.17.57/`, peramban (Chrome/Edge/Firefo
 1. Klik tombol **"Lanjutan"** (*Advanced*).
 2. Klik link **"Lanjutkan ke 202.155.17.57 (tidak aman)"**.
 3. Website dan API akan langsung berjalan dengan enkripsi SSL HTTPS penuh.
+
+---
+
+## ☁️ Panduan Menghubungkan VPS ke Domain Custom via Cloudflare
+
+Jika Anda telah memiliki nama domain kustom (contoh: `archtera.com`), ikuti langkah-langkah berikut untuk menghubungkannya ke VPS `202.155.17.57` menggunakan Cloudflare:
+
+### 1. Ubah Nameserver Domain ke Cloudflare
+1. Buka akun Cloudflare di [dash.cloudflare.com](https://dash.cloudflare.com) &gt; **Add a Site** &gt; Masukkan domain Anda (pilih Free Plan).
+2. Ubah nameserver default di registrar domain Anda (Niagahoster, Domainesia, Namecheap, GoDaddy, dll.) ke 2 nameserver resmi dari Cloudflare (contoh: `dina.ns.cloudflare.com` & `noah.ns.cloudflare.com`).
+
+### 2. Atur DNS Records Menuju IP VPS
+Pada dashboard Cloudflare &gt; **DNS &gt; Records**, tambahkan dua record:
+* **Record A (Root)**:
+  * Type: `A`
+  * Name: `@`
+  * IPv4 address: `202.155.17.57`
+  * Proxy status: **Proxied (🟠 Awan Orange)**
+* **Record CNAME (WWW)**:
+  * Type: `CNAME`
+  * Name: `www`
+  * Target: `@`
+  * Proxy status: **Proxied (🟠 Awan Orange)**
+
+### 3. Pengaturan SSL/TLS Cloudflare (PENTING)
+1. Buka menu **SSL/TLS &gt; Overview** di Cloudflare:
+   * **Wajib pilih mode: "Full"**.
+   * *Perhatian*: Jangan pilih *Flexible*, karena akan menyebabkan loop pengalihan `ERR_TOO_MANY_REDIRECTS`. Mode *Full* bekerja sempurna dan aman dengan sertifikat SSL Self-Signed yang ada di VPS.
+2. Buka tab **SSL/TLS &gt; Edge Certificates**:
+   * Aktifkan **Always Use HTTPS** (`ON`).
+   * Aktifkan **Automatic HTTPS Rewrites** (`ON`).
+
+### 4. Sesuaikan Konfigurasi Nginx di VPS
+Login ke VPS via SSH (`ssh root@202.155.17.57`), buka file konfigurasi Nginx:
+```bash
+sudo nano /etc/nginx/sites-available/air-dashboard
+```
+Ubah `server_name _;` menjadi nama domain Anda:
+```nginx
+server {
+    listen 80;
+    server_name namadomain.com www.namadomain.com;
+    return 301 https://$host$request_uri;
+}
+
+server {
+    listen 443 ssl http2;
+    server_name namadomain.com www.namadomain.com;
+
+    ssl_certificate /etc/ssl/certs/nginx-selfsigned.crt;
+    ssl_certificate_key /etc/ssl/private/nginx-selfsigned.key;
+    ...
+}
+```
+Uji dan restart Nginx:
+```bash
+sudo nginx -t
+sudo systemctl restart nginx
+```
+Domain Anda kini dapat diakses penuh melalui HTTPS publik tanpa peringatan sertifikat browser!

@@ -67,7 +67,7 @@ export default function DocsAllHubPage({ onNavigate }) {
       highlights: [
         'Kredensial SSH: IP 202.155.17.57, User root, Password iot123bridge321',
         'Eksekusi otomatisasi deploy via script setup-production.sh',
-        'Prompt siap pakai untuk didelegasikan ke AI Agent pada VPS',
+        'Panduan menghubungkan domain custom via Cloudflare DNS & SSL Full',
         'Perintah monitoring berkala (pm2 status, pm2 logs, systemctl restart nginx)',
       ],
       linkText: 'Buka Dokumentasi VPS (/docs-vps)',
