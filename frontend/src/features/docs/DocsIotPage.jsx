@@ -105,7 +105,7 @@ void reconnectMQTT() {
     Serial.print("[MQTT] Menghubungkan ke broker EMQX...");
     
     // Generate Client ID acak unik
-    String clientId = "ESP32_AirSafe_" + String(ROOM_ID) + "_" + String(random(0xffff), HEX);
+    String clientId = "ESP32_Archtera_" + String(ROOM_ID) + "_" + String(random(0xffff), HEX);
 
     if (mqttClient.connect(clientId.c_str())) {
       Serial.println(" Terhubung!");

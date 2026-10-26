@@ -55,7 +55,7 @@ Lakukan langkah-langkah berikut secara berurutan dan mandiri:
    sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
      -keyout /etc/ssl/private/nginx-selfsigned.key \
      -out /etc/ssl/certs/nginx-selfsigned.crt \
-     -subj "/C=ID/ST=Indonesia/L=Jakarta/O=AirSafe/OU=IoT/CN=$PUBLIC_IP"
+     -subj "/C=ID/ST=Indonesia/L=Jakarta/O=Archtera/OU=AirSafeArea/CN=$PUBLIC_IP"
 
 5. Konfigurasi Backend:
    - Masuk ke folder 'backend': cd backend
@@ -109,7 +109,7 @@ Lakukan langkah-langkah berikut secara berurutan dan mandiri:
 
 | Rute URL | Protokol | Keterangan |
 | :--- | :--- | :--- |
-| `https://202.155.17.57/` | HTTPS (SSL) | Halaman Depan / Landing Page AirSafe |
+| `https://202.155.17.57/` | HTTPS (SSL) | Halaman Depan Archtera — Air Safe Area |
 | `https://202.155.17.57/dashboard` | HTTPS (SSL) | Dashboard Monitoring Sensor & Grafik 4 Ruangan |
 | `https://202.155.17.57/docs-all` | HTTPS (SSL) | **Hub Utama Pengantar & Ringkasan Seluruh Dokumentasi** |
 | `https://202.155.17.57/docs-backend` | HTTPS (SSL) | **Dokumentasi Lengkap Backend & RESTful API** |

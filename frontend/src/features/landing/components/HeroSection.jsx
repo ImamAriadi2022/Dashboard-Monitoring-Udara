@@ -25,9 +25,14 @@ export default function HeroSection({ onOpenDashboard, latest }) {
           
           {/* Left Column: Headlines & Call To Action */}
           <div className="lg:col-span-7 space-y-5">
-            <span className="inline-block text-xs font-bold uppercase tracking-wider text-emerald-700">
-              Udara Bersih, Hidup Lebih Sehat
-            </span>
+            <div className="inline-flex items-center gap-2">
+              <span className="text-xs font-bold uppercase tracking-wider text-emerald-700 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200">
+                Archtera
+              </span>
+              <span className="text-xs font-bold uppercase tracking-wider text-slate-500">
+                Air Safe Area
+              </span>
+            </div>
 
             <h1 className="text-3xl sm:text-4xl xl:text-5xl font-extrabold text-[#0f2942] tracking-tight leading-tight">
               Pantau Kualitas Udara <br className="hidden sm:inline" />

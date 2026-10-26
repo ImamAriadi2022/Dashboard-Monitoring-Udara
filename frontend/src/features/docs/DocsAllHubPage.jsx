@@ -82,11 +82,11 @@ export default function DocsAllHubPage({ onNavigate }) {
           <div className="max-w-3xl space-y-4">
             <div className="inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-bold text-emerald-800">
               <BookOpen className="h-3.5 w-3.5 text-emerald-600" />
-              <span>Titik Kumpul Dokumentasi Pengembang (Hub Utama)</span>
+              <span>Titik Kumpul Dokumentasi Pengembang Archtera — Air Safe Area</span>
             </div>
 
             <h1 className="text-3xl sm:text-4xl font-extrabold text-[#0f2942] tracking-tight leading-tight">
-              Panduan Arsitektur & Titik Awal Pengembang AirSafe
+              Panduan Arsitektur & Titik Awal Pengembang Archtera
             </h1>
 
             <p className="text-sm sm:text-base text-slate-600 leading-relaxed">

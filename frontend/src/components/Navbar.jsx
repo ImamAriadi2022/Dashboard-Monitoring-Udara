@@ -33,7 +33,7 @@ export default function Navbar({ currentView, onNavigate }) {
               <Shield className="h-5 w-5 fill-white stroke-white" />
             </div>
             <div className="flex items-center gap-1.5">
-              <span className="text-xl font-bold tracking-tight text-[#0f2942]">AirSafe</span>
+              <span className="text-xl font-bold tracking-tight text-[#0f2942]">Archtera</span>
               <span className="rounded-md bg-rose-50 px-2 py-0.5 text-[10px] font-bold text-rose-700 border border-rose-200/70">
                 Admin Data Panel
               </span>
@@ -67,7 +67,7 @@ export default function Navbar({ currentView, onNavigate }) {
               <Leaf className="h-5 w-5 fill-white stroke-white" />
             </div>
             <div className="flex items-center gap-1.5">
-              <span className="text-xl font-bold tracking-tight text-[#0f2942]">AirSafe</span>
+              <span className="text-xl font-bold tracking-tight text-[#0f2942]">Archtera</span>
               <span className="rounded-md bg-emerald-50 px-1.5 py-0.5 text-[10px] font-semibold text-emerald-700 border border-emerald-200/60">
                 Dokumentasi
               </span>
@@ -154,9 +154,9 @@ export default function Navbar({ currentView, onNavigate }) {
               <Leaf className="h-5 w-5 fill-white stroke-white" />
             </div>
             <div className="flex items-center gap-1.5">
-              <span className="text-xl font-bold tracking-tight text-[#0f2942]">AirSafe</span>
+              <span className="text-xl font-bold tracking-tight text-[#0f2942]">Archtera</span>
               <span className="rounded-md bg-emerald-50 px-1.5 py-0.5 text-[10px] font-semibold text-emerald-700 border border-emerald-200/60">
-                RuangSehat
+                Air Safe Area
               </span>
             </div>
           </div>
@@ -191,9 +191,9 @@ export default function Navbar({ currentView, onNavigate }) {
             <Leaf className="h-5 w-5 fill-white stroke-white" />
           </div>
           <div className="flex items-center gap-1.5">
-            <span className="text-xl font-bold tracking-tight text-[#0f2942]">AirSafe</span>
+            <span className="text-xl font-bold tracking-tight text-[#0f2942]">Archtera</span>
             <span className="rounded-md bg-emerald-50 px-1.5 py-0.5 text-[10px] font-semibold text-emerald-700 border border-emerald-200/60">
-              RuangSehat
+              Air Safe Area
             </span>
           </div>
         </div>

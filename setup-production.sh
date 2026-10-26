@@ -34,7 +34,7 @@ sudo mkdir -p /etc/ssl/private /etc/ssl/certs
 sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
   -keyout /etc/ssl/private/nginx-selfsigned.key \
   -out /etc/ssl/certs/nginx-selfsigned.crt \
-  -subj "/C=ID/ST=Indonesia/L=Jakarta/O=AirSafe/OU=IoT/CN=$PUBLIC_IP"
+  -subj "/C=ID/ST=Indonesia/L=Jakarta/O=Archtera/OU=AirSafeArea/CN=$PUBLIC_IP"
 
 echo "⚙️ [5/7] Mengonfigurasi Backend Node.js..."
 cd "$REPO_DIR/backend"

@@ -1,4 +1,4 @@
-# Dashboard Monitoring Kualitas Udara & Sirkulasi (RuangSehat IoT)
+# Archtera — Air Safe Area (Dashboard Monitoring Kualitas Udara & Sirkulasi)
 
 Sistem pemantauan kualitas udara dan sirkulasi ruangan berbasis **IoT (Internet of Things)** dan **Web Modern**, menggunakan **React.js** (Feature-based & Component-based Architecture) di sisi frontend dan **Node.js Express + MQTT** di sisi backend.
 
