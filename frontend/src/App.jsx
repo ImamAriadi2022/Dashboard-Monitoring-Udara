@@ -5,12 +5,14 @@ import LandingPage from './features/landing/LandingPage';
 import DashboardPage from './features/dashboard/DashboardPage';
 import DocsBackendPage from './features/docs/DocsBackendPage';
 import DocsIotPage from './features/docs/DocsIotPage';
+import DocsVpsPage from './features/docs/DocsVpsPage';
 import { fetchLatest } from './services/api';
 
 const pathToView = (pathname) => {
   const cleanPath = (pathname || '').toLowerCase().replace(/\/+$/, '');
   if (cleanPath === '/docs-backend') return 'docs-backend';
   if (cleanPath === '/docs-iot') return 'docs-iot';
+  if (cleanPath === '/docs-vps') return 'docs-vps';
   if (cleanPath === '/dashboard') return 'dashboard';
   return 'landing';
 };
@@ -21,6 +23,8 @@ const viewToPath = (view) => {
       return '/docs-backend';
     case 'docs-iot':
       return '/docs-iot';
+    case 'docs-vps':
+      return '/docs-vps';
     case 'dashboard':
       return '/dashboard';
     default:
@@ -71,6 +75,8 @@ export default function App() {
         return <DocsBackendPage onNavigate={navigateTo} />;
       case 'docs-iot':
         return <DocsIotPage onNavigate={navigateTo} />;
+      case 'docs-vps':
+        return <DocsVpsPage onNavigate={navigateTo} />;
       case 'landing':
       default:
         return (

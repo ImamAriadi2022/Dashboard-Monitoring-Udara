@@ -87,8 +87,19 @@ Lakukan langkah-langkah berikut secara berurutan dan mandiri:
    - Dashboard Telemetri: https://202.155.17.57/dashboard
    - Dokumentasi Backend: https://202.155.17.57/docs-backend
    - Dokumentasi IoT: https://202.155.17.57/docs-iot
+   - Dokumentasi Server VPS: https://202.155.17.57/docs-vps
    - Backend API Status: https://202.155.17.57/api/status
 ```
+
+---
+
+## 🔑 Kredensial Server VPS
+
+* **Host / Public IP**: `202.155.17.57`
+* **SSH Username**: `root`
+* **SSH Password**: `iot123bridge321`
+* **Port**: `22`
+* **Remote Command**: `ssh root@202.155.17.57`
 
 ---
 
@@ -100,6 +111,7 @@ Lakukan langkah-langkah berikut secara berurutan dan mandiri:
 | `https://202.155.17.57/dashboard` | HTTPS (SSL) | Dashboard Monitoring Sensor & Grafik 4 Ruangan |
 | `https://202.155.17.57/docs-backend` | HTTPS (SSL) | **Dokumentasi Lengkap Backend & RESTful API** |
 | `https://202.155.17.57/docs-iot` | HTTPS (SSL) | **Dokumentasi & Firmware IoT (ESP32/Arduino)** |
+| `https://202.155.17.57/docs-vps` | HTTPS (SSL) | **Dokumentasi & Kredensial Akses Server VPS** |
 | `https://202.155.17.57/api/*` | HTTPS (SSL) | Reverse Proxy Nginx ke Express Server |
 
 ---

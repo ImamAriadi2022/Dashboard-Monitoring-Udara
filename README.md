@@ -48,7 +48,8 @@ Dashboard-Monitoring-Udara/
 │   │   │       ├── components/
 │   │   │       │   └── CodeBlock.jsx       # Komponen Monospace Code Block + Tombol Salin
 │   │   │       ├── DocsBackendPage.jsx     # Rute /docs-backend: Dokumentasi API & Backend
-│   │   │       └── DocsIotPage.jsx         # Rute /docs-iot: Panduan & Firmware IoT (ESP32)
+│   │   │       ├── DocsIotPage.jsx         # Rute /docs-iot: Panduan & Firmware IoT (ESP32)
+│   │   │       └── DocsVpsPage.jsx         # Rute /docs-vps: Akses Server & Kredensial VPS
 │   │   │
 │   │   ├── services/
 │   │   │   └── api.js               # Service REST API Backend (Support SSL & Proxy)
@@ -74,6 +75,7 @@ Dashboard-Monitoring-Udara/
 | `https://202.155.17.57/dashboard` | Dashboard | Pemantauan live telemetri 4 ruangan, grafik tren 3d/7d/30d, unduh CSV |
 | `https://202.155.17.57/docs-backend` | Dokumentasi API | Spesifikasi REST API, schema SQLite, dan contoh kode cURL, JS, Python |
 | `https://202.155.17.57/docs-iot` | Dokumentasi IoT | Skema wiring pinout ESP32, broker MQTT, dan full source code firmware C++ |
+| `https://202.155.17.57/docs-vps` | Dokumentasi VPS | Kredensial login SSH, panduan remote terminal, dan pemeliharaan service |
 
 ---
 

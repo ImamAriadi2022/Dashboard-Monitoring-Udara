@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Leaf, ArrowLeft, Menu, X, Server, Cpu, LayoutDashboard, FileText } from 'lucide-react';
+import { Leaf, ArrowLeft, Menu, X, Server, Cpu, LayoutDashboard, Terminal, Key } from 'lucide-react';
 
 export default function Navbar({ currentView, onNavigate }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -20,8 +20,8 @@ export default function Navbar({ currentView, onNavigate }) {
     setMobileMenuOpen(false);
   };
 
-  // If on Docs views: docs-backend or docs-iot
-  if (currentView === 'docs-backend' || currentView === 'docs-iot') {
+  // If on Docs views: docs-backend, docs-iot, or docs-vps
+  if (currentView === 'docs-backend' || currentView === 'docs-iot' || currentView === 'docs-vps') {
     return (
       <header className="sticky top-0 z-50 w-full bg-white border-b border-slate-200/80 shadow-xs">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
@@ -65,6 +65,18 @@ export default function Navbar({ currentView, onNavigate }) {
             >
               <Cpu className="h-3.5 w-3.5 text-cyan-600" />
               <span>Docs IoT</span>
+            </button>
+
+            <button
+              onClick={() => onNavigate('docs-vps')}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                currentView === 'docs-vps'
+                  ? 'bg-amber-50 text-amber-800 border border-amber-300 shadow-2xs'
+                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
+              }`}
+            >
+              <Terminal className="h-3.5 w-3.5 text-amber-600" />
+              <span>Docs VPS</span>
             </button>
           </div>
 
@@ -129,6 +141,14 @@ export default function Navbar({ currentView, onNavigate }) {
               <span>Docs IoT</span>
             </button>
 
+            <button
+              onClick={() => onNavigate('docs-vps')}
+              className="hidden sm:flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-3 py-1.5 text-xs font-bold text-slate-700 hover:bg-slate-50 hover:text-amber-700 transition-all cursor-pointer shadow-2xs"
+            >
+              <Terminal className="h-3.5 w-3.5 text-amber-600" />
+              <span>Docs VPS</span>
+            </button>
+
             {/* Kembali ke Beranda button */}
             <button
               onClick={() => onNavigate('landing')}
@@ -168,7 +188,7 @@ export default function Navbar({ currentView, onNavigate }) {
         </div>
 
         {/* Navigation Links (Desktop) */}
-        <nav className="hidden md:flex items-center gap-6">
+        <nav className="hidden md:flex items-center gap-5">
           {navLinks.map((link) => {
             const isActive = activeTab === link.label;
             return (
@@ -204,6 +224,14 @@ export default function Navbar({ currentView, onNavigate }) {
           >
             <Cpu className="h-3.5 w-3.5 text-cyan-600" />
             <span>Docs IoT</span>
+          </button>
+
+          <button
+            onClick={() => onNavigate('docs-vps')}
+            className="flex items-center gap-1.5 text-xs font-semibold text-slate-600 hover:text-amber-700 transition-colors cursor-pointer py-1"
+          >
+            <Terminal className="h-3.5 w-3.5 text-amber-600" />
+            <span>Docs VPS</span>
           </button>
         </nav>
 
@@ -252,6 +280,17 @@ export default function Navbar({ currentView, onNavigate }) {
               >
                 <Cpu className="h-4 w-4 text-cyan-600" />
                 <span>Dokumentasi IoT (/docs-iot)</span>
+              </button>
+
+              <button
+                onClick={() => {
+                  onNavigate('docs-vps');
+                  setMobileMenuOpen(false);
+                }}
+                className="w-full text-left flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50 hover:text-amber-700"
+              >
+                <Terminal className="h-4 w-4 text-amber-600" />
+                <span>Dokumentasi Server VPS (/docs-vps)</span>
               </button>
             </div>
           </div>

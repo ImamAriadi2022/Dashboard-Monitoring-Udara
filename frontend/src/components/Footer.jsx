@@ -1,5 +1,5 @@
 import React from 'react';
-import { Leaf, Server, Cpu, LayoutDashboard } from 'lucide-react';
+import { Leaf, Server, Cpu, Terminal, LayoutDashboard } from 'lucide-react';
 
 export default function Footer({ onNavigate }) {
   return (
@@ -15,13 +15,13 @@ export default function Footer({ onNavigate }) {
 
         {/* Documentation & Quick Navigation Links */}
         {onNavigate && (
-          <div className="flex flex-wrap items-center gap-4 text-xs">
+          <div className="flex flex-wrap items-center gap-3.5 text-xs">
             <button
               onClick={() => onNavigate('docs-backend')}
               className="flex items-center gap-1.5 font-medium text-slate-600 hover:text-emerald-700 transition-colors cursor-pointer"
             >
               <Server className="h-3.5 w-3.5 text-emerald-600" />
-              <span>Dokumentasi Backend</span>
+              <span>Docs Backend</span>
             </button>
 
             <span className="text-slate-300">•</span>
@@ -31,7 +31,17 @@ export default function Footer({ onNavigate }) {
               className="flex items-center gap-1.5 font-medium text-slate-600 hover:text-cyan-700 transition-colors cursor-pointer"
             >
               <Cpu className="h-3.5 w-3.5 text-cyan-600" />
-              <span>Dokumentasi IoT</span>
+              <span>Docs IoT</span>
+            </button>
+
+            <span className="text-slate-300">•</span>
+
+            <button
+              onClick={() => onNavigate('docs-vps')}
+              className="flex items-center gap-1.5 font-medium text-slate-600 hover:text-amber-700 transition-colors cursor-pointer"
+            >
+              <Terminal className="h-3.5 w-3.5 text-amber-600" />
+              <span>Docs VPS</span>
             </button>
 
             <span className="text-slate-300">•</span>
@@ -41,7 +51,7 @@ export default function Footer({ onNavigate }) {
               className="flex items-center gap-1.5 font-medium text-slate-600 hover:text-emerald-700 transition-colors cursor-pointer"
             >
               <LayoutDashboard className="h-3.5 w-3.5 text-emerald-600" />
-              <span>Dashboard Telemetri</span>
+              <span>Dashboard</span>
             </button>
           </div>
         )}
