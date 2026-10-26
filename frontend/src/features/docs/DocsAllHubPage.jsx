@@ -18,12 +18,29 @@ import {
   Zap,
   Globe,
   Database,
+  Workflow,
 } from 'lucide-react';
 
 export default function DocsAllHubPage({ onNavigate }) {
   const baseIp = '202.155.17.57';
 
   const docPillars = [
+    {
+      id: 'docs-arch',
+      title: 'Dokumentasi Arsitektur Sistem & Alur Kerja',
+      badge: 'System Architecture',
+      badgeColor: 'bg-indigo-50 text-indigo-700 border-indigo-200',
+      icon: Workflow,
+      iconColor: 'text-indigo-600',
+      desc: 'Penjelasan komprehensif topologi 5-lapisan sistem telemetri Archtera, flowchart data end-to-end, logika hysteresis aktuator exhaust fan, kontrak skema SQLite WAL, dan reverse proxy Nginx.',
+      highlights: [
+        'Diagram Alir (Flowchart) lengkap: Sensor Transduction -> MQTT Broker -> Express Engine -> SQLite WAL -> Dashboard UI',
+        'Algoritma Hysteresis Buffer otomasi kipas (Suhu > 29.5°C atau Angin < 0.3 m/s) tanpa osilasi relay',
+        'Topologi Ingress Nginx port 80/443, Mosquitto port 1883/9001, dan Node.js internal port 5000',
+        'Spesifikasi kontrak JSON payload MQTT & optimasi SQLite WAL mode PRAGMA synchronous NORMAL',
+      ],
+      linkText: 'Buka Dokumentasi Arsitektur (/docs-arch)',
+    },
     {
       id: 'docs-iot',
       title: 'Dokumentasi Perangkat Keras IoT',
@@ -193,9 +210,18 @@ export default function DocsAllHubPage({ onNavigate }) {
 
         {/* Section 2: End-to-End System Architecture */}
         <section className="space-y-4">
-          <div className="flex items-center gap-2 border-b border-slate-200 pb-3">
-            <Radio className="h-5 w-5 text-emerald-600" />
-            <h2 className="text-lg font-bold text-[#0f2942]">2. Peta Alur Komunikasi Sistem Menyeluruh</h2>
+          <div className="flex flex-wrap items-center justify-between gap-2 border-b border-slate-200 pb-3">
+            <div className="flex items-center gap-2">
+              <Radio className="h-5 w-5 text-emerald-600" />
+              <h2 className="text-lg font-bold text-[#0f2942]">2. Peta Alur Komunikasi Sistem Menyeluruh</h2>
+            </div>
+            <button
+              onClick={() => onNavigate('docs-arch')}
+              className="inline-flex items-center gap-1.5 text-xs font-bold text-indigo-600 hover:text-indigo-800 transition-colors cursor-pointer"
+            >
+              <span>Lihat Diagram Alir & Spesifikasi Lengkap (/docs-arch)</span>
+              <ArrowRight className="h-3.5 w-3.5" />
+            </button>
           </div>
 
           <div className="rounded-2xl border border-slate-200/90 bg-white p-6 shadow-xs space-y-6">
@@ -216,9 +242,9 @@ export default function DocsAllHubPage({ onNavigate }) {
                   <span className="text-[10px] font-bold text-blue-600 uppercase font-mono">Lapisan 2</span>
                   <Radio className="h-4 w-4 text-blue-600" />
                 </div>
-                <div className="font-bold text-sm text-[#0f2942]">Broker MQTT (EMQX)</div>
+                <div className="font-bold text-sm text-[#0f2942]">Broker MQTT (Mosquitto)</div>
                 <p className="text-slate-500 leading-relaxed text-[11px]">
-                  ESP32 mempublikasikan string JSON ke <code>broker.emqx.io:1883</code> topik <code>monitoring_udara_ta/data</code>.
+                  ESP32 mempublikasikan string JSON ke <code>{baseIp}:1883</code> topik <code>air_monitoring/data</code>.
                 </p>
               </div>
 
@@ -229,7 +255,7 @@ export default function DocsAllHubPage({ onNavigate }) {
                 </div>
                 <div className="font-bold text-sm text-[#0f2942]">Backend VPS & SQLite</div>
                 <p className="text-slate-500 leading-relaxed text-[11px]">
-                  Node.js Express di <code>{baseIp}</code> berlangganan topik, melakukan sanitasi, dan menyimpan ke <code>air_data.db</code>.
+                  Node.js Express di <code>{baseIp}</code> berlangganan topik, melakukan evaluasi, dan menyimpan ke <code>air_data.db</code>.
                 </p>
               </div>
 
@@ -240,21 +266,21 @@ export default function DocsAllHubPage({ onNavigate }) {
                 </div>
                 <div className="font-bold text-sm text-[#0f2942]">Web React Dashboard</div>
                 <p className="text-slate-500 leading-relaxed text-[11px]">
-                  Frontend menyajikan kartu metrik live, tren grafik interaktif, dan ekspor CSV dataset.
+                  Frontend menyajikan kartu metrik live, tren grafik interaktif, dan kontrol administrasi.
                 </p>
               </div>
             </div>
           </div>
         </section>
 
-        {/* Section 3: 3 Documentation Pillars */}
+        {/* Section 3: 4 Documentation Pillars */}
         <section className="space-y-4">
           <div className="flex items-center gap-2 border-b border-slate-200 pb-3">
             <BookOpen className="h-5 w-5 text-emerald-600" />
             <h2 className="text-lg font-bold text-[#0f2942]">3. Akses Panduan Detail Berdasarkan Topik</h2>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {docPillars.map((p) => {
               const Icon = p.icon;
               return (

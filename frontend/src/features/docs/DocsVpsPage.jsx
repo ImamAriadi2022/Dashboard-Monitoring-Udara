@@ -21,6 +21,7 @@ import {
   FileCode,
   BookOpen,
   Cloud,
+  Workflow,
 } from 'lucide-react';
 import CodeBlock from './components/CodeBlock';
 
@@ -79,6 +80,14 @@ export default function DocsVpsPage({ onNavigate }) {
               >
                 <BookOpen className="h-4 w-4 text-emerald-600" />
                 <span>Hub Pengantar</span>
+              </button>
+
+              <button
+                onClick={() => onNavigate('docs-arch')}
+                className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-xs font-bold text-slate-700 hover:bg-slate-100 hover:text-indigo-700 transition-all cursor-pointer shadow-2xs"
+              >
+                <Workflow className="h-4 w-4 text-indigo-600" />
+                <span>Arsitektur & Alur</span>
               </button>
 
               <button
