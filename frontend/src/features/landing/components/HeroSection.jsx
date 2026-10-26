@@ -9,12 +9,18 @@ import {
 } from 'lucide-react';
 
 export default function HeroSection({ onOpenDashboard, latest }) {
-  const temp = latest?.temperature ?? 26.8;
-  const humid = latest?.humidity ?? 58;
-  const wind = latest?.wind_speed ?? 1.2;
+  const hasData = Boolean(latest && latest.id);
+  const temp = hasData && latest.temperature != null ? Number(latest.temperature).toFixed(1) : null;
+  const humid = hasData && latest.humidity != null ? Number(latest.humidity).toFixed(1) : null;
+  const wind = hasData && latest.wind_speed != null ? Number(latest.wind_speed).toFixed(1) : null;
 
-  // Skor Kenyamanan Ruangan berdasarkan suhu & kelembapan ideal
-  const comfortScore = Math.max(30, Math.min(98, Math.round(100 - Math.abs(temp - 24) * 4 - Math.abs(humid - 55) * 0.4)));
+  // Skor Kenyamanan Ruangan berdasarkan suhu & kelembapan ideal langsung dari database
+  const comfortScore = (temp !== null && humid !== null)
+    ? Math.max(30, Math.min(98, Math.round(100 - Math.abs(Number(temp) - 24) * 4 - Math.abs(Number(humid) - 55) * 0.4)))
+    : '--';
+
+  const roomLabel = latest?.room ? `Ruang ${latest.room.toUpperCase()}` : 'Stasiun Telemetri Ruangan';
+  const airQuality = latest?.air_quality || (hasData ? 'Kondisi Baik' : 'Memuat data...');
 
   return (
     <section id="beranda" className="relative overflow-hidden bg-gradient-to-b from-[#e3f2fd]/70 via-[#f0f9ff]/50 to-[#f8fafc] pt-10 pb-16 border-b border-slate-200/70">
@@ -83,7 +89,7 @@ export default function HeroSection({ onOpenDashboard, latest }) {
                     <MapPin className="h-4 w-4" />
                   </div>
                   <div>
-                    <h3 className="font-bold text-sm text-[#0f2942]">Stasiun Telemetri Ruangan</h3>
+                    <h3 className="font-bold text-sm text-[#0f2942]">{roomLabel}</h3>
                     <p className="text-[11px] text-slate-400">Node IoT Pemantauan Aktif</p>
                   </div>
                 </div>
@@ -106,7 +112,7 @@ export default function HeroSection({ onOpenDashboard, latest }) {
                   <div className="flex items-center gap-1.5">
                     <CheckCircle2 className="h-5 w-5 text-emerald-600 fill-emerald-100" />
                     <span className="text-lg font-bold text-emerald-700">
-                      {latest?.air_quality || 'Kondisi Baik'}
+                      {airQuality}
                     </span>
                   </div>
                   <p className="text-xs text-slate-600 mt-1 leading-relaxed">
@@ -119,15 +125,21 @@ export default function HeroSection({ onOpenDashboard, latest }) {
               <div className="grid grid-cols-3 gap-3 pt-4 border-t border-slate-100 text-center">
                 <div className="rounded-xl bg-orange-50/50 border border-orange-100 p-2.5">
                   <div className="text-[10px] text-slate-400 font-semibold uppercase">Suhu Udara</div>
-                  <div className="text-sm font-bold text-orange-700 mt-0.5">{temp}°C</div>
+                  <div className="text-sm font-bold text-orange-700 mt-0.5">
+                    {temp !== null ? `${temp}°C` : '--'}
+                  </div>
                 </div>
                 <div className="rounded-xl bg-purple-50/50 border border-purple-100 p-2.5">
                   <div className="text-[10px] text-slate-400 font-semibold uppercase">Kelembaban</div>
-                  <div className="text-sm font-bold text-purple-700 mt-0.5">{humid}%</div>
+                  <div className="text-sm font-bold text-purple-700 mt-0.5">
+                    {humid !== null ? `${humid}%` : '--'}
+                  </div>
                 </div>
                 <div className="rounded-xl bg-cyan-50/50 border border-cyan-100 p-2.5">
                   <div className="text-[10px] text-slate-400 font-semibold uppercase">Sirkulasi Angin</div>
-                  <div className="text-sm font-bold text-cyan-700 mt-0.5">{wind} m/s</div>
+                  <div className="text-sm font-bold text-cyan-700 mt-0.5">
+                    {wind !== null ? `${wind} m/s` : '--'}
+                  </div>
                 </div>
               </div>
 

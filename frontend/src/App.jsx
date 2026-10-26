@@ -73,6 +73,8 @@ export default function App() {
       }
     }
     getLatest();
+    const intervalId = setInterval(getLatest, 4000);
+    return () => clearInterval(intervalId);
   }, []);
 
   const renderCurrentView = () => {

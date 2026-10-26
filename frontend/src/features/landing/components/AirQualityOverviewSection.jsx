@@ -10,10 +10,26 @@ import {
 import { getStatusTheme } from '../../../theme/designSystem';
 
 export default function AirQualityOverviewSection({ latest, onOpenDashboard }) {
+  const currentStatus = latest?.air_quality || (latest?.id ? 'Baik' : 'Memuat');
   const pollutants = [
-    { label: 'Suhu Udara (DHT22)', desc: 'Termal ruangan', value: `${latest?.temperature ?? 26.8} °C`, status: 'Baik' },
-    { label: 'Kelembapan Relatif (RH)', desc: 'Kandungan uap air', value: `${latest?.humidity ?? 58} %`, status: 'Baik' },
-    { label: 'Kecepatan Sirkulasi Angin', desc: 'Aliran sirkulasi anemometer', value: `${latest?.wind_speed ?? 1.2} m/s`, status: 'Baik' },
+    {
+      label: 'Suhu Udara (DHT22)',
+      desc: 'Termal ruangan aktual',
+      value: latest?.temperature != null ? `${Number(latest.temperature).toFixed(1)} °C` : '--',
+      status: currentStatus,
+    },
+    {
+      label: 'Kelembapan Relatif (RH)',
+      desc: 'Kandungan uap air aktual',
+      value: latest?.humidity != null ? `${Number(latest.humidity).toFixed(1)} %` : '--',
+      status: currentStatus,
+    },
+    {
+      label: 'Kecepatan Sirkulasi Angin',
+      desc: 'Aliran sirkulasi anemometer aktual',
+      value: latest?.wind_speed != null ? `${Number(latest.wind_speed).toFixed(1)} m/s` : '--',
+      status: currentStatus,
+    },
   ];
 
   return (
@@ -46,7 +62,7 @@ export default function AirQualityOverviewSection({ latest, onOpenDashboard }) {
                   <Check className="h-3 w-3 stroke-[3]" />
                 </div>
                 <div className="text-xs text-emerald-800 leading-relaxed font-medium">
-                  Kualitas udara ruangan saat ini dalam kondisi <strong>Baik</strong>. Sirkulasi udara berada dalam batas nyaman dan aman.
+                  Kualitas udara ruangan saat ini dalam kondisi <strong>{currentStatus}</strong>. Sirkulasi udara berada dalam batas nyaman dan aman.
                 </div>
               </div>
 
