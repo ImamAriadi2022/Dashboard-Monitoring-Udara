@@ -13,6 +13,7 @@ import {
   CheckCircle2,
   ExternalLink,
   Download,
+  BookOpen,
 } from 'lucide-react';
 import CodeBlock from './components/CodeBlock';
 
@@ -140,6 +141,14 @@ fetchTelemetry();`
             </div>
 
             <div className="flex flex-wrap items-center gap-2.5">
+              <button
+                onClick={() => onNavigate('docs-all')}
+                className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-xs font-bold text-slate-700 hover:bg-slate-100 hover:text-emerald-700 transition-all cursor-pointer shadow-2xs"
+              >
+                <BookOpen className="h-4 w-4 text-emerald-600" />
+                <span>Hub Pengantar</span>
+              </button>
+
               <button
                 onClick={() => onNavigate('docs-iot')}
                 className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-xs font-bold text-slate-700 hover:bg-slate-100 hover:text-emerald-700 transition-all cursor-pointer shadow-2xs"

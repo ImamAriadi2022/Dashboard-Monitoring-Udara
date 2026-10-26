@@ -117,7 +117,7 @@ const app = express();
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-  res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
   if (req.method === 'OPTIONS') {
     return res.sendStatus(200);
   }
@@ -189,6 +189,109 @@ app.get('/latest', (req, res) => {
   query += ' ORDER BY id DESC LIMIT 1';
   const row = db.prepare(query).get(...params);
   res.json(row || {});
+});
+
+// ---------- CRUD ENDPOINTS UNTUK HALAMAN /admin ----------
+
+// 1. Tambah Data Baru (CREATE)
+app.post('/readings', (req, res) => {
+  try {
+    const d = req.body || {};
+    const room = (d.room || 'lab_td').toLowerCase();
+    const temp = d.temperature != null ? parseFloat(d.temperature) : null;
+    const hum = d.humidity != null ? parseFloat(d.humidity) : null;
+    const wind = d.wind_speed != null ? parseFloat(d.wind_speed) : null;
+    const fan = d.fan_rpm != null ? parseInt(d.fan_rpm) : 0;
+    const relay = d.relay_state ? String(d.relay_state).toUpperCase() : (temp > 29 ? 'ON' : 'OFF');
+    const airQuality = d.air_quality || (temp && temp > 32 ? 'Buruk' : temp > 29 ? 'Sedang' : 'Baik');
+
+    const stmt = db.prepare(`
+      INSERT INTO readings (room, temperature, humidity, wind_speed, fan_rpm, relay_state, air_quality, temp_status, hum_status, uptime)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `);
+
+    const info = stmt.run(
+      room,
+      temp,
+      hum,
+      wind,
+      fan,
+      relay,
+      airQuality,
+      temp && temp > 30 ? 'Sedang' : 'Baik',
+      hum && hum > 70 ? 'Sedang' : 'Baik',
+      d.uptime != null ? parseInt(d.uptime) : 3600
+    );
+
+    res.status(201).json({
+      success: true,
+      id: info.lastInsertRowid,
+      message: 'Data sensor berhasil ditambahkan'
+    });
+  } catch (err) {
+    console.error('Error POST /readings:', err.message);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// 2. Edit Data Eksisting (UPDATE)
+app.put('/readings/:id', (req, res) => {
+  try {
+    const id = parseInt(req.params.id);
+    if (!id) return res.status(400).json({ success: false, error: 'ID tidak valid' });
+
+    const d = req.body || {};
+    const room = (d.room || 'lab_td').toLowerCase();
+    const temp = d.temperature != null ? parseFloat(d.temperature) : null;
+    const hum = d.humidity != null ? parseFloat(d.humidity) : null;
+    const wind = d.wind_speed != null ? parseFloat(d.wind_speed) : null;
+    const fan = d.fan_rpm != null ? parseInt(d.fan_rpm) : 0;
+    const relay = d.relay_state ? String(d.relay_state).toUpperCase() : 'OFF';
+    const airQuality = d.air_quality || (temp && temp > 32 ? 'Buruk' : temp > 29 ? 'Sedang' : 'Baik');
+
+    const stmt = db.prepare(`
+      UPDATE readings
+      SET room = ?, temperature = ?, humidity = ?, wind_speed = ?, fan_rpm = ?, relay_state = ?, air_quality = ?
+      WHERE id = ?
+    `);
+
+    const result = stmt.run(room, temp, hum, wind, fan, relay, airQuality, id);
+
+    if (result.changes === 0) {
+      return res.status(404).json({ success: false, error: 'Data dengan ID tersebut tidak ditemukan' });
+    }
+
+    res.json({
+      success: true,
+      message: `Data ID #${id} berhasil diperbarui`
+    });
+  } catch (err) {
+    console.error('Error PUT /readings/:id:', err.message);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// 3. Hapus Data (DELETE)
+app.delete('/readings/:id', (req, res) => {
+  try {
+    const id = parseInt(req.params.id);
+    if (!id) return res.status(400).json({ success: false, error: 'ID tidak valid' });
+
+    const stmt = db.prepare('DELETE FROM readings WHERE id = ?');
+    const result = stmt.run(id);
+
+    if (result.changes === 0) {
+      return res.status(404).json({ success: false, error: 'Data tidak ditemukan' });
+    }
+
+    res.json({
+      success: true,
+      message: `Data ID #${id} berhasil dihapus`
+    });
+  } catch (err) {
+    console.error('Error DELETE /readings/:id:', err.message);
+    res.status(500).json({ success: false, error: err.message });
+  }
 });
 
 // Endpoint unduh CSV langsung dari database SQLite per ruangan dan rentang waktu

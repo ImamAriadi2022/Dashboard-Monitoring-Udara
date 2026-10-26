@@ -45,3 +45,42 @@ export async function simulateData(customData = {}) {
   if (!res.ok) throw new Error(`HTTP error ${res.status}`);
   return await res.json();
 }
+
+// ---------- CRUD APIs untuk Halaman /admin ----------
+
+export async function createReading(data) {
+  const res = await fetch(`${API_BASE}/readings`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data),
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.error || `HTTP error ${res.status}`);
+  }
+  return await res.json();
+}
+
+export async function updateReading(id, data) {
+  const res = await fetch(`${API_BASE}/readings/${id}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data),
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.error || `HTTP error ${res.status}`);
+  }
+  return await res.json();
+}
+
+export async function deleteReading(id) {
+  const res = await fetch(`${API_BASE}/readings/${id}`, {
+    method: 'DELETE',
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.error || `HTTP error ${res.status}`);
+  }
+  return await res.json();
+}

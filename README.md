@@ -44,9 +44,13 @@ Dashboard-Monitoring-Udara/
 │   │   │       │   └── useSensorData.js    # Hook Koneksi Backend API & SQLite
 │   │   │       └── DashboardPage.jsx       # Kontainer Dashboard Telemetri
 │   │   │
-│   │   │   └── docs/                # 3. Feature: Dokumentasi Interaktif
+│   │   │   ├── admin/               # 3. Feature: Panel Khusus Administrator (Direct URL Only)
+│   │   │   │   └── AdminPage.jsx        # Rute /admin: Create, Edit, & Delete Data SQLite
+│   │   │   │
+│   │   │   └── docs/                # 4. Feature: Dokumentasi Interaktif
 │   │   │       ├── components/
 │   │   │       │   └── CodeBlock.jsx       # Komponen Monospace Code Block + Tombol Salin
+│   │   │       ├── DocsAllHubPage.jsx      # Rute /docs-all: Hub Pengantar Utama Seluruh Dokumentasi
 │   │   │       ├── DocsBackendPage.jsx     # Rute /docs-backend: Dokumentasi API & Backend
 │   │   │       ├── DocsIotPage.jsx         # Rute /docs-iot: Panduan & Firmware IoT (ESP32)
 │   │   │       └── DocsVpsPage.jsx         # Rute /docs-vps: Akses Server & Kredensial VPS
@@ -73,9 +77,11 @@ Dashboard-Monitoring-Udara/
 | :--- | :--- | :--- |
 | `https://202.155.17.57/` | Landing Page | Halaman depan, overview metrik, dan tips kesehatan udara |
 | `https://202.155.17.57/dashboard` | Dashboard | Pemantauan live telemetri 4 ruangan, grafik tren 3d/7d/30d, unduh CSV |
+| `https://202.155.17.57/docs-all` | Hub Dokumentasi | **Pengantar pertama pengembang & titik kumpul seluruh dokumen** |
 | `https://202.155.17.57/docs-backend` | Dokumentasi API | Spesifikasi REST API, schema SQLite, dan contoh kode cURL, JS, Python |
 | `https://202.155.17.57/docs-iot` | Dokumentasi IoT | Skema wiring pinout ESP32, broker MQTT, dan full source code firmware C++ |
 | `https://202.155.17.57/docs-vps` | Dokumentasi VPS | Kredensial login SSH, panduan remote terminal, dan pemeliharaan service |
+| `https://202.155.17.57/admin` | Panel Admin | **Area khusus manajemen data telemetri (Create, Edit, Delete)** |
 
 ---
 

@@ -6,10 +6,14 @@ import DashboardPage from './features/dashboard/DashboardPage';
 import DocsBackendPage from './features/docs/DocsBackendPage';
 import DocsIotPage from './features/docs/DocsIotPage';
 import DocsVpsPage from './features/docs/DocsVpsPage';
+import DocsAllHubPage from './features/docs/DocsAllHubPage';
+import AdminPage from './features/admin/AdminPage';
 import { fetchLatest } from './services/api';
 
 const pathToView = (pathname) => {
   const cleanPath = (pathname || '').toLowerCase().replace(/\/+$/, '');
+  if (cleanPath === '/admin') return 'admin';
+  if (cleanPath === '/docs-all') return 'docs-all';
   if (cleanPath === '/docs-backend') return 'docs-backend';
   if (cleanPath === '/docs-iot') return 'docs-iot';
   if (cleanPath === '/docs-vps') return 'docs-vps';
@@ -19,6 +23,10 @@ const pathToView = (pathname) => {
 
 const viewToPath = (view) => {
   switch (view) {
+    case 'admin':
+      return '/admin';
+    case 'docs-all':
+      return '/docs-all';
     case 'docs-backend':
       return '/docs-backend';
     case 'docs-iot':
@@ -69,6 +77,10 @@ export default function App() {
 
   const renderCurrentView = () => {
     switch (currentView) {
+      case 'admin':
+        return <AdminPage onNavigate={navigateTo} />;
+      case 'docs-all':
+        return <DocsAllHubPage onNavigate={navigateTo} />;
       case 'dashboard':
         return <DashboardPage onBackToHome={() => navigateTo('landing')} onNavigate={navigateTo} />;
       case 'docs-backend':

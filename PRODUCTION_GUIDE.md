@@ -85,9 +85,11 @@ Lakukan langkah-langkah berikut secara berurutan dan mandiri:
 9. Berikan saya ringkasan alamat HTTPS dan rute aplikasi yang berjalan:
    - Web Landing Page: https://202.155.17.57/
    - Dashboard Telemetri: https://202.155.17.57/dashboard
+   - Hub Dokumentasi Utama: https://202.155.17.57/docs-all
    - Dokumentasi Backend: https://202.155.17.57/docs-backend
    - Dokumentasi IoT: https://202.155.17.57/docs-iot
    - Dokumentasi Server VPS: https://202.155.17.57/docs-vps
+   - Panel Admin (CRUD Data): https://202.155.17.57/admin
    - Backend API Status: https://202.155.17.57/api/status
 ```
 
@@ -109,9 +111,11 @@ Lakukan langkah-langkah berikut secara berurutan dan mandiri:
 | :--- | :--- | :--- |
 | `https://202.155.17.57/` | HTTPS (SSL) | Halaman Depan / Landing Page AirSafe |
 | `https://202.155.17.57/dashboard` | HTTPS (SSL) | Dashboard Monitoring Sensor & Grafik 4 Ruangan |
+| `https://202.155.17.57/docs-all` | HTTPS (SSL) | **Hub Utama Pengantar & Ringkasan Seluruh Dokumentasi** |
 | `https://202.155.17.57/docs-backend` | HTTPS (SSL) | **Dokumentasi Lengkap Backend & RESTful API** |
 | `https://202.155.17.57/docs-iot` | HTTPS (SSL) | **Dokumentasi & Firmware IoT (ESP32/Arduino)** |
 | `https://202.155.17.57/docs-vps` | HTTPS (SSL) | **Dokumentasi & Kredensial Akses Server VPS** |
+| `https://202.155.17.57/admin` | HTTPS (SSL) | **Panel Admin CRUD Data Udara (Direct Route Only)** |
 | `https://202.155.17.57/api/*` | HTTPS (SSL) | Reverse Proxy Nginx ke Express Server |
 
 ---
