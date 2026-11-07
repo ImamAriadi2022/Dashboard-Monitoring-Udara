@@ -1,0 +1,11 @@
+hasil testing
+test 0, testing fungsi esp32 dengan wifi dan led, hasil berhasil
+test 1, tes dht, gagal pin d14 timeout, tidak terbaca
+test 1-1, tes dht, gagal pin d4 timeout, tidak terbaca
+test 1-2, tes dht, ganti library timeout, tidak terbaca
+test 2, tes sgp30, tidak respon kemungkinan masalah i2c
+test 2-1, tes sgp30 ganti pin, gagal pengukuran tidak terdeteksi
+test 3, test anemometer, berhasil
+test 4, test dht dansgp, gagal sensor dht tidak terbaca
+test 5, test dht dan anemo, sensor anemo sensor dht tidak terbaca
+test 6, test sgp dan anemo, sensor anemo terbaca sensor sgp tidak
