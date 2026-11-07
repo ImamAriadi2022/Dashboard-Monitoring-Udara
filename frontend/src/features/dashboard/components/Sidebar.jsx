@@ -5,7 +5,6 @@ import {
   Wind,
   Database,
   ArrowLeft,
-  Sparkles,
   Radio,
   DoorOpen,
 } from 'lucide-react';
@@ -17,8 +16,6 @@ export default function Sidebar({
   onBackToHome,
   status,
   statusText,
-  onSimulate,
-  isSimulating,
   selectedRoomId,
   onSelectRoom,
 }) {
@@ -145,16 +142,6 @@ export default function Sidebar({
             Topik: <span className="text-slate-700 font-medium">monitoring_udara_ta/data</span>
           </div>
         </div>
-
-        {/* Simulation Button */}
-        <button
-          onClick={onSimulate}
-          disabled={isSimulating}
-          className="w-full flex items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white py-2.5 px-3 text-xs font-semibold text-slate-700 hover:bg-slate-50 hover:border-emerald-400 transition-all shadow-2xs disabled:opacity-50 cursor-pointer"
-        >
-          <Sparkles className={`h-3.5 w-3.5 text-amber-500 ${isSimulating ? 'animate-spin' : ''}`} />
-          <span>{isSimulating ? 'Mengirim Data...' : 'Kirim Simulasi Data'}</span>
-        </button>
 
         {/* Back to Home */}
         <button

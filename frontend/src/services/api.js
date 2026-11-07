@@ -36,16 +36,6 @@ export function getDownloadUrl(room = 'h5', range = '30d') {
   return `${API_BASE}/download?room=${encodeURIComponent(room)}&range=${encodeURIComponent(range)}`;
 }
 
-export async function simulateData(customData = {}) {
-  const res = await fetch(`${API_BASE}/simulate`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(customData),
-  });
-  if (!res.ok) throw new Error(`HTTP error ${res.status}`);
-  return await res.json();
-}
-
 // ---------- CRUD APIs untuk Halaman /admin ----------
 
 export async function createReading(data) {

@@ -22,8 +22,6 @@ export default function DashboardPage({ onBackToHome }) {
     status,
     statusText,
     lastUpdated,
-    triggerSimulation,
-    isSimulating,
     downloadData,
   } = useSensorData(selectedRoomId, timeRange);
 
@@ -98,8 +96,6 @@ export default function DashboardPage({ onBackToHome }) {
           onBackToHome={onBackToHome}
           status={status}
           statusText={statusText}
-          onSimulate={triggerSimulation}
-          isSimulating={isSimulating}
           selectedRoomId={selectedRoomId}
           onSelectRoom={setSelectedRoomId}
         />
@@ -121,8 +117,6 @@ export default function DashboardPage({ onBackToHome }) {
               onBackToHome={onBackToHome}
               status={status}
               statusText={statusText}
-              onSimulate={triggerSimulation}
-              isSimulating={isSimulating}
               selectedRoomId={selectedRoomId}
               onSelectRoom={setSelectedRoomId}
             />

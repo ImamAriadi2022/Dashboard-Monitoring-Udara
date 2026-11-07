@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { fetchLatest, fetchReadings, simulateData, getDownloadUrl } from '../../../services/api';
+import { fetchLatest, fetchReadings, getDownloadUrl } from '../../../services/api';
 
 const SEND_INTERVAL_MS = 30000;
 const OFFLINE_TIMEOUT_MS = SEND_INTERVAL_MS * 2.5;
@@ -10,7 +10,6 @@ export function useSensorData(roomId = 'h5', timeRange = '7d') {
   const [status, setStatus] = useState('connecting'); // connecting, ok, offline, err
   const [statusText, setStatusText] = useState('CONNECTING...');
   const [lastUpdated, setLastUpdated] = useState(null);
-  const [isSimulating, setIsSimulating] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
   const lastIdRef = useRef(null);
@@ -119,19 +118,6 @@ export function useSensorData(roomId = 'h5', timeRange = '7d') {
     };
   }, [roomId, timeRange, processReading]);
 
-  const triggerSimulation = async () => {
-    setIsSimulating(true);
-    try {
-      await simulateData({ room: roomId });
-      const newLatest = await fetchLatest(roomId);
-      processReading(newLatest);
-    } catch (e) {
-      console.error('Simulation error:', e);
-    } finally {
-      setIsSimulating(false);
-    }
-  };
-
   const downloadData = (formatRange = timeRange) => {
     const url = getDownloadUrl(roomId, formatRange);
     window.open(url, '_blank');
@@ -143,8 +129,6 @@ export function useSensorData(roomId = 'h5', timeRange = '7d') {
     status,
     statusText,
     lastUpdated,
-    triggerSimulation,
-    isSimulating,
     isLoading,
     downloadData,
   };
