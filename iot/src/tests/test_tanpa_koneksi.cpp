@@ -51,7 +51,7 @@ const int CO2_THRESHOLD_OFF = 500;
 const unsigned long WARMUP_MS = 60000; // tunggu 60 detik setelah boot
 
 unsigned long timeold = 0;
-const int timemeasure = 30; // Waktu antar pembacaan (detik)
+const int timemeasure = 5;  // Waktu antar pembacaan (detik) - dipercepat untuk testing
 
 float temp, hum, wind_ms;
 uint16_t eco2, tvoc;

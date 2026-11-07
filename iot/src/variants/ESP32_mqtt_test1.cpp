@@ -19,7 +19,7 @@
 #include <math.h>
 
 // --- Konfigurasi WiFi & MQTT ---
-const char* ssid        = "kandangrudi";
+const char* ssid        = "Kandang rudi";
 const char* password    = "persib1933";
 const char* mqtt_server = "10.128.232.153";
 const int   mqtt_port   = 1883;

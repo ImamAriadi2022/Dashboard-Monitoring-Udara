@@ -11,7 +11,7 @@
 // Kalau LED tidak menyala, cek datasheet board kamu (bisa beda-beda).
 #define LED_PIN 2
 
-const char* ssid = "kandangrudi";
+const char* ssid = "Kandang rudi";
 const char* password = "persib1933";
 
 unsigned long lastBlink = 0;
@@ -22,9 +22,9 @@ void printChipInfo() {
   Serial.printf("Chip model     : %s\n", ESP.getChipModel());
   Serial.printf("Chip revision  : %d\n", ESP.getChipRevision());
   Serial.printf("Jumlah core    : %d\n", ESP.getChipCores());
-  Serial.printf("CPU freq       : %d MHz\n", ESP.getCpuFreqMHz());
-  Serial.printf("Flash size     : %d bytes\n", ESP.getFlashChipSize());
-  Serial.printf("Free heap      : %d bytes\n", ESP.getFreeHeap());
+  Serial.printf("CPU freq       : %lu MHz\n", (unsigned long)ESP.getCpuFreqMHz());
+  Serial.printf("Flash size     : %lu bytes\n", (unsigned long)ESP.getFlashChipSize());
+  Serial.printf("Free heap      : %lu bytes\n", (unsigned long)ESP.getFreeHeap());
   Serial.println("=======================\n");
 }
 
@@ -36,7 +36,7 @@ void scanWifiNetworks() {
   } else {
     Serial.printf("Ditemukan %d jaringan:\n", n);
     for (int i = 0; i < n; i++) {
-      Serial.printf("  %d: %s (RSSI: %d dBm)\n", i + 1, WiFi.SSID(i).c_str(), WiFi.RSSI(i));
+      Serial.printf("  %d: %s (RSSI: %ld dBm)\n", i + 1, WiFi.SSID(i).c_str(), (long)WiFi.RSSI(i));
     }
   }
   Serial.println();
@@ -87,7 +87,7 @@ void loop() {
     ledState = !ledState;
     digitalWrite(LED_PIN, ledState);
     lastBlink = millis();
-    Serial.printf("LED: %s | Free heap: %d bytes | Uptime: %lu s\n",
-                  ledState ? "ON" : "OFF", ESP.getFreeHeap(), millis() / 1000);
+    Serial.printf("LED: %s | Free heap: %lu bytes | Uptime: %lu s\n",
+                  ledState ? "ON" : "OFF", (unsigned long)ESP.getFreeHeap(), millis() / 1000);
   }
 }
