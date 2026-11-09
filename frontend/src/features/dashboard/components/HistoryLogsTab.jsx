@@ -211,6 +211,7 @@ export default function HistoryLogsTab({
                 <th className="py-3 px-4">Waktu Rekam</th>
                 <th className="py-3 px-4">Suhu (°C)</th>
                 <th className="py-3 px-4">Kelembapan (%)</th>
+                <th className="py-3 px-4">CO2 (ppm)</th>
                 <th className="py-3 px-4">Angin (m/s)</th>
                 <th className="py-3 px-4">Relay Kipas</th>
               </tr>
@@ -218,19 +219,19 @@ export default function HistoryLogsTab({
             <tbody className="divide-y divide-slate-100">
               {loading && rows.length === 0 ? (
                 <tr>
-                  <td colSpan="7" className="py-10 text-center text-slate-400">
+                  <td colSpan="8" className="py-10 text-center text-slate-400">
                     Memuat rekaman data dari database...
                   </td>
                 </tr>
               ) : error ? (
                 <tr>
-                  <td colSpan="7" className="py-10 text-center text-rose-500">
+                  <td colSpan="8" className="py-10 text-center text-rose-500">
                     Gagal memuat data log: {error}
                   </td>
                 </tr>
               ) : rows.length === 0 ? (
                 <tr>
-                  <td colSpan="7" className="py-10 text-center text-slate-400">
+                  <td colSpan="8" className="py-10 text-center text-slate-400">
                     Tidak ada rekaman data pada rentang waktu atau kata kunci pencarian ini.
                   </td>
                 </tr>
@@ -249,6 +250,9 @@ export default function HistoryLogsTab({
                     </td>
                     <td className="py-3 px-4 font-bold text-purple-700 font-mono">
                       {row.humidity != null ? `${row.humidity}%` : '--'}
+                    </td>
+                    <td className="py-3 px-4 font-bold text-emerald-700 font-mono">
+                      {row.co2 != null ? `${row.co2} ppm` : '--'}
                     </td>
                     <td className="py-3 px-4 font-bold text-cyan-700 font-mono">
                       {row.wind_speed != null ? `${row.wind_speed}` : '--'}

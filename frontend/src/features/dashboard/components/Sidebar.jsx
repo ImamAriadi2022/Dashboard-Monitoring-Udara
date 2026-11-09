@@ -24,7 +24,7 @@ export default function Sidebar({
       id: 'overview',
       label: 'Ringkasan Sistem',
       icon: LayoutDashboard,
-      desc: 'Ikhtisar suhu, kelembaban, sirkulasi',
+      desc: 'Ikhtisar suhu, kelembaban, CO2, sirkulasi',
     },
     {
       id: 'temp-humid',

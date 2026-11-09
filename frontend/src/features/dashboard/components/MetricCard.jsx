@@ -13,12 +13,12 @@ export default function MetricCard({
 
   return (
     <div className="relative overflow-hidden rounded-2xl border border-slate-200/80 bg-white p-5 shadow-xs transition-all hover:shadow-md">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between gap-2">
         <span className="text-xs font-bold uppercase tracking-wider text-slate-400">
           {title}
         </span>
         {Icon && (
-          <div className="p-2 rounded-xl bg-slate-50 border border-slate-100 text-slate-600">
+          <div className="p-2 rounded-xl bg-slate-50 border border-slate-100 text-slate-600 shrink-0">
             <Icon className="h-4 w-4" />
           </div>
         )}
@@ -31,7 +31,7 @@ export default function MetricCard({
         {unit && <span className="text-xs text-slate-400 font-semibold">{unit}</span>}
       </div>
 
-      <div className="mt-4 flex items-center justify-between">
+      <div className="mt-4 flex flex-wrap items-center justify-between gap-2">
         <span
           className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-[11px] font-semibold ${st.badge}`}
         >

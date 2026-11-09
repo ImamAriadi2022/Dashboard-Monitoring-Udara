@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Thermometer, Droplets, Wind, ShieldCheck } from 'lucide-react';
+import { Thermometer, Droplets, Wind, ShieldCheck, Cloud } from 'lucide-react';
 import MetricCard from './MetricCard';
 import SensorChart from './SensorChart';
 import TimeRangeSelector from './TimeRangeSelector';
@@ -19,6 +19,7 @@ export default function OverviewTab({
   const chartConfigs = {
     temperature: { title: 'Tren Suhu (°C)', key: 'temperature', label: 'Suhu', color: '#ea580c', unit: '°C' },
     humidity: { title: 'Tren Kelembapan (%)', key: 'humidity', label: 'Kelembapan', color: '#7c3aed', unit: '%' },
+    co2: { title: 'Tren Kadar CO2 (ppm)', key: 'co2', label: 'CO2', color: '#059669', unit: 'ppm' },
     wind_speed: { title: 'Tren Kecepatan Angin (m/s)', key: 'wind_speed', label: 'Kecepatan', color: '#0284c7', unit: 'm/s' },
   };
 
@@ -61,14 +62,14 @@ export default function OverviewTab({
         </div>
       </div>
 
-      {/* Main Metric Cards Grid (3 Aspek Pengukuran: Suhu, Kelembapan, Sirkulasi Angin) */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      {/* Main Metric Cards Grid (4 Aspek Pengukuran: Suhu, Kelembapan, CO2, Sirkulasi Angin) */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
         <MetricCard
           title="Suhu Ruangan"
           value={latest?.temperature}
           unit="°C"
           icon={Thermometer}
-          status={latest?.temp_status || (latest?.temperature ? (latest.temperature < 30 ? 'Baik' : 'Sedang') : 'Normal')}
+          status={latest?.temp_status || (latest?.temperature != null ? (latest.temperature < 30 ? 'Baik' : 'Sedang') : 'Normal')}
           subtitle="Batas aman: < 30°C"
         />
 
@@ -77,8 +78,26 @@ export default function OverviewTab({
           value={latest?.humidity}
           unit="%"
           icon={Droplets}
-          status={latest?.hum_status || (latest?.humidity ? (latest.humidity < 70 ? 'Baik' : 'Sedang') : 'Normal')}
+          status={latest?.hum_status || (latest?.humidity != null ? (latest.humidity < 70 ? 'Baik' : 'Sedang') : 'Normal')}
           subtitle="Ideal: 45 - 65%"
+        />
+
+        <MetricCard
+          title="Kadar CO2"
+          value={latest?.co2}
+          unit="ppm"
+          icon={Cloud}
+          status={
+            latest?.co2_status ||
+            (latest?.co2 != null
+              ? latest.co2 >= 800
+                ? 'Buruk'
+                : latest.co2 >= 700
+                ? 'Sedang'
+                : 'Baik'
+              : 'Normal')
+          }
+          subtitle="Batas aman: < 700 ppm"
         />
 
         <MetricCard
@@ -86,7 +105,7 @@ export default function OverviewTab({
           value={latest?.wind_speed}
           unit="m/s"
           icon={Wind}
-          status={latest?.wind_speed > 0.5 ? 'Baik' : 'Sedang'}
+          status={latest?.wind_speed != null ? (latest.wind_speed > 0.5 ? 'Baik' : 'Sedang') : 'Normal'}
           subtitle="Sensor Anemometer"
         />
       </div>
@@ -107,7 +126,7 @@ export default function OverviewTab({
           <div className="text-sm font-bold text-[#0f2942]">
             Grafik Trend Riwayat Telemetri ({timeRange === '1d' ? '1 Hari Terakhir' : timeRange === '7d' ? '7 Hari Terakhir' : '1 Bulan (30 Hari)'} • {chartInterval === '30m' ? 'Per 30 Menit' : chartInterval === '15m' ? 'Per 15 Menit' : 'Per 1 Menit'})
           </div>
-          <div className="flex items-center gap-1.5 bg-slate-100 border border-slate-200 p-1 rounded-xl">
+          <div className="flex flex-wrap items-center gap-1.5 bg-slate-100 border border-slate-200 p-1 rounded-xl">
             {Object.entries(chartConfigs).map(([k, cfg]) => (
               <button
                 key={k}
