@@ -35,7 +35,7 @@ Dashboard-Monitoring-Udara/
 │   │   │       │   ├── Sidebar.jsx         # Sidebar Navigasi Sticky & Dropdown Ruangan
 │   │   │       │   ├── MetricCard.jsx      # Kartu Parameter Sensor Interaktif
 │   │   │       │   ├── SensorChart.jsx     # Grafik Chart.js Riwayat Telemetri
-│   │   │       │   ├── TimeRangeSelector.jsx # Filter Waktu (3 Hari, 7 Hari, 1 Bulan) & Unduh
+│   │   │       │   ├── TimeRangeSelector.jsx # Filter Waktu (1 Hari, 7 Hari, 1 Bulan) & Unduh
 │   │   │       │   ├── OverviewTab.jsx     # Tab 1: Ringkasan Sistem (Suhu, Lembap, Sirkulasi)
 │   │   │       │   ├── TempHumidTab.jsx    # Tab 2: Suhu & Kelembaban Udara (DHT22)
 │   │   │       │   ├── CirculationTab.jsx  # Tab 3: Sirkulasi Udara & Kipas (Anemometer & Relay)
@@ -76,7 +76,7 @@ Dashboard-Monitoring-Udara/
 | Rute URL | Tipe Halaman | Deskripsi |
 | :--- | :--- | :--- |
 | `https://202.155.17.57/` | Landing Page | Halaman depan, overview metrik, dan tips kesehatan udara |
-| `https://202.155.17.57/dashboard` | Dashboard | Pemantauan live telemetri 4 ruangan, grafik tren 3d/7d/30d, unduh CSV |
+| `https://202.155.17.57/dashboard` | Dashboard | Pemantauan live telemetri 4 ruangan, grafik tren 1d/7d/30d, unduh CSV |
 | `https://202.155.17.57/docs-all` | Hub Dokumentasi | **Pengantar pertama pengembang & titik kumpul seluruh dokumen** |
 | `https://202.155.17.57/docs-backend` | Dokumentasi API | Spesifikasi REST API, schema SQLite, dan contoh kode cURL, JS, Python |
 | `https://202.155.17.57/docs-iot` | Dokumentasi IoT | Skema wiring pinout ESP32, broker MQTT, dan full source code firmware C++ |

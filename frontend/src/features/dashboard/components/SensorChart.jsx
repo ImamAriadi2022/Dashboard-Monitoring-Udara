@@ -59,7 +59,7 @@ export default function SensorChart({
           hour12: false,
         }).replace('.', ':');
 
-        if (timeRange === '3d') {
+        if (timeRange === '1d' || timeRange === '3d') {
           const dd = String(date.getDate()).padStart(2, '0');
           const mm = String(date.getMonth() + 1).padStart(2, '0');
           lbls.push(`${dd}/${mm} ${hhmm}`);
@@ -173,7 +173,7 @@ export default function SensorChart({
           autoSkip: true,
           autoSkipPadding: 20,
           font: { size: 10 },
-          maxTicksLimit: timeRange === '30d' ? 7 : 6,
+          maxTicksLimit: timeRange === '30d' ? 7 : timeRange === '1d' ? 8 : 6,
         },
       },
       y: {

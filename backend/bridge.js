@@ -147,6 +147,9 @@ app.get('/status', (req, res) => {
 });
 
 function buildRangeCondition(range) {
+  if (range === '1d' || range === '24h') {
+    return "recorded_at >= datetime('now', '-1 day')";
+  }
   if (range === '3d') {
     return "recorded_at >= datetime('now', '-3 days')";
   }
@@ -165,7 +168,7 @@ const INTERVAL_SECONDS = {
   '30m': 1800,
 };
 
-// Ambil riwayat pembacaan berdasarkan ruangan, rentang waktu (3d, 7d, 30d),
+// Ambil riwayat pembacaan berdasarkan ruangan, rentang waktu (1d, 7d, 30d),
 // & interval agregasi grafik (1m, 15m, 30m, atau raw)
 app.get('/readings', (req, res) => {
   try {
@@ -461,12 +464,9 @@ app.get('/download', (req, res) => {
     params.push(room);
   }
 
-  if (range === '3d') {
-    query += " AND recorded_at >= datetime('now', '-3 days')";
-  } else if (range === '7d') {
-    query += " AND recorded_at >= datetime('now', '-7 days')";
-  } else if (range === '30d' || range === '1m') {
-    query += " AND recorded_at >= datetime('now', '-30 days')";
+  const rangeCond = buildRangeCondition(range);
+  if (rangeCond) {
+    query += ` AND ${rangeCond}`;
   }
 
   query += ' ORDER BY recorded_at ASC, id ASC';

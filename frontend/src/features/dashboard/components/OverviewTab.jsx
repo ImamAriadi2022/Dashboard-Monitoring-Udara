@@ -105,7 +105,7 @@ export default function OverviewTab({
       <div className="space-y-3">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div className="text-sm font-bold text-[#0f2942]">
-            Grafik Trend Riwayat Telemetri ({timeRange === '3d' ? '3 Hari Terakhir' : timeRange === '7d' ? '7 Hari Terakhir' : '1 Bulan Terakhir'} • {chartInterval === '30m' ? 'Per 30 Menit' : chartInterval === '15m' ? 'Per 15 Menit' : 'Per 1 Menit'})
+            Grafik Trend Riwayat Telemetri ({timeRange === '1d' ? '1 Hari Terakhir' : timeRange === '7d' ? '7 Hari Terakhir' : '1 Bulan (30 Hari)'} • {chartInterval === '30m' ? 'Per 30 Menit' : chartInterval === '15m' ? 'Per 15 Menit' : 'Per 1 Menit'})
           </div>
           <div className="flex items-center gap-1.5 bg-slate-100 border border-slate-200 p-1 rounded-xl">
             {Object.entries(chartConfigs).map(([k, cfg]) => (

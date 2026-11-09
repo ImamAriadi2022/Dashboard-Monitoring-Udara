@@ -370,7 +370,7 @@ fetchTelemetry();`
                       <td className="py-2 px-3 font-mono text-emerald-700 font-bold">range</td>
                       <td className="py-2 px-3 font-mono text-slate-500">string</td>
                       <td className="py-2 px-3 text-slate-600">
-                        Filter waktu: <code>3d</code> (3 hari), <code>7d</code> (7 hari), <code>30d</code> (1 bulan).
+                        Filter waktu: <code>1d</code> (1 hari), <code>7d</code> (7 hari), <code>30d</code> (1 bulan).
                       </td>
                     </tr>
                     <tr>
@@ -386,7 +386,7 @@ fetchTelemetry();`
                 <span className="text-xs font-bold text-slate-700 block mb-1.5">Contoh Response Array:</span>
                 <CodeBlock
                   language="json"
-                  title="Response GET /api/readings?room=lab_td&range=3d&limit=2"
+                  title="Response GET /api/readings?room=lab_td&range=1d&limit=2"
                   code={`[
   {
     "id": 180,

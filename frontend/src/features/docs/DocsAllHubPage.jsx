@@ -67,7 +67,7 @@ export default function DocsAllHubPage({ onNavigate }) {
       desc: 'Spesifikasi endpoint REST API Express.js, reverse proxy SSL Nginx, skema tabel SQLite, serta contoh integrasi multi-bahasa pemrograman.',
       highlights: [
         'Endpoint GET /api/latest, /api/readings, /api/download, dan /api/status',
-        'Struktur skema tabel SQLite (air_data.db) dengan query filter 3d/7d/30d',
+        'Struktur skema tabel SQLite (air_data.db) dengan query filter 1d/7d/30d',
         'Contoh kode pemanggilan API dengan cURL, Fetch JavaScript, dan Python',
         'Dukungan penuh CORS dan SSL HTTPS tanpa mixed-content',
       ],

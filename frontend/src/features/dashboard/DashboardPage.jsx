@@ -12,7 +12,7 @@ import { ROOMS } from './roomsConfig';
 export default function DashboardPage({ onBackToHome }) {
   const [activeTab, setActiveTab] = useState('overview');
   const [selectedRoomId, setSelectedRoomId] = useState('lab_td');
-  const [timeRange, setTimeRange] = useState('7d'); // '3d' | '7d' | '30d'
+  const [timeRange, setTimeRange] = useState('7d'); // '1d' | '7d' | '30d'
   const [chartInterval, setChartInterval] = useState('1m'); // '1m' | '15m' | '30m'
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
 

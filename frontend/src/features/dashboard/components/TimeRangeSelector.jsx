@@ -11,9 +11,9 @@ export default function TimeRangeSelector({
   roomName = 'Ruangan',
 }) {
   const ranges = [
-    { id: '3d', label: '3 Hari Terakhir' },
+    { id: '1d', label: '1 Hari Terakhir' },
     { id: '7d', label: '7 Hari Terakhir' },
-    { id: '30d', label: '1 Bulan Terakhir' },
+    { id: '30d', label: '1 Bulan (30 Hari)' },
   ];
 
   const intervals = [
