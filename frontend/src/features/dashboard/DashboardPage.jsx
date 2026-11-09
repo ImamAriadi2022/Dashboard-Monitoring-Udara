@@ -13,9 +13,10 @@ export default function DashboardPage({ onBackToHome }) {
   const [activeTab, setActiveTab] = useState('overview');
   const [selectedRoomId, setSelectedRoomId] = useState('lab_td');
   const [timeRange, setTimeRange] = useState('7d'); // '3d' | '7d' | '30d'
+  const [chartInterval, setChartInterval] = useState('1m'); // '1m' | '15m' | '30m'
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
 
-  // Directly connect to backend API for the selected room and time range
+  // Directly connect to backend API for the selected room, time range, and chart interval
   const {
     latest,
     history,
@@ -23,7 +24,7 @@ export default function DashboardPage({ onBackToHome }) {
     statusText,
     lastUpdated,
     downloadData,
-  } = useSensorData(selectedRoomId, timeRange);
+  } = useSensorData(selectedRoomId, timeRange, chartInterval);
 
   const currentRoom = useMemo(
     () => ROOMS.find((r) => r.id === selectedRoomId) || ROOMS[0],
@@ -40,8 +41,12 @@ export default function DashboardPage({ onBackToHome }) {
       history,
       timeRange,
       onSelectTimeRange: setTimeRange,
+      chartInterval,
+      onSelectChartInterval: setChartInterval,
       onDownload: handleDownload,
+      roomId: selectedRoomId,
       roomName: currentRoom.name,
+      latestId: latest?.id,
     };
 
     switch (activeTab) {
@@ -151,7 +156,16 @@ export default function DashboardPage({ onBackToHome }) {
             <div className="hidden sm:block text-right border-l border-slate-200 pl-3">
               <div className="text-[10px] text-slate-400 font-medium">Pembaruan Terakhir</div>
               <div className="font-mono text-xs font-bold text-slate-700">
-                {lastUpdated ? lastUpdated.toLocaleTimeString() : '--:--:--'}
+                {lastUpdated
+                  ? lastUpdated
+                      .toLocaleTimeString('id-ID', {
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        second: '2-digit',
+                        hour12: false,
+                      })
+                      .replace(/\./g, ':')
+                  : '--:--:--'}
               </div>
             </div>
 

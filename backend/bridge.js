@@ -4,7 +4,7 @@ const Database = require('better-sqlite3');
 const path     = require('path');
 
 // ---------- Database ----------
-const dbPath = path.join(__dirname, 'air_data.db');
+const dbPath = process.env.DB_PATH || path.join(__dirname, 'air_data.db');
 const db = new Database(dbPath);
 
 db.prepare(`
@@ -41,6 +41,10 @@ for (const [name, type] of Object.entries(newColumns)) {
 // Pastikan data lama memiliki nilai room default 'h5'
 db.prepare("UPDATE readings SET room = 'h5' WHERE room IS NULL OR room = ''").run();
 
+// Index untuk mempercepat query riwayat, pencarian, & agregasi grafik
+db.prepare('CREATE INDEX IF NOT EXISTS idx_readings_room_time_id ON readings(room, recorded_at DESC, id DESC)').run();
+db.prepare('CREATE INDEX IF NOT EXISTS idx_readings_time_id ON readings(recorded_at DESC, id DESC)').run();
+
 const insert = db.prepare(`
   INSERT INTO readings
     (temperature, humidity, wind_speed, co2, tvoc, fan_rpm, relay_state,
@@ -54,61 +58,64 @@ const insert = db.prepare(`
 const MQTT_URL   = process.env.MQTT_URL || 'mqtt://broker.emqx.io';
 const MQTT_TOPIC = process.env.MQTT_TOPIC || 'monitoring_udara_ta/data';
 
-console.log(`Menghubungkan ke MQTT Broker: ${MQTT_URL}`);
-console.log(`Topik MQTT: ${MQTT_TOPIC}`);
+let client = { connected: false };
+if (process.env.DISABLE_MQTT !== '1') {
+  console.log(`Menghubungkan ke MQTT Broker: ${MQTT_URL}`);
+  console.log(`Topik MQTT: ${MQTT_TOPIC}`);
 
-const client = mqtt.connect(MQTT_URL, {
-  reconnectPeriod: 3000,
-  connectTimeout: 10000,
-});
+  client = mqtt.connect(MQTT_URL, {
+    reconnectPeriod: 3000,
+    connectTimeout: 10000,
+  });
 
-client.on('connect', () => {
-  console.log(`[MQTT] Terhubung ke ${MQTT_URL}`);
-  client.subscribe(MQTT_TOPIC, (err) => {
-    if (err) {
-      console.error(`[MQTT] Gagal subscribe ke topik ${MQTT_TOPIC}:`, err.message);
-    } else {
-      console.log(`[MQTT] Berhasil subscribe ke topik: ${MQTT_TOPIC}`);
+  client.on('connect', () => {
+    console.log(`[MQTT] Terhubung ke ${MQTT_URL}`);
+    client.subscribe(MQTT_TOPIC, (err) => {
+      if (err) {
+        console.error(`[MQTT] Gagal subscribe ke topik ${MQTT_TOPIC}:`, err.message);
+      } else {
+        console.log(`[MQTT] Berhasil subscribe ke topik: ${MQTT_TOPIC}`);
+      }
+    });
+  });
+
+  client.on('error', (err) => {
+    console.error('[MQTT Error]:', err.message);
+  });
+
+  client.on('reconnect', () => {
+    console.log('[MQTT] Mencoba menyambung kembali ke broker...');
+  });
+
+  client.on('message', (_, payload) => {
+    try {
+      // Sanitasi data jika Arduino/ESP mengirim "nan" atau "inf"
+      const raw = payload.toString().replace(/:\s*-?(?:nan|inf|infinity)/gi, ':null');
+      const d = JSON.parse(raw);
+      const detail = d.air_quality_detail || {};
+      const room = (d.room || 'h5').toLowerCase();
+
+      const info = insert.run({
+        temperature: d.temperature ?? null,
+        humidity:    d.humidity ?? null,
+        wind_speed:  d.wind_speed ?? null,
+        co2:         d.co2 ?? null,
+        tvoc:        d.tvoc ?? null,
+        fan_rpm:     d.fan_rpm ?? null,
+        relay_state: d.relay_state ?? null,
+        air_quality: d.air_quality ?? null,
+        temp_status: detail.temperature ?? null,
+        hum_status:  detail.humidity ?? null,
+        co2_status:  detail.co2 ?? null,
+        uptime:      d.uptime ?? null,
+        room,
+      });
+      console.log(`[MQTT Data Diterima [${room}] ID ${info.lastInsertRowid}]: Temp: ${d.temperature}°C, Hum: ${d.humidity}%, CO2: ${d.co2}ppm`);
+    } catch (e) {
+      console.error('Parse/insert error:', e.message);
     }
   });
-});
-
-client.on('error', (err) => {
-  console.error('[MQTT Error]:', err.message);
-});
-
-client.on('reconnect', () => {
-  console.log('[MQTT] Mencoba menyambung kembali ke broker...');
-});
-
-client.on('message', (_, payload) => {
-  try {
-    // Sanitasi data jika Arduino/ESP mengirim "nan"
-    const raw = payload.toString().replace(/:\s*-?nan/gi, ':null');
-    const d = JSON.parse(raw);
-    const detail = d.air_quality_detail || {};
-    const room = (d.room || 'h5').toLowerCase();
-
-    const info = insert.run({
-      temperature: d.temperature ?? null,
-      humidity:    d.humidity ?? null,
-      wind_speed:  d.wind_speed ?? null,
-      co2:         d.co2 ?? null,
-      tvoc:        d.tvoc ?? null,
-      fan_rpm:     d.fan_rpm ?? null,
-      relay_state: d.relay_state ?? null,
-      air_quality: d.air_quality ?? null,
-      temp_status: detail.temperature ?? null,
-      hum_status:  detail.humidity ?? null,
-      co2_status:  detail.co2 ?? null,
-      uptime:      d.uptime ?? null,
-      room,
-    });
-    console.log(`[MQTT Data Diterima [${room}] ID ${info.lastInsertRowid}]: Temp: ${d.temperature}°C, Hum: ${d.humidity}%, CO2: ${d.co2}ppm`);
-  } catch (e) {
-    console.error('Parse/insert error:', e.message);
-  }
-});
+}
 
 // ---------- REST API ----------
 const app = express();
@@ -139,39 +146,186 @@ app.get('/status', (req, res) => {
   });
 });
 
-// Ambil riwayat pembacaan berdasarkan ruangan & rentang waktu (3d, 7d, 30d)
-app.get('/readings', (req, res) => {
-  const room = (req.query.room || 'h5').toLowerCase();
-  const range = (req.query.range || '').toLowerCase();
-  const limit = Math.min(parseInt(req.query.limit) || 1000, 2000);
-
-  let query = 'SELECT * FROM readings WHERE 1=1';
-  const params = [];
-
-  if (room !== 'all') {
-    query += ' AND room = ?';
-    params.push(room);
-  }
-
+function buildRangeCondition(range) {
   if (range === '3d') {
-    query += " AND recorded_at >= datetime('now', '-3 days')";
-  } else if (range === '7d') {
-    query += " AND recorded_at >= datetime('now', '-7 days')";
-  } else if (range === '30d' || range === '1m' || range === '1month') {
-    query += " AND recorded_at >= datetime('now', '-30 days')";
+    return "recorded_at >= datetime('now', '-3 days')";
   }
+  if (range === '7d') {
+    return "recorded_at >= datetime('now', '-7 days')";
+  }
+  if (range === '30d' || range === '1m' || range === '1month') {
+    return "recorded_at >= datetime('now', '-30 days')";
+  }
+  return null;
+}
 
-  // Jika range waktu diminta, kembalikan urutan kronologis ASC untuk plotting chart
-  if (range) {
-    query += ' ORDER BY recorded_at ASC LIMIT ?';
-    params.push(limit);
-    const rows = db.prepare(query).all(...params);
-    res.json(rows);
-  } else {
-    query += ' ORDER BY id DESC LIMIT ?';
-    params.push(limit);
-    const rows = db.prepare(query).all(...params);
-    res.json(rows.reverse());
+const INTERVAL_SECONDS = {
+  '1m': 60,
+  '15m': 900,
+  '30m': 1800,
+};
+
+// Ambil riwayat pembacaan berdasarkan ruangan, rentang waktu (3d, 7d, 30d),
+// & interval agregasi grafik (1m, 15m, 30m, atau raw)
+app.get('/readings', (req, res) => {
+  try {
+    const room = (req.query.room || 'h5').toLowerCase();
+    const range = (req.query.range || '').toLowerCase();
+    const interval = (req.query.interval || 'raw').toLowerCase();
+    const order = (req.query.order || 'asc').toLowerCase();
+    const afterId = parseInt(req.query.afterId, 10) || 0;
+
+    const bucketSec = INTERVAL_SECONDS[interval] || 0;
+    const defaultLimit = bucketSec > 0 ? 45000 : 2000;
+    const maxLimit = bucketSec > 0 ? 50000 : 10000;
+    const limit = Math.min(Math.max(parseInt(req.query.limit, 10) || defaultLimit, 1), maxLimit);
+
+    const conditions = ['1=1'];
+    const params = [];
+
+    if (room && room !== 'all') {
+      conditions.push('room = ?');
+      params.push(room);
+    }
+
+    const rangeCond = buildRangeCondition(range);
+    if (rangeCond) {
+      conditions.push(rangeCond);
+    }
+
+    // 1. Query inkremental (hanya data terbaru setelah afterId, khusus raw)
+    if (afterId > 0 && bucketSec === 0) {
+      conditions.push('id > ?');
+      params.push(afterId);
+      const sql = `
+        SELECT * FROM readings
+        WHERE ${conditions.join(' AND ')}
+        ORDER BY recorded_at ASC, id ASC
+        LIMIT ?
+      `;
+      const rows = db.prepare(sql).all(...params, limit);
+      return res.json(rows);
+    }
+
+    // 2. Query agregasi untuk grafik (Per 1 Menit / 15 Menit / 30 Menit)
+    if (bucketSec > 0) {
+      conditions.push('recorded_at IS NOT NULL');
+      conditions.push("strftime('%s', recorded_at) IS NOT NULL");
+
+      const bucketExpr = `(CAST(strftime('%s', recorded_at) AS INTEGER) / ${bucketSec}) * ${bucketSec}`;
+      const roomSelect = room && room !== 'all' ? 'MAX(room) AS room' : "'all' AS room";
+      const sql = `
+        SELECT
+          MAX(id) AS id,
+          ${roomSelect},
+          datetime(${bucketExpr}, 'unixepoch') AS recorded_at,
+          ROUND(AVG(temperature), 2) AS temperature,
+          ROUND(AVG(humidity), 2) AS humidity,
+          ROUND(AVG(wind_speed), 2) AS wind_speed,
+          CAST(ROUND(AVG(co2)) AS INTEGER) AS co2,
+          CAST(ROUND(AVG(tvoc)) AS INTEGER) AS tvoc,
+          ROUND(AVG(fan_rpm), 1) AS fan_rpm,
+          COUNT(*) AS sample_count
+        FROM readings
+        WHERE ${conditions.join(' AND ')}
+        GROUP BY ${bucketExpr}
+        ORDER BY ${bucketExpr} DESC
+        LIMIT ?
+      `;
+
+      const rows = db.prepare(sql).all(...params, limit);
+      return res.json(order === 'desc' ? rows : rows.reverse());
+    }
+
+    // 3. Query raw: selalu ambil data PALING BARU terlebih dahulu agar tidak terpotong di data lama
+    const sql = `
+      SELECT * FROM readings
+      WHERE ${conditions.join(' AND ')}
+      ORDER BY recorded_at DESC, id DESC
+      LIMIT ?
+    `;
+    const rows = db.prepare(sql).all(...params, limit);
+    res.json(order === 'desc' ? rows : rows.reverse());
+  } catch (err) {
+    console.error('Error GET /readings:', err.message);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Ambil Log Riwayat Data terurut (terbaru -> terlama) dengan paginasi & pencarian server-side
+app.get('/readings/logs', (req, res) => {
+  try {
+    const room = (req.query.room || 'h5').toLowerCase();
+    const range = (req.query.range || '').toLowerCase();
+    const search = (req.query.search || '').trim();
+    const page = Math.max(parseInt(req.query.page, 10) || 1, 1);
+    const pageSize = Math.min(Math.max(parseInt(req.query.pageSize || req.query.limit, 10) || 50, 1), 200);
+
+    const baseConditions = ['1=1'];
+    const baseParams = [];
+
+    if (room && room !== 'all') {
+      baseConditions.push('room = ?');
+      baseParams.push(room);
+    }
+
+    const rangeCond = buildRangeCondition(range);
+    if (rangeCond) {
+      baseConditions.push(rangeCond);
+    }
+
+    const baseWhere = baseConditions.join(' AND ');
+    const totalAllRow = db.prepare(`SELECT COUNT(*) AS count FROM readings WHERE ${baseWhere}`).get(...baseParams);
+    const totalAll = totalAllRow ? totalAllRow.count : 0;
+
+    const filteredConditions = [...baseConditions];
+    const filteredParams = [...baseParams];
+
+    if (search) {
+      const like = `%${search}%`;
+      const likeNoHash = `%${search.startsWith('#') ? search.slice(1).trim() : search}%`;
+      const likeColon = `%${search.replace(/\./g, ':')}%`;
+      filteredConditions.push(`(
+        CAST(id AS TEXT) LIKE ?
+        OR ('#' || CAST(id AS TEXT)) LIKE ?
+        OR COALESCE(room, '') LIKE ?
+        OR COALESCE(recorded_at, '') LIKE ?
+        OR COALESCE(datetime(recorded_at, '+7 hours'), '') LIKE ?
+        OR COALESCE(CAST(temperature AS TEXT), '') LIKE ?
+        OR COALESCE(CAST(humidity AS TEXT), '') LIKE ?
+        OR COALESCE(CAST(wind_speed AS TEXT), '') LIKE ?
+        OR COALESCE(CAST(co2 AS TEXT), '') LIKE ?
+        OR COALESCE(relay_state, '') LIKE ?
+        OR COALESCE(air_quality, '') LIKE ?
+      )`);
+      filteredParams.push(likeNoHash, like, like, likeColon, likeColon, like, like, like, like, like, like);
+    }
+
+    const filteredWhere = filteredConditions.join(' AND ');
+    const totalRow = db.prepare(`SELECT COUNT(*) AS count FROM readings WHERE ${filteredWhere}`).get(...filteredParams);
+    const total = totalRow ? totalRow.count : 0;
+    const totalPages = Math.max(Math.ceil(total / pageSize), 1);
+    const safePage = Math.min(page, totalPages);
+    const safeOffset = (safePage - 1) * pageSize;
+
+    const rows = db.prepare(`
+      SELECT * FROM readings
+      WHERE ${filteredWhere}
+      ORDER BY recorded_at DESC, id DESC
+      LIMIT ? OFFSET ?
+    `).all(...filteredParams, pageSize, safeOffset);
+
+    res.json({
+      rows,
+      total,
+      totalAll,
+      page: safePage,
+      pageSize,
+      totalPages,
+    });
+  } catch (err) {
+    console.error('Error GET /readings/logs:', err.message);
+    res.status(500).json({ error: err.message });
   }
 });
 
@@ -186,7 +340,7 @@ app.get('/latest', (req, res) => {
     params.push(room);
   }
 
-  query += ' ORDER BY id DESC LIMIT 1';
+  query += ' ORDER BY recorded_at DESC, id DESC LIMIT 1';
   const row = db.prepare(query).get(...params);
   res.json(row || {});
 });
@@ -315,7 +469,7 @@ app.get('/download', (req, res) => {
     query += " AND recorded_at >= datetime('now', '-30 days')";
   }
 
-  query += ' ORDER BY recorded_at ASC';
+  query += ' ORDER BY recorded_at ASC, id ASC';
   const rows = db.prepare(query).all(...params);
 
   const headers = ['ID', 'Ruangan', 'Waktu_Rekam', 'Suhu_C', 'Kelembapan_Persen', 'Angin_ms', 'Status_Kipas', 'Kualitas_Udara'];

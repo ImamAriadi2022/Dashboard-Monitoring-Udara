@@ -9,6 +9,8 @@ export default function OverviewTab({
   history,
   timeRange,
   onSelectTimeRange,
+  chartInterval,
+  onSelectChartInterval,
   onDownload,
   roomName,
 }) {
@@ -89,10 +91,12 @@ export default function OverviewTab({
         />
       </div>
 
-      {/* Time Range Filter Bar with Room Download */}
+      {/* Time Range & Chart Interval Filter Bar with Room Download */}
       <TimeRangeSelector
         timeRange={timeRange}
         onSelectTimeRange={onSelectTimeRange}
+        chartInterval={chartInterval}
+        onSelectChartInterval={onSelectChartInterval}
         onDownload={onDownload}
         roomName={roomName}
       />
@@ -101,7 +105,7 @@ export default function OverviewTab({
       <div className="space-y-3">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div className="text-sm font-bold text-[#0f2942]">
-            Grafik Trend Riwayat Telemetri ({timeRange === '3d' ? '3 Hari Terakhir' : timeRange === '7d' ? '7 Hari Terakhir' : '1 Bulan Terakhir'})
+            Grafik Trend Riwayat Telemetri ({timeRange === '3d' ? '3 Hari Terakhir' : timeRange === '7d' ? '7 Hari Terakhir' : '1 Bulan Terakhir'} • {chartInterval === '30m' ? 'Per 30 Menit' : chartInterval === '15m' ? 'Per 15 Menit' : 'Per 1 Menit'})
           </div>
           <div className="flex items-center gap-1.5 bg-slate-100 border border-slate-200 p-1 rounded-xl">
             {Object.entries(chartConfigs).map(([k, cfg]) => (
@@ -128,6 +132,7 @@ export default function OverviewTab({
           color={currentChart.color}
           unit={currentChart.unit}
           timeRange={timeRange}
+          chartInterval={chartInterval}
         />
       </div>
     </div>

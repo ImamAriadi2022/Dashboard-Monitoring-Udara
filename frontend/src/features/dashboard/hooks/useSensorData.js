@@ -1,10 +1,19 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { fetchLatest, fetchReadings, getDownloadUrl } from '../../../services/api';
+import {
+  fetchLatest,
+  fetchReadings,
+  getDownloadUrl,
+  parseUtcTimestamp,
+} from '../../../services/api';
 
 const SEND_INTERVAL_MS = 30000;
 const OFFLINE_TIMEOUT_MS = SEND_INTERVAL_MS * 2.5;
 
-export function useSensorData(roomId = 'h5', timeRange = '7d') {
+export function useSensorData(
+  roomId = 'h5',
+  timeRange = '7d',
+  chartInterval = '1m'
+) {
   const [latest, setLatest] = useState(null);
   const [history, setHistory] = useState([]);
   const [status, setStatus] = useState('connecting'); // connecting, ok, offline, err
@@ -14,27 +23,14 @@ export function useSensorData(roomId = 'h5', timeRange = '7d') {
 
   const lastIdRef = useRef(null);
 
-  const parseTime = (timestamp) => {
-    if (!timestamp) return new Date();
-    return new Date(String(timestamp).replace(' ', 'T') + 'Z');
-  };
-
-  const processReading = useCallback((data) => {
-    if (!data || !data.id) return;
-    if (data.id === lastIdRef.current) return;
-
-    lastIdRef.current = data.id;
-    setLatest(data);
-    setLastUpdated(new Date());
-
-    setHistory((prev) => {
-      const exists = prev.some((item) => item.id === data.id);
-      if (exists) return prev;
-      return [...prev, data];
-    });
-
-    const recordedDate = parseTime(data.recorded_at);
-    const ageMs = Date.now() - recordedDate.getTime();
+  const updateConnectionStatus = useCallback((reading) => {
+    if (!reading || !reading.recorded_at) {
+      setStatus('warning');
+      setStatusText('BELUM ADA DATA');
+      return;
+    }
+    const recordedDate = parseUtcTimestamp(reading.recorded_at);
+    const ageMs = recordedDate ? Date.now() - recordedDate.getTime() : Infinity;
 
     if (ageMs > OFFLINE_TIMEOUT_MS) {
       setStatus('offline');
@@ -45,42 +41,37 @@ export function useSensorData(roomId = 'h5', timeRange = '7d') {
     }
   }, []);
 
-  // Fetch data whenever roomId or timeRange changes directly from the backend
   useEffect(() => {
     let isMounted = true;
+    lastIdRef.current = null;
     setIsLoading(true);
 
     async function loadRoomData() {
       try {
         const [readingsData, latestData] = await Promise.all([
-          fetchReadings({ room: roomId, range: timeRange }),
+          fetchReadings({
+            room: roomId,
+            range: timeRange,
+            interval: chartInterval,
+          }),
           fetchLatest(roomId),
         ]);
 
         if (!isMounted) return;
 
-        setHistory(readingsData || []);
+        setHistory(Array.isArray(readingsData) ? readingsData : []);
+
         if (latestData && latestData.id) {
           lastIdRef.current = latestData.id;
           setLatest(latestData);
           setLastUpdated(new Date());
-
-          const recordedDate = parseTime(latestData.recorded_at);
-          const ageMs = Date.now() - recordedDate.getTime();
-          if (ageMs > OFFLINE_TIMEOUT_MS) {
-            setStatus('offline');
-            setStatusText('OFFLINE');
-          } else {
-            setStatus('ok');
-            setStatusText('LIVE');
-          }
-        } else if (readingsData && readingsData.length > 0) {
+          updateConnectionStatus(latestData);
+        } else if (Array.isArray(readingsData) && readingsData.length > 0) {
           const last = readingsData[readingsData.length - 1];
           lastIdRef.current = last.id;
           setLatest(last);
           setLastUpdated(new Date());
-          setStatus('ok');
-          setStatusText('LIVE');
+          updateConnectionStatus(last);
         } else {
           setLatest(null);
           setStatus('warning');
@@ -98,25 +89,41 @@ export function useSensorData(roomId = 'h5', timeRange = '7d') {
 
     loadRoomData();
 
-    // Poll latest reading for the selected room every 2.5s
+    // Poll latest reading every 3s; refresh aggregated chart only when new data arrives
     const interval = setInterval(async () => {
       try {
         const current = await fetchLatest(roomId);
         if (!isMounted) return;
+
         if (current && current.id) {
-          processReading(current);
+          updateConnectionStatus(current);
+
+          if (current.id !== lastIdRef.current) {
+            lastIdRef.current = current.id;
+            setLatest(current);
+            setLastUpdated(new Date());
+
+            // Refresh aggregated chart buckets so chart stays exact without raw jitter
+            const updatedChart = await fetchReadings({
+              room: roomId,
+              range: timeRange,
+              interval: chartInterval,
+            });
+            if (isMounted && Array.isArray(updatedChart)) {
+              setHistory(updatedChart);
+            }
+          }
         }
       } catch (err) {
-        if (!isMounted) return;
-        // Don't override status if already offline
+        // Keep previous state during transient network blip
       }
-    }, 2500);
+    }, 3000);
 
     return () => {
       isMounted = false;
       clearInterval(interval);
     };
-  }, [roomId, timeRange, processReading]);
+  }, [roomId, timeRange, chartInterval, updateConnectionStatus]);
 
   const downloadData = (formatRange = timeRange) => {
     const url = getDownloadUrl(roomId, formatRange);

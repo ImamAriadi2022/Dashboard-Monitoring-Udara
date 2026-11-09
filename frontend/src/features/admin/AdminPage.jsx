@@ -45,10 +45,12 @@ export default function AdminPage() {
     setLoading(true);
     try {
       const data = await fetchReadings({
-        room: selectedRoom === 'all' ? '' : selectedRoom,
-        limit: 100,
+        room: selectedRoom === 'all' ? 'all' : selectedRoom,
+        range: '',
+        limit: 200,
+        order: 'desc',
       });
-      setReadings(Array.isArray(data) ? [...data].reverse() : []);
+      setReadings(Array.isArray(data) ? data : []);
     } catch (err) {
       showToast('error', `Gagal memuat data: ${err.message}`);
     } finally {
