@@ -350,17 +350,30 @@ app.get('/latest', (req, res) => {
 
 // ---------- CRUD ENDPOINTS UNTUK HALAMAN /admin ----------
 
+// Helper parse angka aman (hindari NaN dari string kosong/tidak valid)
+function parseFloatOrNull(val) {
+  if (val === null || val === undefined || val === '') return null;
+  const n = Number(val);
+  return Number.isFinite(n) ? n : null;
+}
+
+function parseIntOrDefault(val, fallback = 0) {
+  if (val === null || val === undefined || val === '') return fallback;
+  const n = parseInt(val, 10);
+  return Number.isFinite(n) ? n : fallback;
+}
+
 // 1. Tambah Data Baru (CREATE)
 app.post('/readings', (req, res) => {
   try {
     const d = req.body || {};
     const room = (d.room || 'lab_td').toLowerCase();
-    const temp = d.temperature != null ? parseFloat(d.temperature) : null;
-    const hum = d.humidity != null ? parseFloat(d.humidity) : null;
-    const wind = d.wind_speed != null ? parseFloat(d.wind_speed) : null;
-    const fan = d.fan_rpm != null ? parseInt(d.fan_rpm) : 0;
-    const relay = d.relay_state ? String(d.relay_state).toUpperCase() : (temp > 29 ? 'ON' : 'OFF');
-    const airQuality = d.air_quality || (temp && temp > 32 ? 'Buruk' : temp > 29 ? 'Sedang' : 'Baik');
+    const temp = parseFloatOrNull(d.temperature);
+    const hum = parseFloatOrNull(d.humidity);
+    const wind = parseFloatOrNull(d.wind_speed);
+    const fan = parseIntOrDefault(d.fan_rpm, 0);
+    const relay = d.relay_state ? String(d.relay_state).toUpperCase() : (temp !== null && temp > 29 ? 'ON' : 'OFF');
+    const airQuality = d.air_quality || (temp !== null && temp > 32 ? 'Buruk' : temp !== null && temp > 29 ? 'Sedang' : 'Baik');
 
     const stmt = db.prepare(`
       INSERT INTO readings (room, temperature, humidity, wind_speed, fan_rpm, relay_state, air_quality, temp_status, hum_status, uptime)
@@ -375,9 +388,9 @@ app.post('/readings', (req, res) => {
       fan,
       relay,
       airQuality,
-      temp && temp > 30 ? 'Sedang' : 'Baik',
-      hum && hum > 70 ? 'Sedang' : 'Baik',
-      d.uptime != null ? parseInt(d.uptime) : 3600
+      temp !== null && temp > 30 ? 'Sedang' : 'Baik',
+      hum !== null && hum > 70 ? 'Sedang' : 'Baik',
+      parseIntOrDefault(d.uptime, 3600)
     );
 
     res.status(201).json({
@@ -394,17 +407,17 @@ app.post('/readings', (req, res) => {
 // 2. Edit Data Eksisting (UPDATE)
 app.put('/readings/:id', (req, res) => {
   try {
-    const id = parseInt(req.params.id);
+    const id = parseInt(req.params.id, 10);
     if (!id) return res.status(400).json({ success: false, error: 'ID tidak valid' });
 
     const d = req.body || {};
     const room = (d.room || 'lab_td').toLowerCase();
-    const temp = d.temperature != null ? parseFloat(d.temperature) : null;
-    const hum = d.humidity != null ? parseFloat(d.humidity) : null;
-    const wind = d.wind_speed != null ? parseFloat(d.wind_speed) : null;
-    const fan = d.fan_rpm != null ? parseInt(d.fan_rpm) : 0;
+    const temp = parseFloatOrNull(d.temperature);
+    const hum = parseFloatOrNull(d.humidity);
+    const wind = parseFloatOrNull(d.wind_speed);
+    const fan = parseIntOrDefault(d.fan_rpm, 0);
     const relay = d.relay_state ? String(d.relay_state).toUpperCase() : 'OFF';
-    const airQuality = d.air_quality || (temp && temp > 32 ? 'Buruk' : temp > 29 ? 'Sedang' : 'Baik');
+    const airQuality = d.air_quality || (temp !== null && temp > 32 ? 'Buruk' : temp !== null && temp > 29 ? 'Sedang' : 'Baik');
 
     const stmt = db.prepare(`
       UPDATE readings
@@ -494,56 +507,6 @@ app.get('/download', (req, res) => {
   res.header('Content-Type', 'text/csv');
   res.header('Content-Disposition', `attachment; filename="${filename}"`);
   res.send(csvContent);
-});
-
-// Endpoint untuk inject/simulasi data manual per ruangan
-app.post('/simulate', (req, res) => {
-  const d = req.body || {};
-  const room = (d.room || 'h5').toLowerCase();
-
-  let baseTemp = 26.5;
-  let baseHum = 56.0;
-  let baseCo2 = 480;
-  let baseTvoc = 14;
-
-  if (room === 'lab_kom') {
-    baseTemp = 24.0; baseHum = 51.0; baseCo2 = 610; baseTvoc = 22;
-  } else if (room === 'seminar') {
-    baseTemp = 23.2; baseHum = 64.0; baseCo2 = 760; baseTvoc = 38;
-  } else if (room === 'lab_td') {
-    baseTemp = 25.1; baseHum = 53.0; baseCo2 = 430; baseTvoc = 10;
-  }
-
-  const t = d.temperature ?? +(baseTemp + (Math.random() * 2 - 1)).toFixed(1);
-  const h = d.humidity ?? +(baseHum + (Math.random() * 4 - 2)).toFixed(1);
-  const w = d.wind_speed ?? +(0.8 + Math.random() * 1.5).toFixed(1);
-  const c = d.co2 ?? Math.floor(baseCo2 + (Math.random() * 50 - 25));
-  const tvoc = d.tvoc ?? Math.floor(baseTvoc + (Math.random() * 6 - 3));
-  const rpm = d.fan_rpm ?? (c > 700 ? 1600 : 0);
-  const relay = d.relay_state ?? (c > 700 ? 'ON' : 'OFF');
-
-  const aq = c < 600 ? 'Baik' : c < 800 ? 'Sedang' : 'Buruk';
-  const temp_st = t < 30 ? 'Baik' : 'Sedang';
-  const hum_st = h < 70 ? 'Baik' : 'Sedang';
-  const co2_st = c < 700 ? 'Baik' : c < 800 ? 'Sedang' : 'Buruk';
-
-  const info = insert.run({
-    temperature: t,
-    humidity: h,
-    wind_speed: w,
-    co2: c,
-    tvoc,
-    fan_rpm: rpm,
-    relay_state: relay,
-    air_quality: aq,
-    temp_status: temp_st,
-    hum_status: hum_st,
-    co2_status: co2_st,
-    uptime: Math.floor(Date.now() / 1000),
-    room,
-  });
-
-  res.json({ success: true, insertedId: info.lastInsertRowid, room });
 });
 
 const PORT = process.env.PORT || 3000;
