@@ -71,17 +71,17 @@ Dashboard-Monitoring-Udara/
 
 ---
 
-## 🌐 Rute URL Aplikasi (Base IP: 202.155.17.57)
+## 🌐 Rute URL Aplikasi (Base IP: 202.10.42.14)
 
 | Rute URL | Tipe Halaman | Deskripsi |
 | :--- | :--- | :--- |
-| `https://202.155.17.57/` | Landing Page | Halaman depan, overview metrik, dan tips kesehatan udara |
-| `https://202.155.17.57/dashboard` | Dashboard | Pemantauan live telemetri 4 ruangan, grafik tren 1d/7d/30d, unduh CSV |
-| `https://202.155.17.57/docs-all` | Hub Dokumentasi | **Pengantar pertama pengembang & titik kumpul seluruh dokumen** |
-| `https://202.155.17.57/docs-backend` | Dokumentasi API | Spesifikasi REST API, schema SQLite, dan contoh kode cURL, JS, Python |
-| `https://202.155.17.57/docs-iot` | Dokumentasi IoT | Skema wiring pinout ESP32, broker MQTT, dan full source code firmware C++ |
-| `https://202.155.17.57/docs-vps` | Dokumentasi VPS | Kredensial login SSH, panduan remote terminal, dan pemeliharaan service |
-| `https://202.155.17.57/admin` | Panel Admin | **Area khusus manajemen data telemetri (Create, Edit, Delete)** |
+| `https://202.10.42.14/` | Landing Page | Halaman depan, overview metrik, dan tips kesehatan udara |
+| `https://202.10.42.14/dashboard` | Dashboard | Pemantauan live telemetri 4 ruangan, grafik tren 1d/7d/30d, unduh CSV |
+| `https://202.10.42.14/docs-all` | Hub Dokumentasi | **Pengantar pertama pengembang & titik kumpul seluruh dokumen** |
+| `https://202.10.42.14/docs-backend` | Dokumentasi API | Spesifikasi REST API, schema SQLite, dan contoh kode cURL, JS, Python |
+| `https://202.10.42.14/docs-iot` | Dokumentasi IoT | Skema wiring pinout ESP32, broker MQTT, dan full source code firmware C++ |
+| `https://202.10.42.14/docs-vps` | Dokumentasi VPS | Kredensial login SSH, panduan remote terminal, dan pemeliharaan service |
+| `https://202.10.42.14/admin` | Panel Admin | **Area khusus manajemen data telemetri (Create, Edit, Delete)** |
 
 ---
 

@@ -83,54 +83,54 @@ Lakukan langkah-langkah berikut secara berurutan dan mandiri:
 8. Buka port firewall 80, 443, dan 22 jika UFW aktif.
 
 9. Berikan saya ringkasan alamat HTTPS dan rute aplikasi yang berjalan:
-   - Web Landing Page: https://202.155.17.57/
-   - Dashboard Telemetri: https://202.155.17.57/dashboard
-   - Hub Dokumentasi Utama: https://202.155.17.57/docs-all
-   - Dokumentasi Backend: https://202.155.17.57/docs-backend
-   - Dokumentasi IoT: https://202.155.17.57/docs-iot
-   - Dokumentasi Server VPS: https://202.155.17.57/docs-vps
-   - Panel Admin (CRUD Data): https://202.155.17.57/admin
-   - Backend API Status: https://202.155.17.57/api/status
+   - Web Landing Page: https://202.10.42.14/
+   - Dashboard Telemetri: https://202.10.42.14/dashboard
+   - Hub Dokumentasi Utama: https://202.10.42.14/docs-all
+   - Dokumentasi Backend: https://202.10.42.14/docs-backend
+   - Dokumentasi IoT: https://202.10.42.14/docs-iot
+   - Dokumentasi Server VPS: https://202.10.42.14/docs-vps
+   - Panel Admin (CRUD Data): https://202.10.42.14/admin
+   - Backend API Status: https://202.10.42.14/api/status
 ```
 
 ---
 
 ## 🔑 Kredensial Server VPS
 
-* **Host / Public IP**: `202.155.17.57`
+* **Host / Public IP**: `202.10.42.14`
 * **SSH Username**: `root`
 * **SSH Password**: `iot123bridge321`
 * **Port**: `22`
-* **Remote Command**: `ssh root@202.155.17.57`
+* **Remote Command**: `ssh root@202.10.42.14`
 
 ---
 
-## 📌 Daftar Rute Aplikasi (Base IP: 202.155.17.57)
+## 📌 Daftar Rute Aplikasi (Base IP: 202.10.42.14)
 
 | Rute URL | Protokol | Keterangan |
 | :--- | :--- | :--- |
-| `https://202.155.17.57/` | HTTPS (SSL) | Halaman Depan Archtera — Air Safe Area |
-| `https://202.155.17.57/dashboard` | HTTPS (SSL) | Dashboard Monitoring Sensor & Grafik 4 Ruangan |
-| `https://202.155.17.57/docs-all` | HTTPS (SSL) | **Hub Utama Pengantar & Ringkasan Seluruh Dokumentasi** |
-| `https://202.155.17.57/docs-backend` | HTTPS (SSL) | **Dokumentasi Lengkap Backend & RESTful API** |
-| `https://202.155.17.57/docs-iot` | HTTPS (SSL) | **Dokumentasi & Firmware IoT (ESP32/Arduino)** |
-| `https://202.155.17.57/docs-vps` | HTTPS (SSL) | **Dokumentasi & Kredensial Akses Server VPS** |
-| `https://202.155.17.57/admin` | HTTPS (SSL) | **Panel Admin CRUD Data Udara (Direct Route Only)** |
-| `https://202.155.17.57/api/*` | HTTPS (SSL) | Reverse Proxy Nginx ke Express Server |
+| `https://202.10.42.14/` | HTTPS (SSL) | Halaman Depan Archtera — Air Safe Area |
+| `https://202.10.42.14/dashboard` | HTTPS (SSL) | Dashboard Monitoring Sensor & Grafik 4 Ruangan |
+| `https://202.10.42.14/docs-all` | HTTPS (SSL) | **Hub Utama Pengantar & Ringkasan Seluruh Dokumentasi** |
+| `https://202.10.42.14/docs-backend` | HTTPS (SSL) | **Dokumentasi Lengkap Backend & RESTful API** |
+| `https://202.10.42.14/docs-iot` | HTTPS (SSL) | **Dokumentasi & Firmware IoT (ESP32/Arduino)** |
+| `https://202.10.42.14/docs-vps` | HTTPS (SSL) | **Dokumentasi & Kredensial Akses Server VPS** |
+| `https://202.10.42.14/admin` | HTTPS (SSL) | **Panel Admin CRUD Data Udara (Direct Route Only)** |
+| `https://202.10.42.14/api/*` | HTTPS (SSL) | Reverse Proxy Nginx ke Express Server |
 
 ---
 
 ## 💡 Akses Pertama Kali di Browser
-Saat pertama kali membuka `https://202.155.17.57/`, peramban (Chrome/Edge/Firefox) akan menampilkan pemberitahuan keamanan standar karena menggunakan sertifikat *Self-Signed* (tanpa domain). Cukup:
+Saat pertama kali membuka `https://202.10.42.14/`, peramban (Chrome/Edge/Firefox) akan menampilkan pemberitahuan keamanan standar karena menggunakan sertifikat *Self-Signed* (tanpa domain). Cukup:
 1. Klik tombol **"Lanjutan"** (*Advanced*).
-2. Klik link **"Lanjutkan ke 202.155.17.57 (tidak aman)"**.
+2. Klik link **"Lanjutkan ke 202.10.42.14 (tidak aman)"**.
 3. Website dan API akan langsung berjalan dengan enkripsi SSL HTTPS penuh.
 
 ---
 
 ## ☁️ Panduan Menghubungkan VPS ke Domain Custom via Cloudflare
 
-Jika Anda telah memiliki nama domain kustom (contoh: `archtera.com`), ikuti langkah-langkah berikut untuk menghubungkannya ke VPS `202.155.17.57` menggunakan Cloudflare:
+Jika Anda telah memiliki nama domain kustom (contoh: `archtera.com`), ikuti langkah-langkah berikut untuk menghubungkannya ke VPS `202.10.42.14` menggunakan Cloudflare:
 
 ### 1. Ubah Nameserver Domain ke Cloudflare
 1. Buka akun Cloudflare di [dash.cloudflare.com](https://dash.cloudflare.com) &gt; **Add a Site** &gt; Masukkan domain Anda (pilih Free Plan).
@@ -141,7 +141,7 @@ Pada dashboard Cloudflare &gt; **DNS &gt; Records**, tambahkan dua record:
 * **Record A (Root)**:
   * Type: `A`
   * Name: `@`
-  * IPv4 address: `202.155.17.57`
+  * IPv4 address: `202.10.42.14`
   * Proxy status: **Proxied (🟠 Awan Orange)**
 * **Record CNAME (WWW)**:
   * Type: `CNAME`
@@ -158,7 +158,7 @@ Pada dashboard Cloudflare &gt; **DNS &gt; Records**, tambahkan dua record:
    * Aktifkan **Automatic HTTPS Rewrites** (`ON`).
 
 ### 4. Sesuaikan Konfigurasi Nginx di VPS
-Login ke VPS via SSH (`ssh root@202.155.17.57`), buka file konfigurasi Nginx:
+Login ke VPS via SSH (`ssh root@202.10.42.14`), buka file konfigurasi Nginx:
 ```bash
 sudo nano /etc/nginx/sites-available/air-dashboard
 ```

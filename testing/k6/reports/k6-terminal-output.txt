@@ -1,0 +1,861 @@
+
+         /\      Grafana   /‾‾/  
+    /\  /  \     |\  __   /  /   
+   /  \/    \    | |/ /  /   ‾‾\ 
+  /          \   |   (  |  (‾)  |
+ / __________ \  |_|\_\  \_____/ 
+
+
+     execution: local
+        script: testing\k6\latency-suite.js
+        output: -
+
+     scenarios: (100.00%) 4 scenarios, 40 max VUs, 2m6s max duration (incl. graceful stop):
+              * baseline_smoke: 4 iterations shared among 1 VUs (maxDuration: 30s, exec: runBaselineSmoke, gracefulStop: 5s)
+              * live_polling: 15 looping VUs for 30s (exec: runLivePolling, startTime: 10s, gracefulStop: 5s)
+              * analytics_load: Up to 25 looping VUs for 45s over 4 stages (gracefulRampDown: 5s, exec: runAnalyticsAndLogs, startTime: 43s, gracefulStop: 30s)
+              * spike_test: Up to 40 looping VUs for 30s over 3 stages (gracefulRampDown: 5s, exec: runSpikeBurst, startTime: 1m31s, gracefulStop: 30s)
+
+
+running (0m01.0s), 01/40 VUs, 1 complete and 0 interrupted iterations
+baseline_smoke   [  25% ] 1 VUs    01.0s/30s  1/4 shared iters
+live_polling   • [   0% ] waiting  09.0s     
+analytics_load • [   0% ] waiting  42.0s     
+spike_test     • [   0% ] waiting  1m30.0s   
+
+running (0m02.0s), 01/40 VUs, 2 complete and 0 interrupted iterations
+baseline_smoke   [  50% ] 1 VUs    02.0s/30s  2/4 shared iters
+live_polling   • [   0% ] waiting  08.0s     
+analytics_load • [   0% ] waiting  41.0s     
+spike_test     • [   0% ] waiting  1m29.0s   
+
+running (0m03.0s), 01/40 VUs, 3 complete and 0 interrupted iterations
+baseline_smoke   [  75% ] 1 VUs    03.0s/30s  3/4 shared iters
+live_polling   • [   0% ] waiting  07.0s     
+analytics_load • [   0% ] waiting  40.0s     
+spike_test     • [   0% ] waiting  1m28.0s   
+
+running (0m04.0s), 00/40 VUs, 4 complete and 0 interrupted iterations
+baseline_smoke ✓ [ 100% ] 1 VUs    03.1s/30s  4/4 shared iters
+live_polling   • [   0% ] waiting  06.0s     
+analytics_load • [   0% ] waiting  39.0s     
+spike_test     • [   0% ] waiting  1m27.0s   
+
+running (0m05.0s), 00/40 VUs, 4 complete and 0 interrupted iterations
+baseline_smoke ✓ [ 100% ] 1 VUs    03.1s/30s  4/4 shared iters
+live_polling   • [   0% ] waiting  05.0s     
+analytics_load • [   0% ] waiting  38.0s     
+spike_test     • [   0% ] waiting  1m26.0s   
+
+running (0m06.0s), 00/40 VUs, 4 complete and 0 interrupted iterations
+baseline_smoke ✓ [ 100% ] 1 VUs    03.1s/30s  4/4 shared iters
+live_polling   • [   0% ] waiting  04.0s     
+analytics_load • [   0% ] waiting  37.0s     
+spike_test     • [   0% ] waiting  1m25.0s   
+
+running (0m07.0s), 00/40 VUs, 4 complete and 0 interrupted iterations
+baseline_smoke ✓ [ 100% ] 1 VUs    03.1s/30s  4/4 shared iters
+live_polling   • [   0% ] waiting  03.0s     
+analytics_load • [   0% ] waiting  36.0s     
+spike_test     • [   0% ] waiting  1m24.0s   
+
+running (0m08.0s), 00/40 VUs, 4 complete and 0 interrupted iterations
+baseline_smoke ✓ [ 100% ] 1 VUs    03.1s/30s  4/4 shared iters
+live_polling   • [   0% ] waiting  02.0s     
+analytics_load • [   0% ] waiting  35.0s     
+spike_test     • [   0% ] waiting  1m23.0s   
+
+running (0m09.0s), 00/40 VUs, 4 complete and 0 interrupted iterations
+baseline_smoke ✓ [ 100% ] 1 VUs    03.1s/30s  4/4 shared iters
+live_polling   • [   0% ] waiting  01.0s     
+analytics_load • [   0% ] waiting  34.0s     
+spike_test     • [   0% ] waiting  1m22.0s   
+
+running (0m10.0s), 00/40 VUs, 4 complete and 0 interrupted iterations
+baseline_smoke ✓ [ 100% ] 1 VUs    03.1s/30s  4/4 shared iters
+live_polling   • [   0% ] waiting  00.0s     
+analytics_load • [   0% ] waiting  33.0s     
+spike_test     • [   0% ] waiting  1m21.0s   
+
+running (0m11.0s), 15/40 VUs, 4 complete and 0 interrupted iterations
+baseline_smoke ✓ [ 100% ] 1 VUs    03.1s/30s  4/4 shared iters
+live_polling     [   3% ] 15 VUs   01.0s/30s 
+analytics_load • [   0% ] waiting  32.0s     
+spike_test     • [   0% ] waiting  1m20.0s   
+
+running (0m12.0s), 15/40 VUs, 19 complete and 0 interrupted iterations
+baseline_smoke ✓ [ 100% ] 1 VUs    03.1s/30s  4/4 shared iters
+live_polling     [   7% ] 15 VUs   02.0s/30s 
+analytics_load • [   0% ] waiting  31.0s     
+spike_test     • [   0% ] waiting  1m19.0s   
+
+running (0m13.0s), 15/40 VUs, 34 complete and 0 interrupted iterations
+baseline_smoke ✓ [ 100% ] 1 VUs    03.1s/30s  4/4 shared iters
+live_polling     [  10% ] 15 VUs   03.0s/30s 
+analytics_load • [   0% ] waiting  30.0s     
+spike_test     • [   0% ] waiting  1m18.0s   
+
+running (0m14.0s), 15/40 VUs, 49 complete and 0 interrupted iterations
+baseline_smoke ✓ [ 100% ] 1 VUs    03.1s/30s  4/4 shared iters
+live_polling     [  13% ] 15 VUs   04.0s/30s 
+analytics_load • [   0% ] waiting  29.0s     
+spike_test     • [   0% ] waiting  1m17.0s   
+
+running (0m15.0s), 15/40 VUs, 64 complete and 0 interrupted iterations
+baseline_smoke ✓ [ 100% ] 1 VUs    03.1s/30s  4/4 shared iters
+live_polling     [  17% ] 15 VUs   05.0s/30s 
+analytics_load • [   0% ] waiting  28.0s     
+spike_test     • [   0% ] waiting  1m16.0s   
+
+running (0m16.0s), 15/40 VUs, 79 complete and 0 interrupted iterations
+baseline_smoke ✓ [ 100% ] 1 VUs    03.1s/30s  4/4 shared iters
+live_polling     [  20% ] 15 VUs   06.0s/30s 
+analytics_load • [   0% ] waiting  27.0s     
+spike_test     • [   0% ] waiting  1m15.0s   
+
+running (0m17.0s), 15/40 VUs, 94 complete and 0 interrupted iterations
+baseline_smoke ✓ [ 100% ] 1 VUs    03.1s/30s  4/4 shared iters
+live_polling     [  23% ] 15 VUs   07.0s/30s 
+analytics_load • [   0% ] waiting  26.0s     
+spike_test     • [   0% ] waiting  1m14.0s   
+
+running (0m18.0s), 15/40 VUs, 109 complete and 0 interrupted iterations
+baseline_smoke ✓ [ 100% ] 1 VUs    03.1s/30s  4/4 shared iters
+live_polling     [  27% ] 15 VUs   08.0s/30s 
+analytics_load • [   0% ] waiting  25.0s     
+spike_test     • [   0% ] waiting  1m13.0s   
+
+running (0m19.0s), 15/40 VUs, 124 complete and 0 interrupted iterations
+baseline_smoke ✓ [ 100% ] 1 VUs    03.1s/30s  4/4 shared iters
+live_polling     [  30% ] 15 VUs   09.0s/30s 
+analytics_load • [   0% ] waiting  24.0s     
+spike_test     • [   0% ] waiting  1m12.0s   
+
+running (0m20.0s), 15/40 VUs, 138 complete and 0 interrupted iterations
+baseline_smoke ✓ [ 100% ] 1 VUs    03.1s/30s  4/4 shared iters
+live_polling     [  33% ] 15 VUs   10.0s/30s 
+analytics_load • [   0% ] waiting  23.0s     
+spike_test     • [   0% ] waiting  1m11.0s   
+
+running (0m21.0s), 15/40 VUs, 150 complete and 0 interrupted iterations
+baseline_smoke ✓ [ 100% ] 1 VUs    03.1s/30s  4/4 shared iters
+live_polling     [  37% ] 15 VUs   11.0s/30s 
+analytics_load • [   0% ] waiting  22.0s     
+spike_test     • [   0% ] waiting  1m10.0s   
+
+running (0m22.0s), 15/40 VUs, 161 complete and 0 interrupted iterations
+baseline_smoke ✓ [ 100% ] 1 VUs    03.1s/30s  4/4 shared iters
+live_polling     [  40% ] 15 VUs   12.0s/30s 
+analytics_load • [   0% ] waiting  21.0s     
+spike_test     • [   0% ] waiting  1m09.0s   
+
+running (0m23.0s), 15/40 VUs, 174 complete and 0 interrupted iterations
+baseline_smoke ✓ [ 100% ] 1 VUs    03.1s/30s  4/4 shared iters
+live_polling     [  43% ] 15 VUs   13.0s/30s 
+analytics_load • [   0% ] waiting  20.0s     
+spike_test     • [   0% ] waiting  1m08.0s   
+
+running (0m24.0s), 15/40 VUs, 186 complete and 0 interrupted iterations
+baseline_smoke ✓ [ 100% ] 1 VUs    03.1s/30s  4/4 shared iters
+live_polling     [  47% ] 15 VUs   14.0s/30s 
+analytics_load • [   0% ] waiting  19.0s     
+spike_test     • [   0% ] waiting  1m07.0s   
+
+running (0m25.0s), 15/40 VUs, 201 complete and 0 interrupted iterations
+baseline_smoke ✓ [ 100% ] 1 VUs    03.1s/30s  4/4 shared iters
+live_polling     [  50% ] 15 VUs   15.0s/30s 
+analytics_load • [   0% ] waiting  18.0s     
+spike_test     • [   0% ] waiting  1m06.0s   
+
+running (0m26.0s), 15/40 VUs, 214 complete and 0 interrupted iterations
+baseline_smoke ✓ [ 100% ] 1 VUs    03.1s/30s  4/4 shared iters
+live_polling     [  53% ] 15 VUs   16.0s/30s 
+analytics_load • [   0% ] waiting  17.0s     
+spike_test     • [   0% ] waiting  1m05.0s   
+
+running (0m27.0s), 15/40 VUs, 229 complete and 0 interrupted iterations
+baseline_smoke ✓ [ 100% ] 1 VUs    03.1s/30s  4/4 shared iters
+live_polling     [  57% ] 15 VUs   17.0s/30s 
+analytics_load • [   0% ] waiting  16.0s     
+spike_test     • [   0% ] waiting  1m04.0s   
+
+running (0m28.0s), 15/40 VUs, 244 complete and 0 interrupted iterations
+baseline_smoke ✓ [ 100% ] 1 VUs    03.1s/30s  4/4 shared iters
+live_polling     [  60% ] 15 VUs   18.0s/30s 
+analytics_load • [   0% ] waiting  15.0s     
+spike_test     • [   0% ] waiting  1m03.0s   
+
+running (0m29.0s), 15/40 VUs, 259 complete and 0 interrupted iterations
+baseline_smoke ✓ [ 100% ] 1 VUs    03.1s/30s  4/4 shared iters
+live_polling     [  63% ] 15 VUs   19.0s/30s 
+analytics_load • [   0% ] waiting  14.0s     
+spike_test     • [   0% ] waiting  1m02.0s   
+
+running (0m30.0s), 15/40 VUs, 274 complete and 0 interrupted iterations
+baseline_smoke ✓ [ 100% ] 1 VUs    03.1s/30s  4/4 shared iters
+live_polling     [  67% ] 15 VUs   20.0s/30s 
+analytics_load • [   0% ] waiting  13.0s     
+spike_test     • [   0% ] waiting  1m01.0s   
+
+running (0m31.0s), 15/40 VUs, 289 complete and 0 interrupted iterations
+baseline_smoke ✓ [ 100% ] 1 VUs    03.1s/30s  4/4 shared iters
+live_polling     [  70% ] 15 VUs   21.0s/30s 
+analytics_load • [   0% ] waiting  12.0s     
+spike_test     • [   0% ] waiting  1m00.0s   
+
+running (0m32.0s), 15/40 VUs, 304 complete and 0 interrupted iterations
+baseline_smoke ✓ [ 100% ] 1 VUs    03.1s/30s  4/4 shared iters
+live_polling     [  73% ] 15 VUs   22.0s/30s 
+analytics_load • [   0% ] waiting  11.0s     
+spike_test     • [   0% ] waiting  0m59.0s   
+
+running (0m33.0s), 15/40 VUs, 304 complete and 0 interrupted iterations
+baseline_smoke ✓ [ 100% ] 1 VUs    03.1s/30s  4/4 shared iters
+live_polling     [  77% ] 15 VUs   23.0s/30s 
+analytics_load • [   0% ] waiting  10.0s     
+spike_test     • [   0% ] waiting  0m58.0s   
+
+running (0m34.0s), 15/40 VUs, 319 complete and 0 interrupted iterations
+baseline_smoke ✓ [ 100% ] 1 VUs    03.1s/30s  4/4 shared iters
+live_polling     [  80% ] 15 VUs   24.0s/30s 
+analytics_load • [   0% ] waiting  09.0s     
+spike_test     • [   0% ] waiting  0m57.0s   
+
+running (0m35.0s), 15/40 VUs, 334 complete and 0 interrupted iterations
+baseline_smoke ✓ [ 100% ] 1 VUs    03.1s/30s  4/4 shared iters
+live_polling     [  83% ] 15 VUs   25.0s/30s 
+analytics_load • [   0% ] waiting  08.0s     
+spike_test     • [   0% ] waiting  0m56.0s   
+
+running (0m36.0s), 15/40 VUs, 349 complete and 0 interrupted iterations
+baseline_smoke ✓ [ 100% ] 1 VUs    03.1s/30s  4/4 shared iters
+live_polling     [  87% ] 15 VUs   26.0s/30s 
+analytics_load • [   0% ] waiting  07.0s     
+spike_test     • [   0% ] waiting  0m55.0s   
+
+running (0m37.0s), 15/40 VUs, 364 complete and 0 interrupted iterations
+baseline_smoke ✓ [ 100% ] 1 VUs    03.1s/30s  4/4 shared iters
+live_polling     [  90% ] 15 VUs   27.0s/30s 
+analytics_load • [   0% ] waiting  06.0s     
+spike_test     • [   0% ] waiting  0m54.0s   
+
+running (0m38.0s), 15/40 VUs, 379 complete and 0 interrupted iterations
+baseline_smoke ✓ [ 100% ] 1 VUs    03.1s/30s  4/4 shared iters
+live_polling     [  93% ] 15 VUs   28.0s/30s 
+analytics_load • [   0% ] waiting  05.0s     
+spike_test     • [   0% ] waiting  0m53.0s   
+
+running (0m39.0s), 15/40 VUs, 394 complete and 0 interrupted iterations
+baseline_smoke ✓ [ 100% ] 1 VUs    03.1s/30s  4/4 shared iters
+live_polling     [  97% ] 15 VUs   29.0s/30s 
+analytics_load • [   0% ] waiting  04.0s     
+spike_test     • [   0% ] waiting  0m52.0s   
+
+running (0m40.0s), 15/40 VUs, 409 complete and 0 interrupted iterations
+baseline_smoke ✓ [ 100% ] 1 VUs    03.1s/30s  4/4 shared iters
+live_polling     [ 100% ] 15 VUs   30.0s/30s 
+analytics_load • [   0% ] waiting  03.0s     
+spike_test     • [   0% ] waiting  0m51.0s   
+
+running (0m41.0s), 02/40 VUs, 422 complete and 0 interrupted iterations
+baseline_smoke ✓ [ 100% ] 1 VUs    03.1s/30s  4/4 shared iters
+live_polling   ↓ [ 100% ] 15 VUs   30s       
+analytics_load • [   0% ] waiting  02.0s     
+spike_test     • [   0% ] waiting  0m50.0s   
+
+running (0m42.0s), 00/40 VUs, 424 complete and 0 interrupted iterations
+baseline_smoke ✓ [ 100% ] 1 VUs    03.1s/30s  4/4 shared iters
+live_polling   ✓ [ 100% ] 15 VUs   30s       
+analytics_load • [   0% ] waiting  01.0s     
+spike_test     • [   0% ] waiting  0m49.0s   
+
+running (0m43.0s), 00/40 VUs, 424 complete and 0 interrupted iterations
+baseline_smoke ✓ [ 100% ] 1 VUs    03.1s/30s  4/4 shared iters
+live_polling   ✓ [ 100% ] 15 VUs   30s       
+analytics_load • [   0% ] waiting  00.0s     
+spike_test     • [   0% ] waiting  0m48.0s   
+
+running (0m44.0s), 01/40 VUs, 424 complete and 0 interrupted iterations
+baseline_smoke ✓ [ 100% ] 1 VUs      03.1s/30s  4/4 shared iters
+live_polling   ✓ [ 100% ] 15 VUs     30s       
+analytics_load   [   2% ] 01/25 VUs  01.0s/45.0s
+spike_test     • [   0% ] waiting    0m47.0s   
+
+running (0m45.0s), 02/40 VUs, 425 complete and 0 interrupted iterations
+baseline_smoke ✓ [ 100% ] 1 VUs      03.1s/30s  4/4 shared iters
+live_polling   ✓ [ 100% ] 15 VUs     30s       
+analytics_load   [   4% ] 02/25 VUs  02.0s/45.0s
+spike_test     • [   0% ] waiting    0m46.0s   
+
+running (0m46.0s), 03/40 VUs, 427 complete and 0 interrupted iterations
+baseline_smoke ✓ [ 100% ] 1 VUs      03.1s/30s  4/4 shared iters
+live_polling   ✓ [ 100% ] 15 VUs     30s       
+analytics_load   [   7% ] 03/25 VUs  03.0s/45.0s
+spike_test     • [   0% ] waiting    0m45.0s   
+
+running (0m47.0s), 04/40 VUs, 430 complete and 0 interrupted iterations
+baseline_smoke ✓ [ 100% ] 1 VUs      03.1s/30s  4/4 shared iters
+live_polling   ✓ [ 100% ] 15 VUs     30s       
+analytics_load   [   9% ] 04/25 VUs  04.0s/45.0s
+spike_test     • [   0% ] waiting    0m44.0s   
+
+running (0m48.0s), 06/40 VUs, 434 complete and 0 interrupted iterations
+baseline_smoke ✓ [ 100% ] 1 VUs      03.1s/30s  4/4 shared iters
+live_polling   ✓ [ 100% ] 15 VUs     30s       
+analytics_load   [  11% ] 06/25 VUs  05.0s/45.0s
+spike_test     • [   0% ] waiting    0m43.0s   
+
+running (0m49.0s), 07/40 VUs, 441 complete and 0 interrupted iterations
+baseline_smoke ✓ [ 100% ] 1 VUs      03.1s/30s  4/4 shared iters
+live_polling   ✓ [ 100% ] 15 VUs     30s       
+analytics_load   [  13% ] 07/25 VUs  06.0s/45.0s
+spike_test     • [   0% ] waiting    0m42.0s   
+
+running (0m50.0s), 08/40 VUs, 448 complete and 0 interrupted iterations
+baseline_smoke ✓ [ 100% ] 1 VUs      03.1s/30s  4/4 shared iters
+live_polling   ✓ [ 100% ] 15 VUs     30s       
+analytics_load   [  16% ] 08/25 VUs  07.0s/45.0s
+spike_test     • [   0% ] waiting    0m41.0s   
+
+running (0m51.0s), 09/40 VUs, 458 complete and 0 interrupted iterations
+baseline_smoke ✓ [ 100% ] 1 VUs      03.1s/30s  4/4 shared iters
+live_polling   ✓ [ 100% ] 15 VUs     30s       
+analytics_load   [  18% ] 09/25 VUs  08.0s/45.0s
+spike_test     • [   0% ] waiting    0m40.0s   
+
+running (0m52.0s), 10/40 VUs, 468 complete and 0 interrupted iterations
+baseline_smoke ✓ [ 100% ] 1 VUs      03.1s/30s  4/4 shared iters
+live_polling   ✓ [ 100% ] 15 VUs     30s       
+analytics_load   [  20% ] 10/25 VUs  09.0s/45.0s
+spike_test     • [   0% ] waiting    0m39.0s   
+
+running (0m53.0s), 11/40 VUs, 481 complete and 0 interrupted iterations
+baseline_smoke ✓ [ 100% ] 1 VUs      03.1s/30s  4/4 shared iters
+live_polling   ✓ [ 100% ] 15 VUs     30s       
+analytics_load   [  22% ] 11/25 VUs  10.0s/45.0s
+spike_test     • [   0% ] waiting    0m38.0s   
+
+running (0m54.0s), 12/40 VUs, 495 complete and 0 interrupted iterations
+baseline_smoke ✓ [ 100% ] 1 VUs      03.1s/30s  4/4 shared iters
+live_polling   ✓ [ 100% ] 15 VUs     30s       
+analytics_load   [  24% ] 12/25 VUs  11.0s/45.0s
+spike_test     • [   0% ] waiting    0m37.0s   
+
+running (0m55.0s), 12/40 VUs, 508 complete and 0 interrupted iterations
+baseline_smoke ✓ [ 100% ] 1 VUs      03.1s/30s  4/4 shared iters
+live_polling   ✓ [ 100% ] 15 VUs     30s       
+analytics_load   [  27% ] 12/25 VUs  12.0s/45.0s
+spike_test     • [   0% ] waiting    0m36.0s   
+
+running (0m56.0s), 13/40 VUs, 520 complete and 0 interrupted iterations
+baseline_smoke ✓ [ 100% ] 1 VUs      03.1s/30s  4/4 shared iters
+live_polling   ✓ [ 100% ] 15 VUs     30s       
+analytics_load   [  29% ] 13/25 VUs  13.0s/45.0s
+spike_test     • [   0% ] waiting    0m35.0s   
+
+running (0m57.0s), 14/40 VUs, 535 complete and 0 interrupted iterations
+baseline_smoke ✓ [ 100% ] 1 VUs      03.1s/30s  4/4 shared iters
+live_polling   ✓ [ 100% ] 15 VUs     30s       
+analytics_load   [  31% ] 14/25 VUs  14.0s/45.0s
+spike_test     • [   0% ] waiting    0m34.0s   
+
+running (0m58.0s), 15/40 VUs, 549 complete and 0 interrupted iterations
+baseline_smoke ✓ [ 100% ] 1 VUs      03.1s/30s  4/4 shared iters
+live_polling   ✓ [ 100% ] 15 VUs     30s       
+analytics_load   [  33% ] 15/25 VUs  15.0s/45.0s
+spike_test     • [   0% ] waiting    0m33.0s   
+
+running (0m59.0s), 15/40 VUs, 564 complete and 0 interrupted iterations
+baseline_smoke ✓ [ 100% ] 1 VUs      03.1s/30s  4/4 shared iters
+live_polling   ✓ [ 100% ] 15 VUs     30s       
+analytics_load   [  36% ] 15/25 VUs  16.0s/45.0s
+spike_test     • [   0% ] waiting    0m32.0s   
+
+running (1m00.0s), 16/40 VUs, 579 complete and 0 interrupted iterations
+baseline_smoke ✓ [ 100% ] 1 VUs      03.1s/30s  4/4 shared iters
+live_polling   ✓ [ 100% ] 15 VUs     30s       
+analytics_load   [  38% ] 16/25 VUs  17.0s/45.0s
+spike_test     • [   0% ] waiting    0m31.0s   
+
+running (1m01.0s), 17/40 VUs, 602 complete and 0 interrupted iterations
+baseline_smoke ✓ [ 100% ] 1 VUs      03.1s/30s  4/4 shared iters
+live_polling   ✓ [ 100% ] 15 VUs     30s       
+analytics_load   [  40% ] 17/25 VUs  18.0s/45.0s
+spike_test     • [   0% ] waiting    0m30.0s   
+
+running (1m02.0s), 18/40 VUs, 624 complete and 0 interrupted iterations
+baseline_smoke ✓ [ 100% ] 1 VUs      03.1s/30s  4/4 shared iters
+live_polling   ✓ [ 100% ] 15 VUs     30s       
+analytics_load   [  42% ] 18/25 VUs  19.0s/45.0s
+spike_test     • [   0% ] waiting    0m29.0s   
+
+running (1m03.0s), 18/40 VUs, 645 complete and 0 interrupted iterations
+baseline_smoke ✓ [ 100% ] 1 VUs      03.1s/30s  4/4 shared iters
+live_polling   ✓ [ 100% ] 15 VUs     30s       
+analytics_load   [  44% ] 18/25 VUs  20.0s/45.0s
+spike_test     • [   0% ] waiting    0m28.0s   
+
+running (1m04.0s), 19/40 VUs, 664 complete and 0 interrupted iterations
+baseline_smoke ✓ [ 100% ] 1 VUs      03.1s/30s  4/4 shared iters
+live_polling   ✓ [ 100% ] 15 VUs     30s       
+analytics_load   [  47% ] 19/25 VUs  21.0s/45.0s
+spike_test     • [   0% ] waiting    0m27.0s   
+
+running (1m05.0s), 20/40 VUs, 684 complete and 0 interrupted iterations
+baseline_smoke ✓ [ 100% ] 1 VUs      03.1s/30s  4/4 shared iters
+live_polling   ✓ [ 100% ] 15 VUs     30s       
+analytics_load   [  49% ] 20/25 VUs  22.0s/45.0s
+spike_test     • [   0% ] waiting    0m26.0s   
+
+running (1m06.0s), 21/40 VUs, 704 complete and 0 interrupted iterations
+baseline_smoke ✓ [ 100% ] 1 VUs      03.1s/30s  4/4 shared iters
+live_polling   ✓ [ 100% ] 15 VUs     30s       
+analytics_load   [  51% ] 21/25 VUs  23.0s/45.0s
+spike_test     • [   0% ] waiting    0m25.0s   
+
+running (1m07.0s), 21/40 VUs, 731 complete and 0 interrupted iterations
+baseline_smoke ✓ [ 100% ] 1 VUs      03.1s/30s  4/4 shared iters
+live_polling   ✓ [ 100% ] 15 VUs     30s       
+analytics_load   [  53% ] 21/25 VUs  24.0s/45.0s
+spike_test     • [   0% ] waiting    0m24.0s   
+
+running (1m08.0s), 22/40 VUs, 757 complete and 0 interrupted iterations
+baseline_smoke ✓ [ 100% ] 1 VUs      03.1s/30s  4/4 shared iters
+live_polling   ✓ [ 100% ] 15 VUs     30s       
+analytics_load   [  56% ] 22/25 VUs  25.0s/45.0s
+spike_test     • [   0% ] waiting    0m23.0s   
+
+running (1m09.0s), 23/40 VUs, 783 complete and 0 interrupted iterations
+baseline_smoke ✓ [ 100% ] 1 VUs      03.1s/30s  4/4 shared iters
+live_polling   ✓ [ 100% ] 15 VUs     30s       
+analytics_load   [  58% ] 23/25 VUs  26.0s/45.0s
+spike_test     • [   0% ] waiting    0m22.0s   
+
+running (1m10.0s), 24/40 VUs, 809 complete and 0 interrupted iterations
+baseline_smoke ✓ [ 100% ] 1 VUs      03.1s/30s  4/4 shared iters
+live_polling   ✓ [ 100% ] 15 VUs     30s       
+analytics_load   [  60% ] 24/25 VUs  27.0s/45.0s
+spike_test     • [   0% ] waiting    0m21.0s   
+
+running (1m11.0s), 24/40 VUs, 835 complete and 0 interrupted iterations
+baseline_smoke ✓ [ 100% ] 1 VUs      03.1s/30s  4/4 shared iters
+live_polling   ✓ [ 100% ] 15 VUs     30s       
+analytics_load   [  62% ] 24/25 VUs  28.0s/45.0s
+spike_test     • [   0% ] waiting    0m20.0s   
+
+running (1m12.0s), 25/40 VUs, 862 complete and 0 interrupted iterations
+baseline_smoke ✓ [ 100% ] 1 VUs      03.1s/30s  4/4 shared iters
+live_polling   ✓ [ 100% ] 15 VUs     30s       
+analytics_load   [  64% ] 25/25 VUs  29.0s/45.0s
+spike_test     • [   0% ] waiting    0m19.0s   
+
+running (1m13.0s), 25/40 VUs, 887 complete and 0 interrupted iterations
+baseline_smoke ✓ [ 100% ] 1 VUs      03.1s/30s  4/4 shared iters
+live_polling   ✓ [ 100% ] 15 VUs     30s       
+analytics_load   [  67% ] 25/25 VUs  30.0s/45.0s
+spike_test     • [   0% ] waiting    0m18.0s   
+
+running (1m14.0s), 25/40 VUs, 912 complete and 0 interrupted iterations
+baseline_smoke ✓ [ 100% ] 1 VUs      03.1s/30s  4/4 shared iters
+live_polling   ✓ [ 100% ] 15 VUs     30s       
+analytics_load   [  69% ] 25/25 VUs  31.0s/45.0s
+spike_test     • [   0% ] waiting    0m17.0s   
+
+running (1m15.0s), 25/40 VUs, 937 complete and 0 interrupted iterations
+baseline_smoke ✓ [ 100% ] 1 VUs      03.1s/30s  4/4 shared iters
+live_polling   ✓ [ 100% ] 15 VUs     30s       
+analytics_load   [  71% ] 25/25 VUs  32.0s/45.0s
+spike_test     • [   0% ] waiting    0m16.0s   
+
+running (1m16.0s), 25/40 VUs, 967 complete and 0 interrupted iterations
+baseline_smoke ✓ [ 100% ] 1 VUs      03.1s/30s  4/4 shared iters
+live_polling   ✓ [ 100% ] 15 VUs     30s       
+analytics_load   [  73% ] 25/25 VUs  33.0s/45.0s
+spike_test     • [   0% ] waiting    0m15.0s   
+
+running (1m17.0s), 25/40 VUs, 996 complete and 0 interrupted iterations
+baseline_smoke ✓ [ 100% ] 1 VUs      03.1s/30s  4/4 shared iters
+live_polling   ✓ [ 100% ] 15 VUs     30s       
+analytics_load   [  76% ] 25/25 VUs  34.0s/45.0s
+spike_test     • [   0% ] waiting    0m14.0s   
+
+running (1m18.0s), 25/40 VUs, 1023 complete and 0 interrupted iterations
+baseline_smoke ✓ [ 100% ] 1 VUs      03.1s/30s  4/4 shared iters
+live_polling   ✓ [ 100% ] 15 VUs     30s       
+analytics_load   [  78% ] 25/25 VUs  35.0s/45.0s
+spike_test     • [   0% ] waiting    0m13.0s   
+
+running (1m19.0s), 25/40 VUs, 1056 complete and 0 interrupted iterations
+baseline_smoke ✓ [ 100% ] 1 VUs      03.1s/30s  4/4 shared iters
+live_polling   ✓ [ 100% ] 15 VUs     30s       
+analytics_load   [  80% ] 25/25 VUs  36.0s/45.0s
+spike_test     • [   0% ] waiting    0m12.0s   
+
+running (1m20.0s), 25/40 VUs, 1079 complete and 0 interrupted iterations
+baseline_smoke ✓ [ 100% ] 1 VUs      03.1s/30s  4/4 shared iters
+live_polling   ✓ [ 100% ] 15 VUs     30s       
+analytics_load   [  82% ] 25/25 VUs  37.0s/45.0s
+spike_test     • [   0% ] waiting    0m11.0s   
+
+running (1m21.0s), 25/40 VUs, 1107 complete and 0 interrupted iterations
+baseline_smoke ✓ [ 100% ] 1 VUs      03.1s/30s  4/4 shared iters
+live_polling   ✓ [ 100% ] 15 VUs     30s       
+analytics_load   [  84% ] 25/25 VUs  38.0s/45.0s
+spike_test     • [   0% ] waiting    0m10.0s   
+
+running (1m22.0s), 23/40 VUs, 1135 complete and 0 interrupted iterations
+baseline_smoke ✓ [ 100% ] 1 VUs      03.1s/30s  4/4 shared iters
+live_polling   ✓ [ 100% ] 15 VUs     30s       
+analytics_load   [  87% ] 23/25 VUs  39.0s/45.0s
+spike_test     • [   0% ] waiting    0m09.0s   
+
+running (1m23.0s), 20/40 VUs, 1158 complete and 0 interrupted iterations
+baseline_smoke ✓ [ 100% ] 1 VUs      03.1s/30s  4/4 shared iters
+live_polling   ✓ [ 100% ] 15 VUs     30s       
+analytics_load   [  89% ] 20/25 VUs  40.0s/45.0s
+spike_test     • [   0% ] waiting    0m08.0s   
+
+running (1m24.0s), 17/40 VUs, 1178 complete and 0 interrupted iterations
+baseline_smoke ✓ [ 100% ] 1 VUs      03.1s/30s  4/4 shared iters
+live_polling   ✓ [ 100% ] 15 VUs     30s       
+analytics_load   [  91% ] 17/25 VUs  41.0s/45.0s
+spike_test     • [   0% ] waiting    0m07.0s   
+
+running (1m25.0s), 14/40 VUs, 1195 complete and 0 interrupted iterations
+baseline_smoke ✓ [ 100% ] 1 VUs      03.1s/30s  4/4 shared iters
+live_polling   ✓ [ 100% ] 15 VUs     30s       
+analytics_load   [  93% ] 14/25 VUs  42.0s/45.0s
+spike_test     • [   0% ] waiting    0m06.0s   
+
+running (1m26.0s), 09/40 VUs, 1211 complete and 0 interrupted iterations
+baseline_smoke ✓ [ 100% ] 1 VUs      03.1s/30s  4/4 shared iters
+live_polling   ✓ [ 100% ] 15 VUs     30s       
+analytics_load   [  96% ] 09/25 VUs  43.0s/45.0s
+spike_test     • [   0% ] waiting    0m05.0s   
+
+running (1m27.0s), 05/40 VUs, 1224 complete and 0 interrupted iterations
+baseline_smoke ✓ [ 100% ] 1 VUs      03.1s/30s  4/4 shared iters
+live_polling   ✓ [ 100% ] 15 VUs     30s       
+analytics_load   [  98% ] 05/25 VUs  44.0s/45.0s
+spike_test     • [   0% ] waiting    0m04.0s   
+
+running (1m28.0s), 01/40 VUs, 1230 complete and 0 interrupted iterations
+baseline_smoke ✓ [ 100% ] 1 VUs      03.1s/30s  4/4 shared iters
+live_polling   ✓ [ 100% ] 15 VUs     30s       
+analytics_load   [ 100% ] 01/25 VUs  45.0s/45.0s
+spike_test     • [   0% ] waiting    0m03.0s   
+
+running (1m29.0s), 00/40 VUs, 1231 complete and 0 interrupted iterations
+baseline_smoke ✓ [ 100% ] 1 VUs      03.1s/30s  4/4 shared iters
+live_polling   ✓ [ 100% ] 15 VUs     30s       
+analytics_load ✓ [ 100% ] 00/25 VUs  45s       
+spike_test     • [   0% ] waiting    0m02.0s   
+
+running (1m30.0s), 00/40 VUs, 1231 complete and 0 interrupted iterations
+baseline_smoke ✓ [ 100% ] 1 VUs      03.1s/30s  4/4 shared iters
+live_polling   ✓ [ 100% ] 15 VUs     30s       
+analytics_load ✓ [ 100% ] 00/25 VUs  45s       
+spike_test     • [   0% ] waiting    0m01.0s   
+
+running (1m31.0s), 00/40 VUs, 1231 complete and 0 interrupted iterations
+baseline_smoke ✓ [ 100% ] 1 VUs      03.1s/30s  4/4 shared iters
+live_polling   ✓ [ 100% ] 15 VUs     30s       
+analytics_load ✓ [ 100% ] 00/25 VUs  45s       
+spike_test     • [   0% ] waiting    0m00.0s   
+
+running (1m32.0s), 11/40 VUs, 1243 complete and 0 interrupted iterations
+baseline_smoke ✓ [ 100% ] 1 VUs      03.1s/30s  4/4 shared iters
+live_polling   ✓ [ 100% ] 15 VUs     30s       
+analytics_load ✓ [ 100% ] 00/25 VUs  45s       
+spike_test       [   3% ] 11/40 VUs  01.0s/30.0s
+
+running (1m33.0s), 18/40 VUs, 1269 complete and 0 interrupted iterations
+baseline_smoke ✓ [ 100% ] 1 VUs      03.1s/30s  4/4 shared iters
+live_polling   ✓ [ 100% ] 15 VUs     30s       
+analytics_load ✓ [ 100% ] 00/25 VUs  45s       
+spike_test       [   7% ] 18/40 VUs  02.0s/30.0s
+
+running (1m34.0s), 25/40 VUs, 1312 complete and 0 interrupted iterations
+baseline_smoke ✓ [ 100% ] 1 VUs      03.1s/30s  4/4 shared iters
+live_polling   ✓ [ 100% ] 15 VUs     30s       
+analytics_load ✓ [ 100% ] 00/25 VUs  45s       
+spike_test       [  10% ] 25/40 VUs  03.0s/30.0s
+
+running (1m35.0s), 32/40 VUs, 1364 complete and 0 interrupted iterations
+baseline_smoke ✓ [ 100% ] 1 VUs      03.1s/30s  4/4 shared iters
+live_polling   ✓ [ 100% ] 15 VUs     30s       
+analytics_load ✓ [ 100% ] 00/25 VUs  45s       
+spike_test       [  13% ] 32/40 VUs  04.0s/30.0s
+
+running (1m36.0s), 39/40 VUs, 1435 complete and 0 interrupted iterations
+baseline_smoke ✓ [ 100% ] 1 VUs      03.1s/30s  4/4 shared iters
+live_polling   ✓ [ 100% ] 15 VUs     30s       
+analytics_load ✓ [ 100% ] 00/25 VUs  45s       
+spike_test       [  17% ] 39/40 VUs  05.0s/30.0s
+
+running (1m37.0s), 40/40 VUs, 1522 complete and 0 interrupted iterations
+baseline_smoke ✓ [ 100% ] 1 VUs      03.1s/30s  4/4 shared iters
+live_polling   ✓ [ 100% ] 15 VUs     30s       
+analytics_load ✓ [ 100% ] 00/25 VUs  45s       
+spike_test       [  20% ] 40/40 VUs  06.0s/30.0s
+
+running (1m38.0s), 40/40 VUs, 1602 complete and 0 interrupted iterations
+baseline_smoke ✓ [ 100% ] 1 VUs      03.1s/30s  4/4 shared iters
+live_polling   ✓ [ 100% ] 15 VUs     30s       
+analytics_load ✓ [ 100% ] 00/25 VUs  45s       
+spike_test       [  23% ] 40/40 VUs  07.0s/30.0s
+
+running (1m39.0s), 40/40 VUs, 1686 complete and 0 interrupted iterations
+baseline_smoke ✓ [ 100% ] 1 VUs      03.1s/30s  4/4 shared iters
+live_polling   ✓ [ 100% ] 15 VUs     30s       
+analytics_load ✓ [ 100% ] 00/25 VUs  45s       
+spike_test       [  27% ] 40/40 VUs  08.0s/30.0s
+
+running (1m40.0s), 40/40 VUs, 1764 complete and 0 interrupted iterations
+baseline_smoke ✓ [ 100% ] 1 VUs      03.1s/30s  4/4 shared iters
+live_polling   ✓ [ 100% ] 15 VUs     30s       
+analytics_load ✓ [ 100% ] 00/25 VUs  45s       
+spike_test       [  30% ] 40/40 VUs  09.0s/30.0s
+
+running (1m41.0s), 40/40 VUs, 1844 complete and 0 interrupted iterations
+baseline_smoke ✓ [ 100% ] 1 VUs      03.1s/30s  4/4 shared iters
+live_polling   ✓ [ 100% ] 15 VUs     30s       
+analytics_load ✓ [ 100% ] 00/25 VUs  45s       
+spike_test       [  33% ] 40/40 VUs  10.0s/30.0s
+
+running (1m42.0s), 40/40 VUs, 1924 complete and 0 interrupted iterations
+baseline_smoke ✓ [ 100% ] 1 VUs      03.1s/30s  4/4 shared iters
+live_polling   ✓ [ 100% ] 15 VUs     30s       
+analytics_load ✓ [ 100% ] 00/25 VUs  45s       
+spike_test       [  37% ] 40/40 VUs  11.0s/30.0s
+
+running (1m43.0s), 40/40 VUs, 2009 complete and 0 interrupted iterations
+baseline_smoke ✓ [ 100% ] 1 VUs      03.1s/30s  4/4 shared iters
+live_polling   ✓ [ 100% ] 15 VUs     30s       
+analytics_load ✓ [ 100% ] 00/25 VUs  45s       
+spike_test       [  40% ] 40/40 VUs  12.0s/30.0s
+
+running (1m44.0s), 40/40 VUs, 2096 complete and 0 interrupted iterations
+baseline_smoke ✓ [ 100% ] 1 VUs      03.1s/30s  4/4 shared iters
+live_polling   ✓ [ 100% ] 15 VUs     30s       
+analytics_load ✓ [ 100% ] 00/25 VUs  45s       
+spike_test       [  43% ] 40/40 VUs  13.0s/30.0s
+
+running (1m45.0s), 40/40 VUs, 2177 complete and 0 interrupted iterations
+baseline_smoke ✓ [ 100% ] 1 VUs      03.1s/30s  4/4 shared iters
+live_polling   ✓ [ 100% ] 15 VUs     30s       
+analytics_load ✓ [ 100% ] 00/25 VUs  45s       
+spike_test       [  47% ] 40/40 VUs  14.0s/30.0s
+
+running (1m46.0s), 40/40 VUs, 2257 complete and 0 interrupted iterations
+baseline_smoke ✓ [ 100% ] 1 VUs      03.1s/30s  4/4 shared iters
+live_polling   ✓ [ 100% ] 15 VUs     30s       
+analytics_load ✓ [ 100% ] 00/25 VUs  45s       
+spike_test       [  50% ] 40/40 VUs  15.0s/30.0s
+
+running (1m47.0s), 40/40 VUs, 2339 complete and 0 interrupted iterations
+baseline_smoke ✓ [ 100% ] 1 VUs      03.1s/30s  4/4 shared iters
+live_polling   ✓ [ 100% ] 15 VUs     30s       
+analytics_load ✓ [ 100% ] 00/25 VUs  45s       
+spike_test       [  53% ] 40/40 VUs  16.0s/30.0s
+
+running (1m48.0s), 40/40 VUs, 2427 complete and 0 interrupted iterations
+baseline_smoke ✓ [ 100% ] 1 VUs      03.1s/30s  4/4 shared iters
+live_polling   ✓ [ 100% ] 15 VUs     30s       
+analytics_load ✓ [ 100% ] 00/25 VUs  45s       
+spike_test       [  57% ] 40/40 VUs  17.0s/30.0s
+
+running (1m49.0s), 40/40 VUs, 2510 complete and 0 interrupted iterations
+baseline_smoke ✓ [ 100% ] 1 VUs      03.1s/30s  4/4 shared iters
+live_polling   ✓ [ 100% ] 15 VUs     30s       
+analytics_load ✓ [ 100% ] 00/25 VUs  45s       
+spike_test       [  60% ] 40/40 VUs  18.0s/30.0s
+
+running (1m50.0s), 40/40 VUs, 2591 complete and 0 interrupted iterations
+baseline_smoke ✓ [ 100% ] 1 VUs      03.1s/30s  4/4 shared iters
+live_polling   ✓ [ 100% ] 15 VUs     30s       
+analytics_load ✓ [ 100% ] 00/25 VUs  45s       
+spike_test       [  63% ] 40/40 VUs  19.0s/30.0s
+
+running (1m51.0s), 40/40 VUs, 2667 complete and 0 interrupted iterations
+baseline_smoke ✓ [ 100% ] 1 VUs      03.1s/30s  4/4 shared iters
+live_polling   ✓ [ 100% ] 15 VUs     30s       
+analytics_load ✓ [ 100% ] 00/25 VUs  45s       
+spike_test       [  67% ] 40/40 VUs  20.0s/30.0s
+
+running (1m52.0s), 37/40 VUs, 2751 complete and 0 interrupted iterations
+baseline_smoke ✓ [ 100% ] 1 VUs      03.1s/30s  4/4 shared iters
+live_polling   ✓ [ 100% ] 15 VUs     30s       
+analytics_load ✓ [ 100% ] 00/25 VUs  45s       
+spike_test       [  70% ] 37/40 VUs  21.0s/30.0s
+
+running (1m53.0s), 34/40 VUs, 2829 complete and 0 interrupted iterations
+baseline_smoke ✓ [ 100% ] 1 VUs      03.1s/30s  4/4 shared iters
+live_polling   ✓ [ 100% ] 15 VUs     30s       
+analytics_load ✓ [ 100% ] 00/25 VUs  45s       
+spike_test       [  73% ] 34/40 VUs  22.0s/30.0s
+
+running (1m54.0s), 29/40 VUs, 2907 complete and 0 interrupted iterations
+baseline_smoke ✓ [ 100% ] 1 VUs      03.1s/30s  4/4 shared iters
+live_polling   ✓ [ 100% ] 15 VUs     30s       
+analytics_load ✓ [ 100% ] 00/25 VUs  45s       
+spike_test       [  77% ] 29/40 VUs  23.0s/30.0s
+
+running (1m55.0s), 25/40 VUs, 2963 complete and 0 interrupted iterations
+baseline_smoke ✓ [ 100% ] 1 VUs      03.1s/30s  4/4 shared iters
+live_polling   ✓ [ 100% ] 15 VUs     30s       
+analytics_load ✓ [ 100% ] 00/25 VUs  45s       
+spike_test       [  80% ] 25/40 VUs  24.0s/30.0s
+
+running (1m56.0s), 22/40 VUs, 3012 complete and 0 interrupted iterations
+baseline_smoke ✓ [ 100% ] 1 VUs      03.1s/30s  4/4 shared iters
+live_polling   ✓ [ 100% ] 15 VUs     30s       
+analytics_load ✓ [ 100% ] 00/25 VUs  45s       
+spike_test       [  83% ] 22/40 VUs  25.0s/30.0s
+
+running (1m57.0s), 17/40 VUs, 3055 complete and 0 interrupted iterations
+baseline_smoke ✓ [ 100% ] 1 VUs      03.1s/30s  4/4 shared iters
+live_polling   ✓ [ 100% ] 15 VUs     30s       
+analytics_load ✓ [ 100% ] 00/25 VUs  45s       
+spike_test       [  87% ] 17/40 VUs  26.0s/30.0s
+
+running (1m58.0s), 14/40 VUs, 3091 complete and 0 interrupted iterations
+baseline_smoke ✓ [ 100% ] 1 VUs      03.1s/30s  4/4 shared iters
+live_polling   ✓ [ 100% ] 15 VUs     30s       
+analytics_load ✓ [ 100% ] 00/25 VUs  45s       
+spike_test       [  90% ] 14/40 VUs  27.0s/30.0s
+
+running (1m59.0s), 10/40 VUs, 3117 complete and 0 interrupted iterations
+baseline_smoke ✓ [ 100% ] 1 VUs      03.1s/30s  4/4 shared iters
+live_polling   ✓ [ 100% ] 15 VUs     30s       
+analytics_load ✓ [ 100% ] 00/25 VUs  45s       
+spike_test       [  93% ] 10/40 VUs  28.0s/30.0s
+
+running (2m00.0s), 06/40 VUs, 3135 complete and 0 interrupted iterations
+baseline_smoke ✓ [ 100% ] 1 VUs      03.1s/30s  4/4 shared iters
+live_polling   ✓ [ 100% ] 15 VUs     30s       
+analytics_load ✓ [ 100% ] 00/25 VUs  45s       
+spike_test       [  97% ] 06/40 VUs  29.0s/30.0s
+
+running (2m01.0s), 02/40 VUs, 3144 complete and 0 interrupted iterations
+baseline_smoke ✓ [ 100% ] 1 VUs      03.1s/30s  4/4 shared iters
+live_polling   ✓ [ 100% ] 15 VUs     30s       
+analytics_load ✓ [ 100% ] 00/25 VUs  45s       
+spike_test       [ 100% ] 02/40 VUs  30.0s/30.0s
+
+
+  █ THRESHOLDS 
+
+    checks
+    ✓ 'rate>0.99' rate=100.00%
+
+    http_req_duration{endpoint:download_csv}
+    ✓ 'p(95)<1500' p(95)=488.88ms
+
+    http_req_duration{endpoint:latest}
+    ✓ 'p(95)<350' p(95)=172.94ms
+
+    http_req_duration{endpoint:readings_1d_1m}
+    ✓ 'p(95)<600' p(95)=230.81ms
+
+    http_req_duration{endpoint:readings_30d_30m}
+    ✓ 'p(95)<600' p(95)=213.04ms
+
+    http_req_duration{endpoint:readings_7d_15m}
+    ✓ 'p(95)<600' p(95)=209.53ms
+
+    http_req_duration{endpoint:readings_logs}
+    ✓ 'p(95)<500' p(95)=171.15ms
+
+    http_req_duration{endpoint:status}
+    ✓ 'p(95)<300' p(95)=101.65ms
+
+    http_req_duration{scenario:analytics_load}
+    ✓ 'p(95)<700' p(95)=209.5ms
+
+    http_req_duration{scenario:baseline_smoke}
+    ✓ 'p(95)<500' p(95)=145.68ms
+
+    http_req_duration{scenario:live_polling}
+    ✓ 'p(95)<400' p(95)=260.68ms
+
+    http_req_duration{scenario:spike_test}
+    ✓ 'p(95)<1000' p(95)=173.68ms
+
+    http_req_failed
+    ✓ 'rate<0.01' rate=0.00%
+
+    http_req_waiting{endpoint:latest}
+    ✓ 'p(95)<300' p(95)=172.58ms
+
+    http_req_waiting{endpoint:readings_1d_1m}
+    ✓ 'p(95)<450' p(95)=192.63ms
+
+
+  █ TOTAL RESULTS 
+
+    checks_total.......: 3372    27.825204/s
+    checks_succeeded...: 100.00% 3372 out of 3372
+    checks_failed......: 0.00%   0 out of 3372
+
+    ✓ status 200 OK
+    ✓ status payload online
+    ✓ latest 200 OK
+    ✓ latest is object
+    ✓ readings 1d/1m 200 OK
+    ✓ readings 1d/1m array
+    ✓ readings 7d/15m 200 OK
+    ✓ readings 7d/15m array
+    ✓ readings 30d/30m 200 OK
+    ✓ readings 30d/30m array
+    ✓ logs 200 OK
+    ✓ logs has rows array
+    ✓ csv 200 OK
+    ✓ csv content-type
+    ✓ live /latest 200 OK
+    ✓ live refresh chart 200 OK
+    ✓ analytics 1d/1m 200 OK
+    ✓ status health 200 OK
+    ✓ analytics 7d/15m 200 OK
+    ✓ analytics 30d/30m 200 OK
+    ✓ logs paginated 200 OK
+    ✓ download csv 200 OK
+    ✓ spike /readings 200 OK
+    ✓ spike /logs 200 OK
+    ✓ spike /latest 200 OK
+
+    HTTP
+    http_req_duration.................: min=37.69ms  avg=83.29ms  med=65.55ms p(90)=122.31ms p(95)=192.78ms p(99)=373.49ms max=1s      
+      { endpoint:download_csv }.......: min=39.67ms  avg=150.28ms med=67.12ms p(90)=139.08ms p(95)=488.88ms p(99)=904.12ms max=1s      
+      { endpoint:latest }.............: min=37.69ms  avg=80.13ms  med=61.41ms p(90)=120.66ms p(95)=172.94ms p(99)=397.4ms  max=682.49ms
+      { endpoint:readings_1d_1m }.....: min=39.8ms   avg=94.2ms   med=73.3ms  p(90)=166.65ms p(95)=230.81ms p(99)=381.74ms max=517.8ms 
+      { endpoint:readings_30d_30m }...: min=43.5ms   avg=89.33ms  med=67.94ms p(90)=147.33ms p(95)=213.04ms p(99)=376.82ms max=519.55ms
+      { endpoint:readings_7d_15m }....: min=39.54ms  avg=85.95ms  med=69.8ms  p(90)=126.9ms  p(95)=209.53ms p(99)=339.18ms max=484.5ms 
+      { endpoint:readings_logs }......: min=40.1ms   avg=80.32ms  med=66.97ms p(90)=106.97ms p(95)=171.15ms p(99)=335.82ms max=582.43ms
+      { endpoint:status }.............: min=39.86ms  avg=65.12ms  med=53.94ms p(90)=81.13ms  p(95)=101.65ms p(99)=288.17ms max=416.63ms
+      { expected_response:true }......: min=37.69ms  avg=83.29ms  med=65.55ms p(90)=122.31ms p(95)=192.78ms p(99)=373.49ms max=1s      
+      { scenario:analytics_load }.....: min=39.86ms  avg=87.12ms  med=65.64ms p(90)=148.21ms p(95)=209.5ms  p(99)=445.75ms max=1s      
+      { scenario:baseline_smoke }.....: min=39.67ms  avg=63.14ms  med=49.57ms p(90)=94.25ms  p(95)=145.68ms p(99)=183.98ms max=188.1ms 
+      { scenario:live_polling }.......: min=37.69ms  avg=81.58ms  med=55.08ms p(90)=131.23ms p(95)=260.68ms p(99)=439.08ms max=595.17ms
+      { scenario:spike_test }.........: min=37.92ms  avg=82.21ms  med=67.91ms p(90)=113.34ms p(95)=173.68ms p(99)=336.87ms max=682.49ms
+    http_req_failed...................: 0.00%  0 out of 3344
+    http_reqs.........................: 3344   27.594153/s
+
+    EXECUTION
+    iteration_duration................: min=439.06ms avg=672.89ms med=495ms   p(90)=1.05s    p(95)=1.09s    p(99)=1.3s     max=2.03s   
+    iterations........................: 3146   25.960288/s
+    vus...............................: 2      min=0         max=40
+    vus_max...........................: 40     min=40        max=40
+
+    NETWORK
+    data_received.....................: 20 MB  161 kB/s
+    data_sent.........................: 293 kB 2.4 kB/s
+
+
+
+
+running (2m01.2s), 00/40 VUs, 3146 complete and 0 interrupted iterations
+baseline_smoke ✓ [ 100% ] 1 VUs      03.1s/30s  4/4 shared iters
+live_polling   ✓ [ 100% ] 15 VUs     30s       
+analytics_load ✓ [ 100% ] 00/25 VUs  45s       
+spike_test     ✓ [ 100% ] 00/40 VUs  30s       

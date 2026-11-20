@@ -22,7 +22,7 @@ import {
 } from 'lucide-react';
 
 export default function DocsAllHubPage({ onNavigate }) {
-  const baseIp = '202.155.17.57';
+  const baseIp = '202.10.42.14';
 
   const docPillars = [
     {
@@ -80,9 +80,9 @@ export default function DocsAllHubPage({ onNavigate }) {
       badgeColor: 'bg-amber-50 text-amber-700 border-amber-200',
       icon: Terminal,
       iconColor: 'text-amber-600',
-      desc: 'Informasi login SSH, kredensial otentikasi IP 202.155.17.57, otomatisasi deploy 1-klik di VPS kosongan, dan pemeliharaan service PM2 & Nginx.',
+      desc: 'Informasi login SSH, kredensial otentikasi IP 202.10.42.14, otomatisasi deploy 1-klik di VPS kosongan, dan pemeliharaan service PM2 & Nginx.',
       highlights: [
-        'Kredensial SSH: IP 202.155.17.57, User root, Password iot123bridge321',
+        'Kredensial SSH: IP 202.10.42.14, User root, Password iot123bridge321',
         'Eksekusi otomatisasi deploy via script setup-production.sh',
         'Panduan menghubungkan domain custom via Cloudflare DNS & SSL Full',
         'Perintah monitoring berkala (pm2 status, pm2 logs, systemctl restart nginx)',

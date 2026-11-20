@@ -416,7 +416,7 @@ export default function DocsBackendPage({ onNavigate }) {
   const [copiedTestNo, setCopiedTestNo] = useState(null);
 
   const domainHost = 'archtera.web.id';
-  const baseIp = '202.155.17.57';
+  const baseIp = '202.10.42.14';
   const baseOrigin = `https://${domainHost}`;
   const baseUrl = `${baseOrigin}/api`;
 

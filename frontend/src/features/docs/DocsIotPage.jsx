@@ -24,7 +24,7 @@ import CodeBlock from './components/CodeBlock';
 
 export default function DocsIotPage({ onNavigate }) {
   const [selectedRoom, setSelectedRoom] = useState('h5');
-  const baseIp = '202.155.17.57';
+  const baseIp = '202.10.42.14';
 
   const arduinoCode = `/*
  * ==================================================================================
