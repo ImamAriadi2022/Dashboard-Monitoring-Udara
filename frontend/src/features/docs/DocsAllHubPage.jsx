@@ -22,7 +22,7 @@ import {
 } from 'lucide-react';
 
 export default function DocsAllHubPage({ onNavigate }) {
-  const baseIp = '202.10.42.14';
+  const baseIp = '202.155.17.57';
 
   const docPillars = [
     {
@@ -64,12 +64,12 @@ export default function DocsAllHubPage({ onNavigate }) {
       badgeColor: 'bg-emerald-50 text-emerald-700 border-emerald-200',
       icon: Server,
       iconColor: 'text-emerald-600',
-      desc: 'Spesifikasi lengkap seluruh 8 Route Endpoint Inti & 28 Skenario Uji Fungsionalitas per ruangan (h5, lab_td, lab_kom, seminar), Nginx proxy, SQLite, & integrasi API.',
+      desc: 'Spesifikasi endpoint REST API Express.js, reverse proxy SSL Nginx, skema tabel SQLite, serta contoh integrasi multi-bahasa pemrograman.',
       highlights: [
-        'Total 8 Route REST API (5 GET, 1 POST, 1 PUT, 1 DELETE) & 28 skenario uji lengkap per 4 ruangan',
-        'Struktur skema tabel SQLite (air_data.db) dengan query filter 1d/7d/30d & agregasi 1m/15m/30m',
-        'Contoh skrip uji fungsionalitas API dengan cURL, Fetch JavaScript, Python, dan Node.js',
-        'Dukungan penuh CORS, Nginx reverse proxy (/api/*), dan SSL HTTPS tanpa mixed-content',
+        'Endpoint GET /api/latest, /api/readings, /api/download, dan /api/status',
+        'Struktur skema tabel SQLite (air_data.db) dengan query filter 3d/7d/30d',
+        'Contoh kode pemanggilan API dengan cURL, Fetch JavaScript, dan Python',
+        'Dukungan penuh CORS dan SSL HTTPS tanpa mixed-content',
       ],
       linkText: 'Buka Dokumentasi Backend (/docs-backend)',
     },
@@ -80,9 +80,9 @@ export default function DocsAllHubPage({ onNavigate }) {
       badgeColor: 'bg-amber-50 text-amber-700 border-amber-200',
       icon: Terminal,
       iconColor: 'text-amber-600',
-      desc: 'Informasi login SSH, kredensial otentikasi IP 202.10.42.14, otomatisasi deploy 1-klik di VPS kosongan, dan pemeliharaan service PM2 & Nginx.',
+      desc: 'Informasi login SSH, kredensial otentikasi IP 202.155.17.57, otomatisasi deploy 1-klik di VPS kosongan, dan pemeliharaan service PM2 & Nginx.',
       highlights: [
-        'Kredensial SSH: IP 202.10.42.14, User root, Password iot123bridge321',
+        'Kredensial SSH: IP 202.155.17.57, User root, Password iot123bridge321',
         'Eksekusi otomatisasi deploy via script setup-production.sh',
         'Panduan menghubungkan domain custom via Cloudflare DNS & SSL Full',
         'Perintah monitoring berkala (pm2 status, pm2 logs, systemctl restart nginx)',

@@ -9,8 +9,6 @@ export default function CirculationTab({
   history,
   timeRange,
   onSelectTimeRange,
-  chartInterval,
-  onSelectChartInterval,
   onDownload,
   roomName,
 }) {
@@ -106,12 +104,10 @@ export default function CirculationTab({
         />
       </div>
 
-      {/* Time Range & Chart Interval Filter Bar with Room Download */}
+      {/* Time Range Filter Bar with Room Download */}
       <TimeRangeSelector
         timeRange={timeRange}
         onSelectTimeRange={onSelectTimeRange}
-        chartInterval={chartInterval}
-        onSelectChartInterval={onSelectChartInterval}
         onDownload={onDownload}
         roomName={roomName}
       />
@@ -125,7 +121,6 @@ export default function CirculationTab({
         color="#0284c7"
         unit="m/s"
         timeRange={timeRange}
-        chartInterval={chartInterval}
       />
     </div>
   );

@@ -30,7 +30,7 @@ import CodeBlock from './components/CodeBlock';
 
 export default function DocsArchPage({ onNavigate }) {
   const [activeTab, setActiveTab] = useState('pipeline');
-  const baseIp = '202.10.42.14';
+  const baseIp = '202.155.17.57';
 
   return (
     <div className="min-h-screen bg-[#f8fafc] text-slate-800 pb-20">

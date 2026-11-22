@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Thermometer, Droplets, Wind, ShieldCheck, Cloud } from 'lucide-react';
+import { Thermometer, Droplets, Wind, ShieldCheck } from 'lucide-react';
 import MetricCard from './MetricCard';
 import SensorChart from './SensorChart';
 import TimeRangeSelector from './TimeRangeSelector';
@@ -9,8 +9,6 @@ export default function OverviewTab({
   history,
   timeRange,
   onSelectTimeRange,
-  chartInterval,
-  onSelectChartInterval,
   onDownload,
   roomName,
 }) {
@@ -19,8 +17,8 @@ export default function OverviewTab({
   const chartConfigs = {
     temperature: { title: 'Tren Suhu (°C)', key: 'temperature', label: 'Suhu', color: '#ea580c', unit: '°C' },
     humidity: { title: 'Tren Kelembapan (%)', key: 'humidity', label: 'Kelembapan', color: '#7c3aed', unit: '%' },
-    co2: { title: 'Tren Kadar CO2 (ppm)', key: 'co2', label: 'CO2', color: '#059669', unit: 'ppm' },
     wind_speed: { title: 'Tren Kecepatan Angin (m/s)', key: 'wind_speed', label: 'Kecepatan', color: '#0284c7', unit: 'm/s' },
+    co2: { title: 'Tren Kadar CO2 (ppm)', key: 'co2', label: 'CO2', color: '#16a34a', unit: 'ppm' },
   };
 
   const currentChart = chartConfigs[selectedChartKey];
@@ -62,14 +60,14 @@ export default function OverviewTab({
         </div>
       </div>
 
-      {/* Main Metric Cards Grid (4 Aspek Pengukuran: Suhu, Kelembapan, CO2, Sirkulasi Angin) */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+      {/* Main Metric Cards Grid (3 Aspek Pengukuran: Suhu, Kelembapan, Sirkulasi Angin) */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <MetricCard
           title="Suhu Ruangan"
           value={latest?.temperature}
           unit="°C"
           icon={Thermometer}
-          status={latest?.temp_status || (latest?.temperature != null ? (latest.temperature < 30 ? 'Baik' : 'Sedang') : 'Normal')}
+          status={latest?.temp_status || (latest?.temperature ? (latest.temperature < 30 ? 'Baik' : 'Sedang') : 'Normal')}
           subtitle="Batas aman: < 30°C"
         />
 
@@ -78,7 +76,7 @@ export default function OverviewTab({
           value={latest?.humidity}
           unit="%"
           icon={Droplets}
-          status={latest?.hum_status || (latest?.humidity != null ? (latest.humidity < 70 ? 'Baik' : 'Sedang') : 'Normal')}
+          status={latest?.hum_status || (latest?.humidity ? (latest.humidity < 70 ? 'Baik' : 'Sedang') : 'Normal')}
           subtitle="Ideal: 45 - 65%"
         />
 
@@ -86,18 +84,9 @@ export default function OverviewTab({
           title="Kadar CO2"
           value={latest?.co2}
           unit="ppm"
-          icon={Cloud}
-          status={
-            latest?.co2_status ||
-            (latest?.co2 != null
-              ? latest.co2 >= 800
-                ? 'Buruk'
-                : latest.co2 >= 700
-                ? 'Sedang'
-                : 'Baik'
-              : 'Normal')
-          }
-          subtitle="Batas aman: < 700 ppm"
+          icon={Droplets}
+          status={latest?.co2_status || (latest?.co2 ? (latest.co2 <= 1000 ? 'Baik' : 'Sedang') : 'Normal')}
+          subtitle="Ideal: <= 1000 ppm"
         />
 
         <MetricCard
@@ -105,17 +94,15 @@ export default function OverviewTab({
           value={latest?.wind_speed}
           unit="m/s"
           icon={Wind}
-          status={latest?.wind_speed != null ? (latest.wind_speed > 0.5 ? 'Baik' : 'Sedang') : 'Normal'}
+          status={latest?.wind_speed > 0.5 ? 'Baik' : 'Sedang'}
           subtitle="Sensor Anemometer"
         />
       </div>
 
-      {/* Time Range & Chart Interval Filter Bar with Room Download */}
+      {/* Time Range Filter Bar with Room Download */}
       <TimeRangeSelector
         timeRange={timeRange}
         onSelectTimeRange={onSelectTimeRange}
-        chartInterval={chartInterval}
-        onSelectChartInterval={onSelectChartInterval}
         onDownload={onDownload}
         roomName={roomName}
       />
@@ -124,9 +111,9 @@ export default function OverviewTab({
       <div className="space-y-3">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div className="text-sm font-bold text-[#0f2942]">
-            Grafik Trend Riwayat Telemetri ({timeRange === '1d' ? '1 Hari Terakhir' : timeRange === '7d' ? '7 Hari Terakhir' : '1 Bulan (30 Hari)'} • {chartInterval === '30m' ? 'Per 30 Menit' : chartInterval === '15m' ? 'Per 15 Menit' : 'Per 1 Menit'})
+            Grafik Trend Riwayat Telemetri ({timeRange === '3d' ? '3 Hari Terakhir' : timeRange === '7d' ? '7 Hari Terakhir' : '1 Bulan Terakhir'})
           </div>
-          <div className="flex flex-wrap items-center gap-1.5 bg-slate-100 border border-slate-200 p-1 rounded-xl">
+          <div className="flex items-center gap-1.5 bg-slate-100 border border-slate-200 p-1 rounded-xl">
             {Object.entries(chartConfigs).map(([k, cfg]) => (
               <button
                 key={k}
@@ -151,7 +138,6 @@ export default function OverviewTab({
           color={currentChart.color}
           unit={currentChart.unit}
           timeRange={timeRange}
-          chartInterval={chartInterval}
         />
       </div>
     </div>

@@ -9,8 +9,6 @@ export default function TempHumidTab({
   history,
   timeRange,
   onSelectTimeRange,
-  chartInterval,
-  onSelectChartInterval,
   onDownload,
   roomName,
 }) {
@@ -82,12 +80,10 @@ export default function TempHumidTab({
         </div>
       </div>
 
-      {/* Time Range & Chart Interval Filter Bar with Room Download */}
+      {/* Time Range Filter Bar with Room Download */}
       <TimeRangeSelector
         timeRange={timeRange}
         onSelectTimeRange={onSelectTimeRange}
-        chartInterval={chartInterval}
-        onSelectChartInterval={onSelectChartInterval}
         onDownload={onDownload}
         roomName={roomName}
       />
@@ -102,7 +98,6 @@ export default function TempHumidTab({
           color="#ea580c"
           unit="°C"
           timeRange={timeRange}
-          chartInterval={chartInterval}
         />
 
         <SensorChart
@@ -113,7 +108,6 @@ export default function TempHumidTab({
           color="#7c3aed"
           unit="%"
           timeRange={timeRange}
-          chartInterval={chartInterval}
         />
       </div>
     </div>

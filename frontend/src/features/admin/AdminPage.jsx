@@ -33,6 +33,7 @@ export default function AdminPage() {
     room: 'lab_td',
     temperature: 26.5,
     humidity: 58.0,
+    co2: 400,
     wind_speed: 1.2,
     fan_rpm: 850,
     relay_state: 'ON',
@@ -45,12 +46,10 @@ export default function AdminPage() {
     setLoading(true);
     try {
       const data = await fetchReadings({
-        room: selectedRoom === 'all' ? 'all' : selectedRoom,
-        range: '',
-        limit: 200,
-        order: 'desc',
+        room: selectedRoom === 'all' ? '' : selectedRoom,
+        limit: 100,
       });
-      setReadings(Array.isArray(data) ? data : []);
+      setReadings(Array.isArray(data) ? [...data].reverse() : []);
     } catch (err) {
       showToast('error', `Gagal memuat data: ${err.message}`);
     } finally {
@@ -73,6 +72,7 @@ export default function AdminPage() {
       room: selectedRoom !== 'all' ? selectedRoom : 'lab_td',
       temperature: 26.5,
       humidity: 58.0,
+      co2: 400,
       wind_speed: 1.2,
       fan_rpm: 850,
       relay_state: 'ON',
@@ -87,6 +87,7 @@ export default function AdminPage() {
       room: item.room || 'lab_td',
       temperature: item.temperature ?? 26.5,
       humidity: item.humidity ?? 58.0,
+      co2: item.co2 ?? 400,
       wind_speed: item.wind_speed ?? 1.2,
       fan_rpm: item.fan_rpm ?? 0,
       relay_state: item.relay_state || 'OFF',
@@ -136,6 +137,7 @@ export default function AdminPage() {
       String(row.room).toLowerCase().includes(term) ||
       String(row.temperature).includes(term) ||
       String(row.humidity).includes(term) ||
+      String(row.co2).includes(term) ||
       String(row.wind_speed).includes(term) ||
       String(row.relay_state).toLowerCase().includes(term) ||
       String(row.air_quality).toLowerCase().includes(term)
@@ -274,6 +276,7 @@ export default function AdminPage() {
                   <th className="py-3 px-4">Waktu Rekam</th>
                   <th className="py-3 px-4">Suhu (°C)</th>
                   <th className="py-3 px-4">Kelembapan (%)</th>
+                  <th className="py-3 px-4">CO2 (ppm)</th>
                   <th className="py-3 px-4">Angin (m/s)</th>
                   <th className="py-3 px-4">Relay Kipas</th>
                   <th className="py-3 px-4">Kualitas</th>
@@ -309,6 +312,9 @@ export default function AdminPage() {
                       </td>
                       <td className="py-3 px-4 font-bold text-purple-700 font-mono">
                         {row.humidity != null ? `${row.humidity}%` : '--'}
+                      </td>
+                      <td className="py-3 px-4 font-bold text-purple-700 font-mono">
+                        {row.co2 != null ? `${row.co2} ppm` : '--'}
                       </td>
                       <td className="py-3 px-4 font-bold text-cyan-700 font-mono">
                         {row.wind_speed != null ? `${row.wind_speed} m/s` : '--'}
@@ -410,8 +416,8 @@ export default function AdminPage() {
                 </select>
               </div>
 
-              {/* Grid 3 Sensor Aspek: Suhu, Lembap, Angin */}
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              {/* Grid Sensor Aspek: Suhu, Lembap, CO2, Angin */}
+              <div className="grid grid-cols-1 sm:grid-cols-4 gap-3">
                 <div>
                   <label className="font-bold text-slate-700 flex items-center gap-1 mb-1">
                     <Thermometer className="h-3.5 w-3.5 text-orange-600" />
@@ -438,6 +444,20 @@ export default function AdminPage() {
                     required
                     value={formData.humidity}
                     onChange={(e) => setFormData({ ...formData, humidity: e.target.value })}
+                    className="w-full rounded-xl border border-slate-200 p-2 font-mono text-slate-800 font-bold focus:border-emerald-500 focus:outline-none"
+                  />
+                </div>
+                <div>
+                  <label className="font-bold text-slate-700 flex items-center gap-1 mb-1">
+                    <ShieldCheck className="h-3.5 w-3.5 text-emerald-600" />
+                    <span>CO₂ (ppm)</span>
+                  </label>
+                  <input
+                    type="number"
+                    step="1"
+                    required
+                    value={formData.co2}
+                    onChange={(e) => setFormData({ ...formData, co2: e.target.value })}
                     className="w-full rounded-xl border border-slate-200 p-2 font-mono text-slate-800 font-bold focus:border-emerald-500 focus:outline-none"
                   />
                 </div>

@@ -30,12 +30,12 @@ export default function DocsVpsPage({ onNavigate }) {
   const [copiedField, setCopiedField] = useState(null);
 
   const vpsInfo = {
-    ip: '202.10.42.14',
+    ip: '202.155.17.57',
     username: 'root',
     password: 'iot123bridge321',
     port: '22',
     os: 'Ubuntu 22.04 / 24.04 LTS (atau Debian 12)',
-    sshCommand: 'ssh root@202.10.42.14',
+    sshCommand: 'ssh root@202.155.17.57',
   };
 
   const handleCopy = (field, text) => {
@@ -239,7 +239,7 @@ export default function DocsVpsPage({ onNavigate }) {
               <CodeBlock
                 language="bash"
                 title="Windows PowerShell"
-                code={`ssh root@202.10.42.14`}
+                code={`ssh root@202.155.17.57`}
               />
               <p className="text-slate-500 text-[11px] leading-relaxed">
                 1. Jika muncul <em>"Are you sure you want to continue connecting (yes/no/[fingerprint])?"</em>, ketik <strong>yes</strong> lalu tekan Enter.<br />
@@ -258,7 +258,7 @@ export default function DocsVpsPage({ onNavigate }) {
               <CodeBlock
                 language="bash"
                 title="macOS / Linux Terminal"
-                code={`ssh root@202.10.42.14`}
+                code={`ssh root@202.155.17.57`}
               />
               <p className="text-slate-500 text-[11px] leading-relaxed">
                 Alternatif menggunakan client GUI seperti <strong>PuTTY</strong>, <strong>Bitvise SSH</strong>, atau <strong>Termius</strong>:<br />
@@ -325,12 +325,12 @@ chmod +x setup-production.sh
             <CodeBlock
               language="markdown"
               title="Prompt Siap Pakai untuk AI Agent VPS"
-              code={`Tolong deploy dan konfigurasikan project Dashboard-Monitoring-Udara ini secara menyeluruh di VPS saya (IP: 202.10.42.14). VPS ini masih kosongan (fresh install Ubuntu) dan saya belum memiliki domain (akses via Public IP dengan SSL HTTPS).
+              code={`Tolong deploy dan konfigurasikan project Dashboard-Monitoring-Udara ini secara menyeluruh di VPS saya (IP: 202.155.17.57). VPS ini masih kosongan (fresh install Ubuntu) dan saya belum memiliki domain (akses via Public IP dengan SSL HTTPS).
 
 Jalankan langkah-langkah berikut secara berurutan:
 1. Update apt dan install paket dasar: curl, git, build-essential, nginx, openssl, ufw.
 2. Install Node.js v22 LTS dari NodeSource dan install PM2 global (npm install -g pm2).
-3. Buat Self-Signed SSL Certificate untuk IP 202.10.42.14 di /etc/ssl/certs/nginx-selfsigned.crt dan /etc/ssl/private/nginx-selfsigned.key.
+3. Buat Self-Signed SSL Certificate untuk IP 202.155.17.57 di /etc/ssl/certs/nginx-selfsigned.crt dan /etc/ssl/private/nginx-selfsigned.key.
 4. Setup Backend: masuk ke folder 'backend', jalankan 'npm install', inisialisasi database dengan 'node seed_data.js', lalu jalankan service dengan 'pm2 start bridge.js --name "air-backend"' dan 'pm2 save'.
 5. Setup Frontend: masuk ke folder 'frontend', jalankan 'npm install' dan 'npm run build'.
 6. Konfigurasikan Nginx di /etc/nginx/sites-available/air-dashboard:

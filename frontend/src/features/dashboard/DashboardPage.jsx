@@ -12,19 +12,20 @@ import { ROOMS } from './roomsConfig';
 export default function DashboardPage({ onBackToHome }) {
   const [activeTab, setActiveTab] = useState('overview');
   const [selectedRoomId, setSelectedRoomId] = useState('lab_td');
-  const [timeRange, setTimeRange] = useState('7d'); // '1d' | '7d' | '30d'
-  const [chartInterval, setChartInterval] = useState('1m'); // '1m' | '15m' | '30m'
+  const [timeRange, setTimeRange] = useState('7d'); // '3d' | '7d' | '30d'
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
 
-  // Directly connect to backend API for the selected room, time range, and chart interval
+  // Directly connect to backend API for the selected room and time range
   const {
     latest,
     history,
     status,
     statusText,
     lastUpdated,
+    triggerSimulation,
+    isSimulating,
     downloadData,
-  } = useSensorData(selectedRoomId, timeRange, chartInterval);
+  } = useSensorData(selectedRoomId, timeRange);
 
   const currentRoom = useMemo(
     () => ROOMS.find((r) => r.id === selectedRoomId) || ROOMS[0],
@@ -41,12 +42,8 @@ export default function DashboardPage({ onBackToHome }) {
       history,
       timeRange,
       onSelectTimeRange: setTimeRange,
-      chartInterval,
-      onSelectChartInterval: setChartInterval,
       onDownload: handleDownload,
-      roomId: selectedRoomId,
       roomName: currentRoom.name,
-      latestId: latest?.id,
     };
 
     switch (activeTab) {
@@ -101,6 +98,8 @@ export default function DashboardPage({ onBackToHome }) {
           onBackToHome={onBackToHome}
           status={status}
           statusText={statusText}
+          onSimulate={triggerSimulation}
+          isSimulating={isSimulating}
           selectedRoomId={selectedRoomId}
           onSelectRoom={setSelectedRoomId}
         />
@@ -122,6 +121,8 @@ export default function DashboardPage({ onBackToHome }) {
               onBackToHome={onBackToHome}
               status={status}
               statusText={statusText}
+              onSimulate={triggerSimulation}
+              isSimulating={isSimulating}
               selectedRoomId={selectedRoomId}
               onSelectRoom={setSelectedRoomId}
             />
@@ -156,16 +157,7 @@ export default function DashboardPage({ onBackToHome }) {
             <div className="hidden sm:block text-right border-l border-slate-200 pl-3">
               <div className="text-[10px] text-slate-400 font-medium">Pembaruan Terakhir</div>
               <div className="font-mono text-xs font-bold text-slate-700">
-                {lastUpdated
-                  ? lastUpdated
-                      .toLocaleTimeString('id-ID', {
-                        hour: '2-digit',
-                        minute: '2-digit',
-                        second: '2-digit',
-                        hour12: false,
-                      })
-                      .replace(/\./g, ':')
-                  : '--:--:--'}
+                {lastUpdated ? lastUpdated.toLocaleTimeString() : '--:--:--'}
               </div>
             </div>
 
