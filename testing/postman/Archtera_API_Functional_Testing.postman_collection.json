@@ -1,0 +1,1437 @@
+{
+  "info": {
+    "_postman_id": "archtera-functional-test-collection-v2",
+    "name": "Archtera REST API - Functional Testing Suite",
+    "description": "Koleksi pengujian fungsionalitas menyeluruh seluruh 8 route REST API dan 28 skenario operasional per ruangan sistem Archtera Monitoring Kualitas Udara.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "https://archtera.web.id/api",
+      "type": "string",
+      "description": "URL Basis HTTPS Produksi"
+    },
+    {
+      "key": "ip_base_url",
+      "value": "https://202.10.42.14/api",
+      "type": "string",
+      "description": "URL Basis IP Publik VPS"
+    },
+    {
+      "key": "test_record_id",
+      "value": "5374",
+      "type": "string",
+      "description": "ID dinamis hasil CRUD TC-26"
+    }
+  ],
+  "item": [
+    {
+      "name": "01. Status & Health (6 Requests)",
+      "item": [
+        {
+          "name": "#1 - Health Check Backend & Koneksi Broker MQTT",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/status",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "status"
+              ],
+              "query": []
+            },
+            "description": "Kriteria Pengujian: JSON { status: \"online\", mqtt: { broker, topic, connected }, timestamp } valid dan waktu respons < 2000ms."
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response time is under 2000ms\", function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+                  "});",
+                  "",
+                  "pm.test(\"Server is online and MQTT connected\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.status).to.eql(\"online\");",
+                  "    pm.expect(jsonData.mqtt).to.be.an(\"object\");",
+                  "    pm.expect(jsonData.mqtt.connected).to.be.true;",
+                  "    pm.expect(jsonData.timestamp).to.be.a(\"string\");",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "#2 - Data Telemetri Sensor Terakhir Ruang H5",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/latest?room=h5",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "latest"
+              ],
+              "query": [
+                {
+                  "key": "room",
+                  "value": "h5"
+                }
+              ]
+            },
+            "description": "Kriteria Pengujian: Mengembalikan 1 record paling baru room \"h5\" dengan ID tertinggi dan field telemetri lengkap."
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Data belongs to Room H5\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.room).to.eql(\"h5\");",
+                  "    pm.expect(jsonData).to.have.property(\"id\");",
+                  "    pm.expect(jsonData).to.have.property(\"temperature\");",
+                  "    pm.expect(jsonData).to.have.property(\"humidity\");",
+                  "    pm.expect(jsonData).to.have.property(\"co2\");",
+                  "    pm.expect(jsonData).to.have.property(\"relay_state\");",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "#3 - Data Telemetri Sensor Terakhir Ruang Lab TD",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/latest?room=lab_td",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "latest"
+              ],
+              "query": [
+                {
+                  "key": "room",
+                  "value": "lab_td"
+                }
+              ]
+            },
+            "description": "Kriteria Pengujian: Mengembalikan 1 record paling baru room \"lab_td\" dengan validasi isolasi data ruangan."
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Room is lab_td\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.room).to.eql(\"lab_td\");",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "#4 - Data Telemetri Sensor Terakhir Ruang Lab Komputer",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/latest?room=lab_kom",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "latest"
+              ],
+              "query": [
+                {
+                  "key": "room",
+                  "value": "lab_kom"
+                }
+              ]
+            },
+            "description": "Kriteria Pengujian: Mengembalikan 1 record paling baru room \"lab_kom\" dari database."
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Room is lab_kom\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.room).to.eql(\"lab_kom\");",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "#5 - Data Telemetri Sensor Terakhir Ruang Seminar",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/latest?room=seminar",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "latest"
+              ],
+              "query": [
+                {
+                  "key": "room",
+                  "value": "seminar"
+                }
+              ]
+            },
+            "description": "Kriteria Pengujian: Mengembalikan 1 record paling baru room \"seminar\"."
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Room is seminar\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.room).to.eql(\"seminar\");",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "#6 - Data Telemetri Terakhir Lintas Seluruh Ruangan (room=all)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/latest?room=all",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "latest"
+              ],
+              "query": [
+                {
+                  "key": "room",
+                  "value": "all"
+                }
+              ]
+            },
+            "description": "Kriteria Pengujian: Mengembalikan 1 record paling akhir yang masuk ke sistem tanpa filter ruangan."
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Has valid telemetry structure\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property(\"id\");",
+                  "    pm.expect(jsonData).to.have.property(\"room\");",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "02. Readings & Grafik Telemetri (8 Requests)",
+      "item": [
+        {
+          "name": "#7 - Grafik Agregasi 1 Menit Ruang H5 (1 Hari)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/readings?room=h5&range=1d&interval=1m",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "readings"
+              ],
+              "query": [
+                {
+                  "key": "room",
+                  "value": "h5"
+                },
+                {
+                  "key": "range",
+                  "value": "1d"
+                },
+                {
+                  "key": "interval",
+                  "value": "1m"
+                }
+              ]
+            },
+            "description": "Kriteria Pengujian: Array kronologis ASC bucket rata-rata 1 menit 24 jam terakhir, memuat properti sample_count."
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Returns chronological array with sample_count\", function () {",
+                  "    var data = pm.response.json();",
+                  "    pm.expect(Array.isArray(data)).to.be.true;",
+                  "    if (data.length > 0) {",
+                  "        pm.expect(data[0]).to.have.property(\"sample_count\");",
+                  "        pm.expect(data[0].room).to.eql(\"h5\");",
+                  "    }",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "#8 - Grafik Agregasi 1 Menit Ruang Lab TD (7 Hari)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/readings?room=lab_td&range=7d&interval=1m",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "readings"
+              ],
+              "query": [
+                {
+                  "key": "room",
+                  "value": "lab_td"
+                },
+                {
+                  "key": "range",
+                  "value": "7d"
+                },
+                {
+                  "key": "interval",
+                  "value": "1m"
+                }
+              ]
+            },
+            "description": "Kriteria Pengujian: Array ASC bucket 1 menit khusus data \"lab_td\" 7 hari terakhir."
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"All items belong to lab_td\", function () {",
+                  "    var data = pm.response.json();",
+                  "    pm.expect(Array.isArray(data)).to.be.true;",
+                  "    data.forEach(function(item) {",
+                  "        pm.expect(item.room).to.eql(\"lab_td\");",
+                  "    });",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "#9 - Grafik Agregasi 15 Menit Ruang Lab Kom (7 Hari)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/readings?room=lab_kom&range=7d&interval=15m",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "readings"
+              ],
+              "query": [
+                {
+                  "key": "room",
+                  "value": "lab_kom"
+                },
+                {
+                  "key": "range",
+                  "value": "7d"
+                },
+                {
+                  "key": "interval",
+                  "value": "15m"
+                }
+              ]
+            },
+            "description": "Kriteria Pengujian: Array ASC bucket 15 menit (:00, :15, :30, :45) khusus \"lab_kom\"."
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Valid 15m aggregated array\", function () {",
+                  "    var data = pm.response.json();",
+                  "    pm.expect(Array.isArray(data)).to.be.true;",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "#10 - Grafik Agregasi 30 Menit Ruang Seminar (30 Hari)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/readings?room=seminar&range=30d&interval=30m",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "readings"
+              ],
+              "query": [
+                {
+                  "key": "room",
+                  "value": "seminar"
+                },
+                {
+                  "key": "range",
+                  "value": "30d"
+                },
+                {
+                  "key": "interval",
+                  "value": "30m"
+                }
+              ]
+            },
+            "description": "Kriteria Pengujian: Array ASC bucket 30 menit (:00, :30) 30 hari terakhir khusus \"seminar\"."
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Returns 30m bucket array\", function () {",
+                  "    var data = pm.response.json();",
+                  "    pm.expect(Array.isArray(data)).to.be.true;",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "#11 - Readings Mentah (Raw) Ruang H5 (Maksimal 2000 Baris)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/readings?room=h5&range=1d&interval=raw&limit=2000",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "readings"
+              ],
+              "query": [
+                {
+                  "key": "room",
+                  "value": "h5"
+                },
+                {
+                  "key": "range",
+                  "value": "1d"
+                },
+                {
+                  "key": "interval",
+                  "value": "raw"
+                },
+                {
+                  "key": "limit",
+                  "value": "2000"
+                }
+              ]
+            },
+            "description": "Kriteria Pengujian: Mengembalikan maks 2000 baris mentah terbaru dalam urutan ASC kronologis."
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Raw data has unaggregated properties\", function () {",
+                  "    var data = pm.response.json();",
+                  "    pm.expect(Array.isArray(data)).to.be.true;",
+                  "    pm.expect(data.length).to.be.at.most(2000);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "#12 - Readings Inkremental Polling (afterId > N)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/readings?room=h5&afterId=5000",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "readings"
+              ],
+              "query": [
+                {
+                  "key": "room",
+                  "value": "h5"
+                },
+                {
+                  "key": "afterId",
+                  "value": "5000"
+                }
+              ]
+            },
+            "description": "Kriteria Pengujian: Hanya mengembalikan baris rekaman baru \"h5\" dengan ID > 5000 secara ASC."
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"All IDs are greater than afterId\", function () {",
+                  "    var data = pm.response.json();",
+                  "    data.forEach(function(item) {",
+                  "        pm.expect(item.id).to.be.above(5000);",
+                  "        pm.expect(item.room).to.eql(\"h5\");",
+                  "    });",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "#13 - Panel Admin: Rekaman Terbaru Lintas Ruangan (order=desc)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/readings?room=all&limit=200&order=desc",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "readings"
+              ],
+              "query": [
+                {
+                  "key": "room",
+                  "value": "all"
+                },
+                {
+                  "key": "limit",
+                  "value": "200"
+                },
+                {
+                  "key": "order",
+                  "value": "desc"
+                }
+              ]
+            },
+            "description": "Kriteria Pengujian: Mengembalikan maks 200 record terbaru lintas ruangan terurut DESC."
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Order is descending\", function () {",
+                  "    var data = pm.response.json();",
+                  "    pm.expect(Array.isArray(data)).to.be.true;",
+                  "    if (data.length >= 2) {",
+                  "        pm.expect(data[0].id).to.be.at.least(data[1].id);",
+                  "    }",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "#14 - Panel Admin: Filter Ruang Lab TD (order=desc)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/readings?room=lab_td&limit=200&order=desc",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "readings"
+              ],
+              "query": [
+                {
+                  "key": "room",
+                  "value": "lab_td"
+                },
+                {
+                  "key": "limit",
+                  "value": "200"
+                },
+                {
+                  "key": "order",
+                  "value": "desc"
+                }
+              ]
+            },
+            "description": "Kriteria Pengujian: Mengembalikan maks 200 record terbaru khusus \"lab_td\" terurut DESC."
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Items filtered to lab_td\", function () {",
+                  "    var data = pm.response.json();",
+                  "    data.forEach(function(item) {",
+                  "        pm.expect(item.room).to.eql(\"lab_td\");",
+                  "    });",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "03. Log Riwayat Terpaginasi (6 Requests)",
+      "item": [
+        {
+          "name": "#15 - Log Riwayat Terpaginasi Ruang H5 (Page 1, Size 50)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/readings/logs?room=h5&range=7d&page=1&pageSize=50",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "readings",
+                "logs"
+              ],
+              "query": [
+                {
+                  "key": "room",
+                  "value": "h5"
+                },
+                {
+                  "key": "range",
+                  "value": "7d"
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "pageSize",
+                  "value": "50"
+                }
+              ]
+            },
+            "description": "Kriteria Pengujian: rows urut DESC tanpa lompatan ID, totalAll akurat, page=1, pageSize=50."
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Valid pagination metadata\", function () {",
+                  "    var res = pm.response.json();",
+                  "    pm.expect(res).to.have.property(\"rows\");",
+                  "    pm.expect(res).to.have.property(\"total\");",
+                  "    pm.expect(res).to.have.property(\"totalAll\");",
+                  "    pm.expect(res.page).to.eql(1);",
+                  "    pm.expect(res.pageSize).to.eql(50);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "#16 - Log Riwayat Terpaginasi Ruang Lab TD",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/readings/logs?room=lab_td&range=7d&page=1&pageSize=50",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "readings",
+                "logs"
+              ],
+              "query": [
+                {
+                  "key": "room",
+                  "value": "lab_td"
+                },
+                {
+                  "key": "range",
+                  "value": "7d"
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "pageSize",
+                  "value": "50"
+                }
+              ]
+            },
+            "description": "Kriteria Pengujian: rows khusus \"lab_td\" urut DESC dengan metadata total & paginasi lengkap."
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Rows belong to lab_td\", function () {",
+                  "    var res = pm.response.json();",
+                  "    res.rows.forEach(function(row) {",
+                  "        pm.expect(row.room).to.eql(\"lab_td\");",
+                  "    });",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "#17 - Log Riwayat Terpaginasi Ruang Lab Komputer",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/readings/logs?room=lab_kom&range=7d&page=1&pageSize=50",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "readings",
+                "logs"
+              ],
+              "query": [
+                {
+                  "key": "room",
+                  "value": "lab_kom"
+                },
+                {
+                  "key": "range",
+                  "value": "7d"
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "pageSize",
+                  "value": "50"
+                }
+              ]
+            },
+            "description": "Kriteria Pengujian: rows khusus \"lab_kom\" urut DESC dengan metadata total & paginasi lengkap."
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "#18 - Log Riwayat Terpaginasi Ruang Seminar",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/readings/logs?room=seminar&range=7d&page=1&pageSize=50",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "readings",
+                "logs"
+              ],
+              "query": [
+                {
+                  "key": "room",
+                  "value": "seminar"
+                },
+                {
+                  "key": "range",
+                  "value": "7d"
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "pageSize",
+                  "value": "50"
+                }
+              ]
+            },
+            "description": "Kriteria Pengujian: rows khusus \"seminar\" urut DESC dengan metadata total & paginasi lengkap."
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "#19 - Pencarian Server-side & Paginasi Lanjutan (Search Query)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/readings/logs?room=h5&range=1d&page=1&pageSize=25&search=ON",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "readings",
+                "logs"
+              ],
+              "query": [
+                {
+                  "key": "room",
+                  "value": "h5"
+                },
+                {
+                  "key": "range",
+                  "value": "1d"
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "pageSize",
+                  "value": "25"
+                },
+                {
+                  "key": "search",
+                  "value": "ON"
+                }
+              ]
+            },
+            "description": "Kriteria Pengujian: Pencarian relay state \"ON\" / kata kunci jam bekerja; pageSize=25 dan page di-clamp aman."
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Search filter matched\", function () {",
+                  "    var res = pm.response.json();",
+                  "    pm.expect(res.pageSize).to.eql(25);",
+                  "    res.rows.forEach(function(row) {",
+                  "        var str = JSON.stringify(row).toLowerCase();",
+                  "        pm.expect(str.includes(\"on\")).to.be.true;",
+                  "    });",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "#20 - Log Riwayat Lintas Ruangan (room=all, 30 Hari, Size 100)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/readings/logs?room=all&range=30d&page=1&pageSize=100",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "readings",
+                "logs"
+              ],
+              "query": [
+                {
+                  "key": "room",
+                  "value": "all"
+                },
+                {
+                  "key": "range",
+                  "value": "30d"
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "pageSize",
+                  "value": "100"
+                }
+              ]
+            },
+            "description": "Kriteria Pengujian: Mengembalikan hingga 100 baris terbaru dari seluruh ruangan dalam 30 hari terakhir."
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Contains multiple room data\", function () {",
+                  "    var res = pm.response.json();",
+                  "    pm.expect(Array.isArray(res.rows)).to.be.true;",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "04. Unduh Dataset CSV (5 Requests)",
+      "item": [
+        {
+          "name": "#21 - Unduh File CSV Ruang H5 (1 Hari Terakhir)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/download?room=h5&range=1d",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "download"
+              ],
+              "query": [
+                {
+                  "key": "room",
+                  "value": "h5"
+                },
+                {
+                  "key": "range",
+                  "value": "1d"
+                }
+              ]
+            },
+            "description": "Kriteria Pengujian: Content-Type text/csv, header kolom CSV lengkap, rekaman \"h5\" 1 hari urut ASC."
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Content-Type is CSV\", function () {",
+                  "    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"text/csv\");",
+                  "});",
+                  "",
+                  "pm.test(\"CSV Header contains standard columns\", function () {",
+                  "    var csvText = pm.response.text();",
+                  "    pm.expect(csvText).to.include(\"ID\");",
+                  "    pm.expect(csvText).to.include(\"Ruangan\");",
+                  "    pm.expect(csvText).to.include(\"Suhu_C\");",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "#22 - Unduh File CSV Ruang Lab TD (7 Hari Terakhir)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/download?room=lab_td&range=7d",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "download"
+              ],
+              "query": [
+                {
+                  "key": "room",
+                  "value": "lab_td"
+                },
+                {
+                  "key": "range",
+                  "value": "7d"
+                }
+              ]
+            },
+            "description": "Kriteria Pengujian: File .csv isi rekaman \"lab_td\" 7 hari urut ASC tanpa tercampur ruangan lain."
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Content-Type is text/csv\", function () {",
+                  "    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"text/csv\");",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "#23 - Unduh File CSV Ruang Lab Komputer (7 Hari Terakhir)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/download?room=lab_kom&range=7d",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "download"
+              ],
+              "query": [
+                {
+                  "key": "room",
+                  "value": "lab_kom"
+                },
+                {
+                  "key": "range",
+                  "value": "7d"
+                }
+              ]
+            },
+            "description": "Kriteria Pengujian: File .csv isi rekaman \"lab_kom\" 7 hari urut ASC."
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "#24 - Unduh File CSV Ruang Seminar (30 Hari Terakhir)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/download?room=seminar&range=30d",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "download"
+              ],
+              "query": [
+                {
+                  "key": "room",
+                  "value": "seminar"
+                },
+                {
+                  "key": "range",
+                  "value": "30d"
+                }
+              ]
+            },
+            "description": "Kriteria Pengujian: File .csv isi rekaman \"seminar\" 30 hari urut ASC."
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "#25 - Unduh File CSV Seluruh Ruangan (Seluruh Riwayat / all)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/download?room=all&range=all",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "download"
+              ],
+              "query": [
+                {
+                  "key": "room",
+                  "value": "all"
+                },
+                {
+                  "key": "range",
+                  "value": "all"
+                }
+              ]
+            },
+            "description": "Kriteria Pengujian: File .csv lengkap berisi seluruh rekaman lintas ruangan dari basis data SQLite."
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Contains multiple rooms\", function () {",
+                  "    var txt = pm.response.text();",
+                  "    pm.expect(txt).to.include(\"h5\");",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "05. CRUD Admin Data Sensor (3 Requests)",
+      "item": [
+        {
+          "name": "#26 - Admin: Tambah Data Sensor Baru (Injeksi HTTP POST)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/readings",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "readings"
+              ],
+              "query": []
+            },
+            "description": "Kriteria Pengujian: Body JSON tersimpan ke basis data; respons { success: true, id: <ID> }; langsung muncul di /latest & /logs.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"room\": \"lab_td\",\n  \"temperature\": 27.4,\n  \"humidity\": 58.2,\n  \"wind_speed\": 1.4,\n  \"co2\": 420,\n  \"fan_rpm\": 980,\n  \"relay_state\": \"ON\",\n  \"air_quality\": \"Baik\",\n  \"uptime\": 3600\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 201 Created\", function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "",
+                  "pm.test(\"Response contains success and new ID\", function () {",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json.success).to.be.true;",
+                  "    pm.expect(json).to.have.property(\"id\");",
+                  "    ",
+                  "    // Simpan ID yang baru dibuat ke environment variable Postman",
+                  "    pm.environment.set(\"test_record_id\", json.id);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "#27 - Admin: Perbarui Rekaman Sensor Berdasarkan ID (HTTP PUT)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/readings/{{test_record_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "readings",
+                "{{test_record_id}}"
+              ],
+              "query": []
+            },
+            "description": "Kriteria Pengujian: Data terupdate (200 OK); ID non-numerik menghasilkan 400 Bad Request; ID tidak ada menghasilkan 404 Not Found.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"room\": \"lab_td\",\n  \"temperature\": 28,\n  \"humidity\": 59,\n  \"wind_speed\": 1.6,\n  \"co2\": 415,\n  \"fan_rpm\": 1100,\n  \"relay_state\": \"ON\",\n  \"air_quality\": \"Baik\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200 OK\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response confirms update success\", function () {",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json.success).to.be.true;",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "#28 - Admin: Hapus Rekaman Sensor Berdasarkan ID (HTTP DELETE)",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/readings/{{test_record_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "readings",
+                "{{test_record_id}}"
+              ],
+              "query": []
+            },
+            "description": "Kriteria Pengujian: Baris terhapus permanen dari basis data SQLite (200 OK); uji ulang ID yang sama menghasilkan 404 Not Found."
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200 OK\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response confirms deletion\", function () {",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json.success).to.be.true;",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

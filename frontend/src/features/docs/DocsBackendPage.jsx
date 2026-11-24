@@ -15,12 +15,13 @@ import {
   Download,
   BookOpen,
   Workflow,
+  Send,
 } from 'lucide-react';
 import CodeBlock from './components/CodeBlock';
 
 export default function DocsBackendPage({ onNavigate }) {
   const [activeLang, setActiveLang] = useState('curl');
-  const baseIp = '202.155.17.57';
+  const baseIp = '202.10.42.14';
   const baseUrl = `https://${baseIp}/api`;
 
   const codeExamples = {
@@ -156,6 +157,15 @@ fetchTelemetry();`
               >
                 <Workflow className="h-4 w-4 text-indigo-600" />
                 <span>Arsitektur & Alur</span>
+              </button>
+
+              <button
+                onClick={() => onNavigate('docs-postman')}
+                className="inline-flex items-center gap-2 rounded-xl border border-orange-200 bg-orange-50 px-4 py-2.5 text-xs font-bold text-orange-800 hover:bg-orange-100 transition-all cursor-pointer shadow-2xs"
+              >
+                <Send className="h-4 w-4 text-orange-600" />
+                <span>Uji Skenario Postman</span>
+                <ArrowRight className="h-3.5 w-3.5" />
               </button>
 
               <button

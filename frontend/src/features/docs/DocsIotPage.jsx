@@ -19,12 +19,13 @@ import {
   Terminal,
   BookOpen,
   Workflow,
+  Send,
 } from 'lucide-react';
 import CodeBlock from './components/CodeBlock';
 
 export default function DocsIotPage({ onNavigate }) {
   const [selectedRoom, setSelectedRoom] = useState('h5');
-  const baseIp = '202.155.17.57';
+  const baseIp = '202.10.42.14';
 
   const arduinoCode = `/*
  * ==================================================================================
@@ -256,6 +257,15 @@ void loop() {
               >
                 <Server className="h-4 w-4 text-emerald-600" />
                 <span>Buka Dokumen Backend</span>
+                <ArrowRight className="h-3.5 w-3.5" />
+              </button>
+
+              <button
+                onClick={() => onNavigate('docs-postman')}
+                className="inline-flex items-center gap-2 rounded-xl border border-orange-200 bg-orange-50 px-4 py-2.5 text-xs font-bold text-orange-800 hover:bg-orange-100 transition-all cursor-pointer shadow-2xs"
+              >
+                <Send className="h-4 w-4 text-orange-600" />
+                <span>Uji Postman</span>
                 <ArrowRight className="h-3.5 w-3.5" />
               </button>
 

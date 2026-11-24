@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Leaf, ArrowLeft, Menu, X, BookOpen, Server, Cpu, Terminal, LayoutDashboard, Shield } from 'lucide-react';
+import { Leaf, ArrowLeft, Menu, X, BookOpen, Server, Cpu, Terminal, LayoutDashboard, Shield, Send, Workflow } from 'lucide-react';
 
 export default function Navbar({ currentView, onNavigate }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -52,8 +52,8 @@ export default function Navbar({ currentView, onNavigate }) {
     );
   }
 
-  // If on Docs views: docs-all, docs-backend, docs-iot, or docs-vps
-  const isDocsView = ['docs-all', 'docs-backend', 'docs-iot', 'docs-vps'].includes(currentView);
+  // If on Docs views: docs-all, docs-arch, docs-backend, docs-postman, docs-iot, or docs-vps
+  const isDocsView = ['docs-all', 'docs-arch', 'docs-backend', 'docs-postman', 'docs-iot', 'docs-vps'].includes(currentView);
   if (isDocsView) {
     return (
       <header className="sticky top-0 z-50 w-full bg-white border-b border-slate-200/80 shadow-xs">
@@ -75,7 +75,7 @@ export default function Navbar({ currentView, onNavigate }) {
           </div>
 
           {/* Docs Sub-navigation Tabs (Hanya muncul saat rute docs sedang dibuka) */}
-          <div className="hidden lg:flex items-center gap-2">
+          <div className="hidden lg:flex items-center gap-1.5">
             <button
               onClick={() => onNavigate('docs-all')}
               className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
@@ -89,15 +89,15 @@ export default function Navbar({ currentView, onNavigate }) {
             </button>
 
             <button
-              onClick={() => onNavigate('docs-iot')}
+              onClick={() => onNavigate('docs-arch')}
               className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
-                currentView === 'docs-iot'
-                  ? 'bg-cyan-50 text-cyan-800 border border-cyan-300 shadow-2xs'
+                currentView === 'docs-arch'
+                  ? 'bg-indigo-50 text-indigo-800 border border-indigo-300 shadow-2xs'
                   : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
               }`}
             >
-              <Cpu className="h-3.5 w-3.5 text-cyan-600" />
-              <span>Docs IoT</span>
+              <Workflow className="h-3.5 w-3.5 text-indigo-600" />
+              <span>Arsitektur</span>
             </button>
 
             <button
@@ -109,7 +109,31 @@ export default function Navbar({ currentView, onNavigate }) {
               }`}
             >
               <Server className="h-3.5 w-3.5 text-emerald-600" />
-              <span>Docs Backend</span>
+              <span>Backend API</span>
+            </button>
+
+            <button
+              onClick={() => onNavigate('docs-postman')}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                currentView === 'docs-postman'
+                  ? 'bg-orange-50 text-orange-800 border border-orange-300 shadow-2xs'
+                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
+              }`}
+            >
+              <Send className="h-3.5 w-3.5 text-orange-600" />
+              <span>Postman Uji</span>
+            </button>
+
+            <button
+              onClick={() => onNavigate('docs-iot')}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                currentView === 'docs-iot'
+                  ? 'bg-cyan-50 text-cyan-800 border border-cyan-300 shadow-2xs'
+                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
+              }`}
+            >
+              <Cpu className="h-3.5 w-3.5 text-cyan-600" />
+              <span>IoT &amp; Sensor</span>
             </button>
 
             <button
@@ -121,7 +145,7 @@ export default function Navbar({ currentView, onNavigate }) {
               }`}
             >
               <Terminal className="h-3.5 w-3.5 text-amber-600" />
-              <span>Docs VPS</span>
+              <span>VPS Deploy</span>
             </button>
           </div>
 

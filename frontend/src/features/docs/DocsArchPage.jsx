@@ -25,12 +25,13 @@ import {
   ChevronRight,
   Check,
   Copy,
+  Send,
 } from 'lucide-react';
 import CodeBlock from './components/CodeBlock';
 
 export default function DocsArchPage({ onNavigate }) {
   const [activeTab, setActiveTab] = useState('pipeline');
-  const baseIp = '202.155.17.57';
+  const baseIp = '202.10.42.14';
 
   return (
     <div className="min-h-screen bg-[#f8fafc] text-slate-800 pb-20">
@@ -59,6 +60,13 @@ export default function DocsArchPage({ onNavigate }) {
               >
                 <ArrowLeft className="h-3.5 w-3.5" />
                 <span>Hub Dokumentasi (/docs-all)</span>
+              </button>
+              <button
+                onClick={() => onNavigate('docs-postman')}
+                className="inline-flex items-center gap-1.5 rounded-xl border border-orange-200 bg-orange-50 px-3.5 py-2 text-xs font-bold text-orange-800 hover:bg-orange-100 transition-colors cursor-pointer"
+              >
+                <Send className="h-3.5 w-3.5 text-orange-600" />
+                <span>Uji Postman</span>
               </button>
               <button
                 onClick={() => onNavigate('dashboard')}
