@@ -29,6 +29,11 @@ const newColumns = {
   co2_status: 'TEXT',
   uptime: 'INTEGER',
   room: "TEXT DEFAULT 'h5'",
+  seq: 'INTEGER',
+  sent_ms: 'INTEGER',
+  recv_ms: 'INTEGER',
+  latency_ms: 'INTEGER',
+  db_ms: 'REAL',
 };
 
 const existing = db.prepare('PRAGMA table_info(readings)').all().map(c => c.name);
@@ -48,6 +53,12 @@ const insert = db.prepare(`
   VALUES
     (@temperature, @humidity, @wind_speed, @co2, @tvoc, @fan_rpm, @relay_state,
      @air_quality, @temp_status, @hum_status, @co2_status, @uptime, @room)
+`);
+
+const updateTiming = db.prepare(`
+  UPDATE readings
+  SET seq = ?, sent_ms = ?, recv_ms = ?, latency_ms = ?, db_ms = ?
+  WHERE id = ?
 `);
 
 // ---------- MQTT Configuration (Public Broker EMQX) ----------
@@ -82,13 +93,20 @@ client.on('reconnect', () => {
 });
 
 client.on('message', (_, payload) => {
+  const recvMs = Date.now();
   try {
     // Sanitasi data jika Arduino/ESP mengirim "nan"
     const raw = payload.toString().replace(/:\s*-?nan/gi, ':null');
     const d = JSON.parse(raw);
+
     const detail = d.air_quality_detail || {};
     const room = (d.room || 'h5').toLowerCase();
+    
+    // sent_ms = 0 berarti NTP ESP32 belum sinkron -> anggap tidak ada
+    const sentMs = d.sent_ms > 0 ? d.sent_ms : null;
+    const latencyMs = sentMs !== null ? recvMs - sentMs : null;
 
+    const t0 = performance.now();
     const info = insert.run({
       temperature: d.temperature ?? null,
       humidity:    d.humidity ?? null,
@@ -104,7 +122,16 @@ client.on('message', (_, payload) => {
       uptime:      d.uptime ?? null,
       room,
     });
-    console.log(`[MQTT Data Diterima [${room}] ID ${info.lastInsertRowid}]: Temp: ${d.temperature}°C, Hum: ${d.humidity}%, CO2: ${d.co2}ppm`);
+    const dbMs = +(performance.now() - t0).toFixed(3);
+
+    updateTiming.run(d.seq ?? null, sentMs, recvMs, latencyMs, dbMs, info.lastInsertRowid);
+
+    console.log(
+      `[MQTT Data Diterima [${room}] ID ${info.lastInsertRowid}]: Temp: ${d.temperature}°C, Hum: ${d.humidity}%, CO2: ${d.co2}ppm`
+    );
+    if (latencyMs !== null) {
+      console.log(`[LATENSI ${room}] ESP32->bridge: ${latencyMs} ms | tulis DB: ${dbMs} ms`);
+    }
   } catch (e) {
     console.error('Parse/insert error:', e.message);
   }
