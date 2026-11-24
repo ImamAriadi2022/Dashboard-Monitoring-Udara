@@ -1831,11 +1831,11 @@ export default function DocsPostmanPage({ onNavigate }) {
             </button>
 
             <button
-              onClick={() => onNavigate('docs-arch')}
-              className="inline-flex items-center gap-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 px-5 py-3 text-xs font-bold text-white transition-all cursor-pointer shadow-xs w-full sm:w-auto justify-center"
+              onClick={() => onNavigate('docs-playwright')}
+              className="inline-flex items-center gap-2 rounded-xl bg-red-600 hover:bg-red-700 px-5 py-3 text-xs font-bold text-white transition-all cursor-pointer shadow-xs w-full sm:w-auto justify-center"
             >
-              <span>Buka Dokumentasi Arsitektur Sistem</span>
-              <Workflow className="h-4 w-4" />
+              <span>Buka Dokumentasi Playwright (E2E)</span>
+              <ArrowRight className="h-4 w-4" />
             </button>
           </div>
         </section>

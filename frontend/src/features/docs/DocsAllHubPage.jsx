@@ -20,6 +20,7 @@ import {
   Database,
   Workflow,
   Send,
+  Play,
 } from 'lucide-react';
 
 export default function DocsAllHubPage({ onNavigate }) {
@@ -89,6 +90,22 @@ export default function DocsAllHubPage({ onNavigate }) {
         'Panduan operasional Collection Runner untuk validasi kelulusan pengujian (100% Pass)',
       ],
       linkText: 'Buka Dokumentasi Postman (/docs-postman)',
+    },
+    {
+      id: 'docs-playwright',
+      title: 'Dokumentasi Pengujian Fungsional E2E (Playwright)',
+      badge: 'E2E & UI Testing',
+      badgeColor: 'bg-red-50 text-red-700 border-red-200',
+      icon: Play,
+      iconColor: 'text-red-600',
+      desc: 'Suite pengujian fungsionalitas antarmuka sistem (End-to-End) otomatis lintas browser menggunakan Playwright: Landing Page, Dashboard 4 Ruangan, Panel Admin CRUD, dan Navigasi Dokumen.',
+      highlights: [
+        '24 Skenario Pengujian Otomatis UI & Interaktivitas Lintas Peramban (Chromium, Firefox, WebKit, Mobile)',
+        'Konfigurasi playwright.config.js lengkap dengan penanganan SSL Self-Signed dan rekam trace/video',
+        'Pengujian fungsionalitas pergantian 4 ruangan, filter 1d/7d/30d, render Canvas Chart, dan unduh CSV',
+        'Panduan eksekusi Playwright UI Mode (--ui), Headed Mode, dan pelaporan visual HTML Report',
+      ],
+      linkText: 'Buka Dokumentasi Playwright (/docs-playwright)',
     },
     {
       id: 'docs-vps',

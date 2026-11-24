@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Leaf, ArrowLeft, Menu, X, BookOpen, Server, Cpu, Terminal, LayoutDashboard, Shield, Send, Workflow } from 'lucide-react';
+import { Leaf, ArrowLeft, Menu, X, BookOpen, Server, Cpu, Terminal, LayoutDashboard, Shield, Send, Workflow, Play } from 'lucide-react';
 
 export default function Navbar({ currentView, onNavigate }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -52,8 +52,8 @@ export default function Navbar({ currentView, onNavigate }) {
     );
   }
 
-  // If on Docs views: docs-all, docs-arch, docs-backend, docs-postman, docs-iot, or docs-vps
-  const isDocsView = ['docs-all', 'docs-arch', 'docs-backend', 'docs-postman', 'docs-iot', 'docs-vps'].includes(currentView);
+  // If on Docs views: docs-all, docs-arch, docs-backend, docs-postman, docs-playwright, docs-iot, or docs-vps
+  const isDocsView = ['docs-all', 'docs-arch', 'docs-backend', 'docs-postman', 'docs-playwright', 'docs-iot', 'docs-vps'].includes(currentView);
   if (isDocsView) {
     return (
       <header className="sticky top-0 z-50 w-full bg-white border-b border-slate-200/80 shadow-xs">
@@ -122,6 +122,18 @@ export default function Navbar({ currentView, onNavigate }) {
             >
               <Send className="h-3.5 w-3.5 text-orange-600" />
               <span>Postman Uji</span>
+            </button>
+
+            <button
+              onClick={() => onNavigate('docs-playwright')}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                currentView === 'docs-playwright'
+                  ? 'bg-red-50 text-red-800 border border-red-300 shadow-2xs'
+                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
+              }`}
+            >
+              <Play className="h-3.5 w-3.5 text-red-600 fill-red-600/30" />
+              <span>Playwright E2E</span>
             </button>
 
             <button

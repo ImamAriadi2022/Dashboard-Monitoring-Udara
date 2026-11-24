@@ -9,6 +9,7 @@ import DocsVpsPage from './features/docs/DocsVpsPage';
 import DocsAllHubPage from './features/docs/DocsAllHubPage';
 import DocsArchPage from './features/docs/DocsArchPage';
 import DocsPostmanPage from './features/docs/DocsPostmanPage';
+import DocsPlaywrightPage from './features/docs/DocsPlaywrightPage';
 import AdminPage from './features/admin/AdminPage';
 import { fetchLatest } from './services/api';
 
@@ -19,6 +20,7 @@ const pathToView = (pathname) => {
   if (cleanPath === '/docs-arch') return 'docs-arch';
   if (cleanPath === '/docs-backend') return 'docs-backend';
   if (cleanPath === '/docs-postman') return 'docs-postman';
+  if (cleanPath === '/docs-playwright') return 'docs-playwright';
   if (cleanPath === '/docs-iot') return 'docs-iot';
   if (cleanPath === '/docs-vps') return 'docs-vps';
   if (cleanPath === '/dashboard') return 'dashboard';
@@ -37,6 +39,8 @@ const viewToPath = (view) => {
       return '/docs-backend';
     case 'docs-postman':
       return '/docs-postman';
+    case 'docs-playwright':
+      return '/docs-playwright';
     case 'docs-iot':
       return '/docs-iot';
     case 'docs-vps':
@@ -99,6 +103,8 @@ export default function App() {
         return <DocsBackendPage onNavigate={navigateTo} />;
       case 'docs-postman':
         return <DocsPostmanPage onNavigate={navigateTo} />;
+      case 'docs-playwright':
+        return <DocsPlaywrightPage onNavigate={navigateTo} />;
       case 'docs-iot':
         return <DocsIotPage onNavigate={navigateTo} />;
       case 'docs-vps':
